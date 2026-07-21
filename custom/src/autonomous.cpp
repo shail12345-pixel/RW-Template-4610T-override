@@ -11,6 +11,15 @@
 // IMPORTANT: Remember to add respective function declarations to custom/include/autonomous.h
 // Call these functions from custom/include/user.cpp
 // Format: returnType functionName() { code }
+//
+// NOTE: arm_motor (PORT16/17) is now driven by the CascadeLift controller
+// (see custom/src/lift.cpp). Do NOT run armPIDLoop() or any direct arm_motor
+// commands at the same time as the lift, or the two controllers will fight.
+// To move the lift in autonomous, use the lift API instead, e.g.:
+//   lift.setHeight(LiftHeight::HIGH);
+//   lift.waitUntilAtTarget();
+//   lift.setHeight(LiftHeight::LOW);
+//   lift.waitUntilAtTarget();
 
 void exampleAuton() {
   // Use this for tuning linear and turn pid

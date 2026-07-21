@@ -71,6 +71,38 @@ extern double max_slew_accel_rev;
 extern double max_slew_decel_rev;
 extern double chase_power;
 
+// ============================================================================
+// CASCADE LIFT PARAMETERS
+// Values live in robot-config.cpp. The CascadeLift class reads these in
+// its start() routine. Tune them with the help of LIFT_TUNING.md.
+// ============================================================================
+// PID gains (output in volts, input in degrees)
+extern double lift_pid_kp, lift_pid_ki, lift_pid_kd;
+// Gravity feedforward: flat upward voltage (V) that holds the lift up.
+extern double lift_gravity_ff;
+// Trapezoidal motion-profile limits for automatic moves.
+extern double lift_profile_speed;  // cruise speed (deg/s)
+extern double lift_profile_accel;   // acceleration   (deg/s^2)
+// Arrival detection.
+extern double lift_arrival_tolerance; // degrees
+extern double lift_arrival_settle;    // msec within tolerance to be "arrived"
+// Soft limits (motor-degrees). Protect the mechanism from over-travel.
+extern double lift_min_position;
+extern double lift_max_position;
+// Max output voltage (V). Usually 12.0.
+extern double lift_max_output;
+// Named preset heights (motor-degrees).
+extern double lift_preset_bottom;
+extern double lift_preset_low;
+extern double lift_preset_medium;
+extern double lift_preset_high;
+extern double lift_preset_top;
+
+// Forward-declare the global lift instance (defined in robot-config.cpp
+// after the motor group is constructed).
+class CascadeLift;
+extern CascadeLift lift;
+
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  * 

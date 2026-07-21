@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "../custom/include/lift.h"
 
 using namespace vex;
 using signature = vision::signature;
@@ -46,6 +47,13 @@ distance back_sensor = distance(PORT15);
 motor arm_motor1 = motor(PORT16, ratio18_1, true);
 motor arm_motor2 = motor(PORT17, ratio18_1, false);
 motor_group arm_motor = motor_group(arm_motor1, arm_motor2);
+// The cascade lift reuses the arm motor group (PORT16/17). The lift
+// replaces the arm in this template, so do NOT also run the old armPIDLoop
+// code from autonomous.cpp on these motors — the CascadeLift controller
+// owns them now.
+// If you want the lift on different ports, free up two smart ports below and
+// move these two motor constructors onto them.
+CascadeLift lift(arm_motor);
 motor intake_motor = motor(PORT18, ratio18_1, true);
 digital_out claw = digital_out(Brain.ThreeWirePort.B);
 digital_out rush_arm = digital_out(Brain.ThreeWirePort.C);
@@ -128,6 +136,49 @@ double max_slew_decel_rev = 24;
 // Decrease if there is too much drifting and inconsistency during boomerang
 // Increase for more speed during boomerang
 double chase_power = 2;
+
+// ============================================================================
+// CASCADE LIFT CONFIGURATION (see LIFT_TUNING.md)
+// All positions are in MOTOR-DEGREES (encoder degrees at the motor shaft,
+// before any external gearing). Re-zero with lift.zeroPosition() or
+// lift.home() and re-measure presets from there.
+// ============================================================================
+
+// PID gains. Output is in volts, input in degrees. Start with kG, then P,
+// then D, then I - see the tuning guide.
+double lift_pid_kp = 0.10;   // volts per degree of error
+double lift_pid_ki = 0.0;    // start at 0, add slowly
+double lift_pid_kd = 0.5;    // volts per (deg/s) of error change
+
+// Gravity feedforward (volts). The flat upward voltage that holds the lift
+// at a constant height against gravity. For a cascade lift the load is nearly
+// constant across the range, so a single number works well.
+double lift_gravity_ff = 1.5;
+
+// Trapezoidal motion-profile limits for automatic (setHeight) moves.
+double lift_profile_speed = 300.0;  // cruise speed (deg/s) at the motor
+double lift_profile_accel  = 800.0;  // acceleration     (deg/s^2)
+
+// Arrival detection: how close (deg) and how long settled (msec) before a
+// move is considered complete (isAtTarget() == true).
+double lift_arrival_tolerance = 3.0;  // degrees
+double lift_arrival_settle    = 150.0; // msec
+
+// Soft limits (motor-degrees). Set these to your real mechanical travel so
+// the controller never commands past the stops. 0 = bottom after homing.
+double lift_min_position = 0.0;
+double lift_max_position = 1200.0;
+
+// Max output voltage (V).
+double lift_max_output = 12.0;
+
+// Named preset heights (motor-degrees). Measure these with the lift zeroed
+// at the bottom (0). Replace these placeholder numbers with your real values.
+double lift_preset_bottom = 0.0;
+double lift_preset_low    = 250.0;
+double lift_preset_medium = 550.0;
+double lift_preset_high   = 850.0;
+double lift_preset_top    = 1150.0;
 
 // ============================================================================
 // DO NOT CHANGE ANYTHING BELOW
