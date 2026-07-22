@@ -17,7 +17,7 @@ controller controller_1 = controller(primary);
 // gearSetting is one of the following: ratio36_1(red), ratio18_1(green), ratio6_1(blue)
 // all chassis motors should be reversed appropriately so that they spin vertical when given a positive voltage input
 // such as driveChassis(12, 12)
-motor left_chassis1 = motor(PORT1, ratio6_1, true);
+motor left_chassis1 = motor(PORT21, ratio6_1, true);
 motor left_chassis2 = motor(PORT2, ratio6_1, true);
 motor left_chassis3 = motor(PORT3, ratio6_1, false);
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
@@ -28,12 +28,12 @@ motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_ch
 
 inertial inertial_sensor = inertial(PORT7);
 optical example_optical_sensor = optical(PORT8);
-distance example_distance_sensor = distance(PORT9);
+distance example_distance_sensor = distance(PORT21);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
 
 // Format is rotation(port, reversed)
 // just set these to random ports if you don't use tracking wheels
-rotation horizontal_tracker = rotation(PORT10, true);
+rotation horizontal_tracker = rotation(PORT21, true);
 rotation vertical_tracker = rotation(PORT11, true);
 
 // Distance reset sensors
@@ -43,24 +43,11 @@ distance left_sensor = distance(PORT13);
 distance right_sensor = distance(PORT14);
 distance back_sensor = distance(PORT15);
 
-// game specific devices for high stakes
-motor arm_motor1 = motor(PORT16, ratio18_1, true);
-motor arm_motor2 = motor(PORT17, ratio18_1, false);
-motor_group arm_motor = motor_group(arm_motor1, arm_motor2);
-// The cascade lift reuses the arm motor group (PORT16/17). The lift
-// replaces the arm in this template, so do NOT also run the old armPIDLoop
-// code from autonomous.cpp on these motors — the CascadeLift controller
-// owns them now.
-// If you want the lift on different ports, free up two smart ports below and
-// move these two motor constructors onto them.
-CascadeLift lift(arm_motor);
-motor intake_motor = motor(PORT18, ratio18_1, true);
-digital_out claw = digital_out(Brain.ThreeWirePort.B);
-digital_out rush_arm = digital_out(Brain.ThreeWirePort.C);
-optical optical_sensor = optical(PORT19);
-distance intake_distance = distance(PORT20);
-distance clamp_distance = distance(PORT21);
-digital_out mogo_mech = digital_out(Brain.ThreeWirePort.D);
+motor rightCascade = motor(PORT1, ratio6_1, true);
+motor leftCascade = motor(PORT10, ratio6_1, false);
+motor_group cascade = motor_group(rightCascade, leftCascade);
+
+motor intake = motor(PORT9, ratio6_1, false);
 
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
