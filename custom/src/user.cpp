@@ -58,32 +58,37 @@ void runDriver() {
   heading_correction = false;
 
   while (true) {
-    // [-100, 100] for controller stick axis values
-    ch1 = controller_1.Axis1.value();
-    ch2 = controller_1.Axis2.value();
-    ch3 = controller_1.Axis3.value();
-    ch4 = controller_1.Axis4.value();
+      // [-100, 100] for controller stick axis values
+      ch1 = controller_1.Axis1.value();
+      ch2 = controller_1.Axis2.value();
+      ch3 = controller_1.Axis3.value();
+      ch4 = controller_1.Axis4.value();
 
-    // true/false for controller button presses
-    l1 = controller_1.ButtonL1.pressing();
-    l2 = controller_1.ButtonL2.pressing();
-    r1 = controller_1.ButtonR1.pressing();
-    r2 = controller_1.ButtonR2.pressing();
-    button_a = controller_1.ButtonA.pressing();
-    button_b = controller_1.ButtonB.pressing();
-    button_x = controller_1.ButtonX.pressing();
-    button_y = controller_1.ButtonY.pressing();
-    button_up_arrow = controller_1.ButtonUp.pressing();
-    button_down_arrow = controller_1.ButtonDown.pressing();
-    button_left_arrow = controller_1.ButtonLeft.pressing();
-    button_right_arrow = controller_1.ButtonRight.pressing();
+      // true/false for controller button presses
+      l1 = controller_1.ButtonL1.pressing();
+      l2 = controller_1.ButtonL2.pressing();
+      r1 = controller_1.ButtonR1.pressing();
+      r2 = controller_1.ButtonR2.pressing();
+      button_a = controller_1.ButtonA.pressing();
+      button_b = controller_1.ButtonB.pressing();
+      button_x = controller_1.ButtonX.pressing();
+      button_y = controller_1.ButtonY.pressing();
+      button_up_arrow = controller_1.ButtonUp.pressing();
+      button_down_arrow = controller_1.ButtonDown.pressing();
+      button_left_arrow = controller_1.ButtonLeft.pressing();
+      button_right_arrow = controller_1.ButtonRight.pressing();
 
-    // ---- DRIVE (default tank drive) ----
-    //driveChassis(ch3 * 0.12, ch2 * 0.12);
+      // default split arcade drive while not running the full controlNormalized thread
+  //    if (!drive_code) {
+        // split arcade drive (Axis3 fwd/back, Axis1 turn)
+      //controlNormalized();
+      double forwardSpeed = ch3 * 0.12;
+      double turn = ch1 * 0.12;
+      driveChassis(forwardSpeed + turn, forwardSpeed - turn);
+      //}
 
-
-    wait(10, msec);
-  }
+      wait(10, msec);
+    }
 }
 
 void runPreAutonomous() {
