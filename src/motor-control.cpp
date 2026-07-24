@@ -231,6 +231,97 @@ void turnToAngle(double turn_angle, double time_limit_msec, bool exit, double ma
   is_turning = false;
 }
 
+//Swing turn
+
+void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output) {
+  // Prepare for turn
+  stopChassis(vex::brakeType::coast);
+  is_turning = true;
+  double threshold = 1;
+  PID pid = PID(turn_kp, turn_ki, turn_kd);
+
+  // Normalize and set PID target
+  turn_angle = normalizeTarget(turn_angle);
+  pid.setTarget(turn_angle);
+  pid.setIntegralMax(0);  
+  pid.setIntegralRange(3);
+  pid.setSmallBigErrorTolerance(threshold, threshold * 3);
+  pid.setSmallBigErrorDuration(50, 250);
+  pid.setDerivativeTolerance(threshold * 4.5);
+
+  // Draw baseline for visualization
+  double draw_amplifier = 230 / fabs(turn_angle);
+  Brain.Screen.clearScreen(black);
+  Brain.Screen.setPenColor(green);
+  Brain.Screen.drawLine(0, fabs(turn_angle) * draw_amplifier, 600, fabs(turn_angle) * draw_amplifier);
+  Brain.Screen.setPenColor(red);
+
+  // PID loop for turning
+  double start_time = Brain.timer(msec);
+  double output;
+  double current_heading = getInertialHeading();
+  double previous_heading = 0;
+  int index = 1;
+  if(exit == false && correct_angle < turn_angle) {
+    // Turn right without stopping at end
+    while (getInertialHeading() < turn_angle && Brain.timer(msec) - start_time <= time_limit_msec) {
+      current_heading = getInertialHeading();
+      output = pid.update(current_heading); // PID update for heading
+      // Draw heading trace
+      Brain.Screen.drawLine(index * 3, fabs(previous_heading) * draw_amplifier, (index + 1) * 3, fabs(current_heading * draw_amplifier));
+      index++;
+      previous_heading = current_heading;
+      // Clamp output
+      if(output < min_output) output = min_output;
+      if(output > max_output) output = max_output;
+      else if(output < -max_output) output = -max_output;
+      driveChassis(output,0);
+      wait(10, msec);
+    }
+  } else if(exit == false && correct_angle > turn_angle) {
+    // Turn left without stopping at end
+    while (getInertialHeading() > turn_angle && Brain.timer(msec) - start_time <= time_limit_msec) {
+      current_heading = getInertialHeading();
+      output = pid.update(current_heading);
+      Brain.Screen.drawLine(index * 3, fabs(previous_heading) * draw_amplifier, (index + 1) * 3, fabs(current_heading * draw_amplifier));
+      index++;
+      previous_heading = current_heading;
+      if(output < min_output) output = min_output;
+      if(output > max_output) output = max_output;
+      else if(output < -max_output) output = -max_output;
+      driveChassis(-output, 0);
+      wait(10, msec);
+    }
+  } else {
+    // Standard PID turn
+    while (!pid.targetArrived() && Brain.timer(msec) - start_time <= time_limit_msec) {
+      current_heading = getInertialHeading();
+      output = pid.update(current_heading);
+      Brain.Screen.drawLine(index * 3, fabs(previous_heading) * draw_amplifier, (index + 1) * 3, fabs(current_heading * draw_amplifier));
+      index++;
+      previous_heading = current_heading;
+      if(output > max_output) output = max_output;
+      else if(output < -max_output) output = -max_output;
+      if(output > 0){ //right turn
+        driveChassis(output, 0);
+      }
+      else{
+        driveChassis(-output, 0);
+      }
+      wait(10, msec);
+    }
+  }
+  if(exit) {
+    stopChassis(vex::hold);
+  }
+  correct_angle = turn_angle;
+  is_turning = false;
+}
+
+
+
+
+
 /*
  * Drives the robot a specified distance (in inches) using PID control.
  * - distance_in: Target distance to drive (positive or negative).
