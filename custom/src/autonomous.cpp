@@ -185,3 +185,41 @@ double arm_pid_target = 0, arm_load_target = 60, arm_store_target = 250, arm_sco
 //   turnToAngle(40, 200);                                // Final turn for alignment
 //   driveChassis(1, 1);                                  // Slow drive forward
 // }
+
+
+void autonOne(){
+
+  //beginning
+swingToAngle(150, 1, "right", 5000, true, 10 );
+//score
+//heading to next scoring area
+driveTo(-3,5000, true, 10);
+//turn to adjuct heading face forward
+turnToPoint(12,12, -1, 5000);
+//finishing forward motion
+moveToPoint(12,12,-1,5000,true,10);
+//score
+driveTo(4,3000,true, 10);
+turnToPoint(0,6, 1, 4000);
+moveToPoint(0,6,1,4000,true,10);
+turnToPoint(12,24,1, 3000);
+moveToPoint(12,24,1,4000,true,10);
+//score
+//drive back if needed...
+turnToPoint(-12,12,-1, 3000);
+moveToPoint(-12,12,-1, 4000, true, 10);
+//score
+driveTo(3,3000,true,10);
+turnToPoint(-12,24, 1, 3000);
+moveToPoint(-12,24,1,3000,true, 10);
+//score
+turnToPoint(-12,12, -1, 5000);
+moveToPoint(-12,12,-1, 4000, true,10);
+//finished
+
+
+
+
+
+}
+// void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output) {

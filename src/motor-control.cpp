@@ -232,6 +232,10 @@ void turnToAngle(double turn_angle, double time_limit_msec, bool exit, double ma
 }
 
 //Swing turn
+/// @brief    brief descrption
+/// @param a  first input
+/// @param b second input etc
+/// @return what it returns
 
 void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output) {
   // Prepare for turn

@@ -36,3 +36,4 @@ void resetPositionFront();
 void resetPositionBack();
 void resetPositionLeft();
 void resetPositionRight();
+void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output);
