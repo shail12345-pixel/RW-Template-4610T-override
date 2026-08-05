@@ -240,5 +240,10 @@ void autonOne(){
 }
 void tunePid(){
   driveTo(12, 2000);
-  std::cout << y_pos << "\n";
+  std::cout << "x_pos=" << x_pos << " y_pos=" << y_pos << " error_y=" << (12 - y_pos) << "\n";
 }
+
+// PID TUNING TESTS:
+// x_pos=0 y_pos=12.0303 error_y=-0.0303364 - test 1
+// x_pos=0 y_pos=12.0087 error_y=-0.00873792 - test 2
+// x_pos=0 y_pos=11.8683 error_y=0.131652 - test 3

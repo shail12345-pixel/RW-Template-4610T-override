@@ -45,7 +45,7 @@ void pre_auton(void) {
 --------------------------------------------*/
 
 void autonomous(void) {
- tunePid();
+ runAutonomous();
   
 }
 

@@ -15,7 +15,7 @@ void runAutonomous() {
   int auton_selected = 1;
   switch(auton_selected) {
     case 1:
-      exampleAuton();
+      tunePid();
       break;
     case 2:
       exampleAuton2();

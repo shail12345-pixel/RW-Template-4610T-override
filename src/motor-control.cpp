@@ -237,7 +237,7 @@ void turnToAngle(double turn_angle, double time_limit_msec, bool exit, double ma
 /// @param b second input etc
 /// @return what it returns
 
-void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output) {
+void swingToAngle(double turn_angle, int direction, std::string side, double time_limit_msec, bool exit, double max_output) {
   // Prepare for turn
   stopChassis(vex::brakeType::coast);
   is_turning = true;
