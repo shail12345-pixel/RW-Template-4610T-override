@@ -17,13 +17,13 @@ controller controller_1 = controller(primary);
 // gearSetting is one of the following: ratio36_1(red), ratio18_1(green), ratio6_1(blue)
 // all chassis motors should be reversed appropriately so that they spin vertical when given a positive voltage input
 // such as driveChassis(12, 12)
-motor left_chassis1 = motor(PORT1, ratio6_1, true);
-motor left_chassis2 = motor(PORT2, ratio18_1, true);
-motor left_chassis3 = motor(PORT3, ratio6_1, true);
+motor left_chassis1 = motor(PORT15, ratio6_1, true); //front
+motor left_chassis2 = motor(PORT19, ratio18_1, true); //mini
+motor left_chassis3 = motor(PORT18, ratio6_1, true); //back
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
-motor right_chassis1 = motor(PORT4, ratio6_1, false);
-motor right_chassis2 = motor(PORT5, ratio18_1, false);
-motor right_chassis3 = motor(PORT6, ratio6_1, false);
+motor right_chassis1 = motor(PORT17, ratio6_1, false); //front
+motor right_chassis2 = motor(PORT20, ratio18_1, false); //mini
+motor right_chassis3 = motor(PORT16, ratio6_1, false); //back
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
 
 inertial inertial_sensor = inertial(PORT7);
@@ -54,10 +54,10 @@ motor intake = motor(PORT9, ratio6_1, false);
 // ============================================================================
 
 // Distance between the middles of the left and right wheels of the drive (in inches)
-double distance_between_wheels = 12.3;
+double distance_between_wheels = 11.3;
 
 // motor to wheel gear ratio * wheel diameter (in inches) * pi
-double wheel_distance_in = (36.0 / 48.0) * 3.17 * M_PI;
+double wheel_distance_in = (36.0 / 48.0) * 2.75 * M_PI;
 
 // PID Constants for movement
 // distance_* : Linear PID for straight driving
@@ -77,8 +77,8 @@ bool using_vertical_tracker = false;   // Set to true if a vertical tracking whe
 double horizontal_tracker_dist_from_center = 2.71875;
 // Horizontal distance from the center of the bot to the vertical tracking wheel (in inches, positive is when the wheel is to the right of the center)
 double vertical_tracker_dist_from_center = -0.03125;
-double horizontal_tracker_diameter = 1.975; // Diameter of the horizontal tracker wheel (in inches)
-double vertical_tracker_diameter = 1.975; // Diameter of the vertical tracker wheel (in inches)
+double horizontal_tracker_diameter = 2.75; // Diameter of the horizontal tracker wheel (in inches)
+double vertical_tracker_diameter = 2; // Diameter of the vertical tracker wheel (in inches)
 
 // Distance Reset setup
 // If you are not using all four distance sensors, just set the unused ones to 0

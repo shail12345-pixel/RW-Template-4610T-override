@@ -3,6 +3,7 @@
 #include "pid.h"
 #include <ctime>
 #include <cmath>
+#include <iostream>
 #include <thread>
 
 #include "../include/autonomous.h"
@@ -237,4 +238,7 @@ void autonOne(){
   moveToPoint(-12,12,-1, 4000, true,10);
   //finished
 }
-// void swingToAngle(double turn_angle, int direction, vex::string side, double time_limit_msec, bool exit, double max_output) {
+void tunePid(){
+  driveTo(12, 2000);
+  std::cout << y_pos << "\n";
+}
