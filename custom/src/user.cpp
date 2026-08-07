@@ -7,21 +7,16 @@
 // Modify autonomous, driver, or pre-auton code below
 
 void runAutonomous() {
-  // NOTE: arm_motor (PORT16/17) is now owned by the CascadeLift controller.
-  // The old redGoalRush() routine (case 3) directly commands arm_motor and
-  // runs armPIDLoop(), which would fight the lift controller. Do NOT select
-  // case 3 until you have rewritten its arm sections to use the lift API:
-  //   lift.setHeight(LiftHeight::HIGH); lift.waitUntilAtTarget();
-  int auton_selected = 1;
+  int auton_selected = 2;
   switch(auton_selected) {
     case 1:
       tunePid();
       break;
     case 2:
-      exampleAuton2();
+      exampleAuton();
       break;  
     case 3:
-      // redGoalRush();
+      autonOne();
       break;
     case 4:
       break; 

@@ -24,14 +24,17 @@
 
 void exampleAuton() {
   // Use this for tuning linear and turn pid
-  driveTo(60, 3000);
+  driveTo(12, 3000);
   turnToAngle(90, 2000);
   turnToAngle(135, 2000);
   turnToAngle(150, 2000);
   turnToAngle(160, 2000);
   turnToAngle(165, 2000);
   turnToAngle(0, 2000);
-  driveTo(-60, 3000);
+  driveTo(-12, 3000);
+  double heading = inertial_sensor.heading();
+  std::cout << "heading=" << heading <<"\n";
+
 }
 
 void exampleAuton2() {
@@ -189,16 +192,18 @@ double arm_pid_target = 0, arm_load_target = 60, arm_store_target = 250, arm_sco
 
 //assume local point system
 void autonOne(){
-
+//change this to back up at an angle since not enough space
+/*
   //beginning
   //swing to first cup
   swingToAngle(150, 1, "right", 5000, true, 10 );
   
   //put preload in cup todo
-  
+ */ 
+  wait(1,sec);
   //backup to create space
   driveTo(-3,5000, true, 10);
-  
+  wait(50,msec);
   //go to first goal
   turnToPoint(12,12, -1, 5000);
   moveToPoint(12,12,-1,5000,true,10);
@@ -239,11 +244,14 @@ void autonOne(){
   //finished
 }
 void tunePid(){
-  driveTo(12, 2000);
+  driveTo(12, 5000);
   std::cout << "x_pos=" << x_pos << " y_pos=" << y_pos << " error_y=" << (12 - y_pos) << "\n";
+  
 }
+
 
 // PID TUNING TESTS:
 // x_pos=0 y_pos=12.0303 error_y=-0.0303364 - test 1
 // x_pos=0 y_pos=12.0087 error_y=-0.00873792 - test 2
 // x_pos=0 y_pos=11.8683 error_y=0.131652 - test 3
+
