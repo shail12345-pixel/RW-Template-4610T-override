@@ -89,6 +89,10 @@ class PID {
   // Calculated PID output. 
   double output;
 
+  //PID for swing
+  double swing_kp, swing_ki, swing_kd;
+
+
 };
 
 #endif

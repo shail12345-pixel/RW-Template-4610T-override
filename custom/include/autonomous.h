@@ -2,4 +2,5 @@
 
 void exampleAuton();
 void exampleAuton2();
-void redGoalRush();
+void tunePid();
+void autonOne();
