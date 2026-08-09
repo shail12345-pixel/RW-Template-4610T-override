@@ -22,6 +22,73 @@
 //   lift.setHeight(LiftHeight::LOW);
 //   lift.waitUntilAtTarget();
 
+
+// =============================================================================
+// Robot Control
+// =============================================================================
+
+double degToIn(double degrees, double diameter){
+  return degrees/360 * M_PI * diameter;
+}
+
+double getLiftHeight(){
+  return degToIn(((leftCascade.position(deg) + rightCascade.position(deg))/2), .25);
+}
+
+double heightConsideredDown = .5;
+
+bool liftDown(){
+  if(getLiftHeight() <= heightConsideredDown){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
+
+void cascadeToHeight(double height){
+  int direction;
+    if(getLiftHeight()<height){
+      direction =1;
+    }else{
+      direction =-1;
+    }
+    while(fabs(getLiftHeight()-height)){
+        cascade.spin(fwd,12*direction,volt);
+    }
+}
+
+double alliance = 3;
+double neutral = 6;
+double midfield = 12;
+
+double cup = 7;
+double pin = 5;
+
+void cascadeToHeight(double pinCount, double cupCount, std::string goal, double buffer = 2){
+    double goalHeight;
+    if(goal=="Alliance"){
+      goalHeight = alliance;
+    }else if(goal=="Neutral"){
+      goalHeight = neutral;
+    }else if(goal =="Midfield"){
+      goalHeight = midfield;
+    }
+    double target = goalHeight + (pin * pinCount) + (cup * cupCount);
+    cascadeToHeight(target);
+}
+
+void cascadePlusHeight(double height){
+  double target = height + getLiftHeight();
+  cascadeToHeight(target); 
+}
+
+
+
+// =============================================================================
+// Autos
+// =============================================================================
 void exampleAuton() {
   // Use this for tuning linear and turn pid
   driveTo(12, 3000);

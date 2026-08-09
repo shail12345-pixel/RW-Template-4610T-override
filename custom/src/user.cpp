@@ -2,9 +2,51 @@
 #include "motor-control.h"
 #include "../custom/include/autonomous.h"
 #include "../custom/include/robot-config.h"
-#include "../custom/include/lift.h"
 
 // Modify autonomous, driver, or pre-auton code below
+
+// =============================================================================
+// Driver Control
+// =============================================================================
+
+
+
+
+
+void liftManager(){
+  while(1){
+    if(controller_1.ButtonR1.pressing()){
+        cascade.spin(fwd,12,volt);
+    }else if(controller_1.ButtonR2.pressing() && !liftDown()){
+      cascade.spin(reverse,12,volt);
+    }else{
+      cascade.stop(hold);
+    }    
+  }
+}
+
+
+void intakeManager(){
+  while(1){
+    if(controller_1.ButtonL1.pressing()){
+        intake.spin(fwd,12,volt);
+        claw.spin(fwd,12,volt);
+    }else if(controller_1.ButtonR2.pressing()&& liftDown()){
+      intake.spin(reverse,12,volt);
+    }else if(controller_1.ButtonR2.pressing()&& !liftDown()){
+        claw.spin(reverse,12,volt);
+        wait(200,msec);
+        cascadePlusHeight(2);
+    }else{
+      intake.stop(coast);
+    }
+    
+  }
+}
+
+// =============================================================================
+// RW Stuff
+// =============================================================================
 
 void runAutonomous() {
   int auton_selected = 2;
@@ -47,8 +89,8 @@ bool lift_high_prev = false, lift_top_prev = false;
 bool lift_home_prev = false;
 
 void runDriver() {
-  thread l(lift);
-  thread i(run_intake);
+  thread l(liftManager);
+  thread i(intakeManager);
   stopChassis(coast);
   heading_correction = false;
 

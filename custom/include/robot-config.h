@@ -31,6 +31,9 @@ extern motor_group cascade;
 
 extern motor intake;
 
+extern motor claw;
+extern motor wrist;
+
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 extern double distance_between_wheels;
 extern double wheel_distance_in;

@@ -38,16 +38,18 @@ rotation vertical_tracker = rotation(PORT11, true);
 
 // Distance reset sensors
 // Set these to random ports if you are not using distance resets
-distance front_sensor = distance(PORT12);
-distance left_sensor = distance(PORT13);
-distance right_sensor = distance(PORT14);
-distance back_sensor = distance(PORT15);
+distance front_sensor = distance(PORT21);
+distance left_sensor = distance(PORT21);
+distance right_sensor = distance(PORT21);
+distance back_sensor = distance(PORT21);
 
 motor rightCascade = motor(PORT20, ratio6_1, true);
 motor leftCascade = motor(PORT10, ratio6_1, false);
 motor_group cascade = motor_group(rightCascade, leftCascade);
 
 motor intake = motor(PORT9, ratio6_1, false);
+motor claw = motor(PORT12, ratio18_1, false);
+motor wrist = motor(PORT13, ratio18_1, false);
 
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
