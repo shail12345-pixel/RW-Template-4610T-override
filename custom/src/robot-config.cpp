@@ -1,5 +1,5 @@
 #include "vex.h"
-#include "../custom/include/lift.h"
+
 
 using namespace vex;
 using signature = vision::signature;
@@ -36,6 +36,8 @@ digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
 rotation horizontal_tracker = rotation(PORT21, true);
 rotation vertical_tracker = rotation(PORT11, true);
 
+rotation liftHeight = rotation(PORT1,true);
+
 // Distance reset sensors
 // Set these to random ports if you are not using distance resets
 distance front_sensor = distance(PORT21);
@@ -43,12 +45,11 @@ distance left_sensor = distance(PORT21);
 distance right_sensor = distance(PORT21);
 distance back_sensor = distance(PORT21);
 
-motor rightCascade = motor(PORT20, ratio6_1, true);
-motor leftCascade = motor(PORT10, ratio6_1, false);
-motor_group cascade = motor_group(rightCascade, leftCascade);
+motor lift = motor(PORT10, ratio36_1, false);
 
-motor intake = motor(PORT9, ratio6_1, false);
-motor claw = motor(PORT12, ratio18_1, false);
+
+motor intake = motor(PORT8, ratio18_1, true);
+motor claw = motor(PORT1, ratio18_1, false);
 motor wrist = motor(PORT13, ratio18_1, false);
 
 // ============================================================================

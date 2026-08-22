@@ -1,7 +1,7 @@
 #include "vex.h"
 #include "motor-control.h"
-#include "../custom/include/autonomous.h"
-#include "../custom/include/robot-config.h"
+#include "../include/autonomous.h"
+#include "../include/robot-config.h"
 
 // Modify autonomous, driver, or pre-auton code below
 
@@ -13,35 +13,51 @@
 
 
 
-void liftManager(){
-  while(1){
-    if(controller_1.ButtonR1.pressing()){
-        cascade.spin(fwd,12,volt);
-    }else if(controller_1.ButtonR2.pressing() && !liftDown()){
-      cascade.spin(reverse,12,volt);
-    }else{
-      cascade.stop(hold);
-    }    
-  }
-}
 
 
 void intakeManager(){
+  // rian from 4610R is the goat
   while(1){
     if(controller_1.ButtonL1.pressing()){
         intake.spin(fwd,12,volt);
         claw.spin(fwd,12,volt);
-    }else if(controller_1.ButtonR2.pressing()&& liftDown()){
+    }else if(controller_1.ButtonL2.pressing()/*&& liftDown()*/){
       intake.spin(reverse,12,volt);
-    }else if(controller_1.ButtonR2.pressing()&& !liftDown()){
+      claw.spin(reverse,12,volt);
+   /* }else if(controller_1.ButtonR2.pressing()&& !liftDown()){
         claw.spin(reverse,12,volt);
         wait(200,msec);
-        cascadePlusHeight(2);
+        // cascadePlusHeight(2);
+        */
     }else{
       intake.stop(coast);
+      claw.stop(hold);
     }
     
   }
+}
+
+void liftManager(){
+  while(1){
+    if(controller_1.ButtonR1.pressing()&&liftHeight.angle(deg)<110){
+        lift.spin(fwd,12,volt);
+    }else if(controller_1.ButtonR2.pressing()&&liftHeight.angle(deg)+1>0){
+      lift.spin(reverse,12,volt);
+    }else{
+      lift.stop(hold);
+    }
+    
+  }
+}
+
+void stressTest(){
+    while(1){
+        controller_1.Screen.clearScreen();
+        controller_1.Screen.setCursor(1,1);
+        controller_1.Screen.print("%f",intake.temperature(celsius));
+        controller_1.Screen.setCursor(2,1);
+        controller_1.Screen.print("%f",intake.velocity(pct));
+    }
 }
 
 // =============================================================================
@@ -89,6 +105,8 @@ bool lift_high_prev = false, lift_top_prev = false;
 bool lift_home_prev = false;
 
 void runDriver() {
+  liftHeight.setPosition(0,deg);
+  thread s(stressTest);
   thread l(liftManager);
   thread i(intakeManager);
   stopChassis(coast);

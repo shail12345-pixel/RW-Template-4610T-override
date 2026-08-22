@@ -25,9 +25,8 @@ extern distance left_sensor;
 extern distance right_sensor;
 extern distance back_sensor;
 
-extern motor rightCascade;
-extern motor leftCascade;
-extern motor_group cascade;
+extern rotation liftHeight;
+extern motor lift;
 
 extern motor intake;
 
