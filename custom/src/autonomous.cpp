@@ -13,45 +13,13 @@
 
 
 
+
+
+
+
 void printText(const char* text){
   std::cout << text <<"\n";
 }
-
-
-void moveWristTo(double target) {
-
-    double scaledTarget = target * 4;
-
-    while (true) {
-
-        double current = wristPosition.position(deg);
-
-        double error = scaledTarget - current;
-
-        if (abs(error) <= 20) {
-
-            wrist.stop(hold);
-
-            break;
-
-        }
-
-        if (error > 0) {
-
-            wrist.spin(fwd, 12, volt);
-
-        } else {
-
-            wrist.spin(reverse, 12, volt);
-
-        }
-
-        wait(10, msec);
-
-    }
-
-}
-
 
 // IMPORTANT: Remember to add respective function declarations to custom/include/autonomous.h
 // Call these functions from custom/include/user.cpp

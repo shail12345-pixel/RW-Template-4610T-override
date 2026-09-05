@@ -32,7 +32,10 @@ void PID::setCoefficient(double new_kp, double new_ki, double new_kd) {
 }
 
 void PID::setTarget(double new_target) { 
-  target = new_target;
+    target = new_target;
+    arrived = false;
+    first_time = true;
+    sum_error = 0;
 }
 
 void PID::setSmallBigErrorTolerance(double new_small_error_tolerance, double new_big_error_tolerance) { 

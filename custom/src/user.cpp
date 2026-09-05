@@ -8,7 +8,7 @@
 #include <iostream>
 #include <thread>
 #include <string>
-
+#include "pid.h"
 #include "utils.h"
 #include "pid.h"
 #include <ctime>
@@ -28,19 +28,20 @@ bool liftOverride = false;
 
 
 
-
 void intakeManager(){
   // rian from 4610R is the goat
   while(1){
     if(controller_1.ButtonL1.pressing()){
       liftOverride = false;
           claw.spin(fwd,12,volt);
+          intake.spin(fwd,12,volt);
           
         
     }else if(controller_1.ButtonL2.pressing() && getLiftHeight()<3){
       liftOverride = false;
-      //intake.spin(reverse,12,volt);
+      intake.spin(reverse,12,volt);
       claw.spin(reverse,12,volt);
+      
     }else if(controller_1.ButtonL2.pressing()){
         liftOverride = true;
 
@@ -72,7 +73,9 @@ void intakeManager(){
 void liftManager(){
   
   while(1){
-    if(controller_1.ButtonR1.pressing()){
+    if(controller_1.ButtonL1.pressing()){
+      liftToState("Intake");
+    }else if(controller_1.ButtonR1.pressing()){
           lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
       lift.spin(reverse,12,volt);
@@ -86,14 +89,12 @@ void liftManager(){
 
 void wristManager(){
   while(1){
-    if(controller_1.ButtonA.pressing()){
-      printText("45");
-      moveWristTo(45);
+    if(controller_1.ButtonL1.pressing()){
+      moveWristTo(-278/4.0);
     }else if(controller_1.ButtonR1.pressing()){
-      printText("90");
-      moveWristTo(90); 
-    }else if(controller_1.ButtonL1.pressing()){
-      moveWristTo(45);
+      moveWristTo(0.0); 
+    }else if(controller_1.ButtonL1.pressing()&&false){
+      moveWristTo(136/4.0);
     }
     wait(5,msec);
   }
@@ -166,7 +167,7 @@ bool lift_home_prev = false;
 
 void runDriver() {
 
-  wristPosition.setPosition(42,deg);
+  wristPosition.setPosition(-278,deg);
   liftHeight.setPosition(0,deg);
 
   lift.setStopping(hold);

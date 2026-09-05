@@ -12,6 +12,9 @@
 #include "math.h"
 #include "../custom/include/autonomous.h"
 #include "../custom/include/user.h"
+#include "pid.h"
+
+
 
 using namespace vex;
 
