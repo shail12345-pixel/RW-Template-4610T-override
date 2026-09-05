@@ -31,3 +31,11 @@ void exampleAuton();
 void exampleAuton2();
 void tunePid();
 void autonOne();
+void liftPID_tuner();
+void fullLiftTest();
+void brainD();
+void simple();
+void qual1();
+
+void moveWristTo(double target);
+void printText(const char* text);

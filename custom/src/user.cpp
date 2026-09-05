@@ -2,6 +2,19 @@
 #include "motor-control.h"
 #include "../include/autonomous.h"
 #include "../include/robot-config.h"
+#include "../include/lift.h"
+#include <cmath>
+#include <cstdio>
+#include <iostream>
+#include <thread>
+#include <string>
+
+#include "utils.h"
+#include "pid.h"
+#include <ctime>
+
+
+
 
 // Modify autonomous, driver, or pre-auton code below
 
@@ -11,6 +24,7 @@
 
 
 
+bool liftOverride = false;
 
 
 
@@ -19,64 +33,110 @@ void intakeManager(){
   // rian from 4610R is the goat
   while(1){
     if(controller_1.ButtonL1.pressing()){
-        intake.spin(fwd,12,volt);
-        claw.spin(fwd,12,volt);
-    }else if(controller_1.ButtonL2.pressing()/*&& liftDown()*/){
-      intake.spin(reverse,12,volt);
+      liftOverride = false;
+          claw.spin(fwd,12,volt);
+          
+        
+    }else if(controller_1.ButtonL2.pressing() && getLiftHeight()<3){
+      liftOverride = false;
+      //intake.spin(reverse,12,volt);
       claw.spin(reverse,12,volt);
-   /* }else if(controller_1.ButtonR2.pressing()&& !liftDown()){
+    }else if(controller_1.ButtonL2.pressing()){
+        liftOverride = true;
+
         claw.spin(reverse,12,volt);
-        wait(200,msec);
-        // cascadePlusHeight(2);
-        */
+        lift.spin(fwd,12,volt);
+
+        wait(350,msec);
+        
+        lift.stop(hold);
+
+
+        moveWristTo(110);
+
+        
+        claw.stop();
+        
+        moveWristTo(68/4);
+
+        liftOverride = false;
     }else{
+      liftOverride = false;
       intake.stop(coast);
-      claw.stop(hold);
+      claw.stop(coast);
     }
-    
+    wait(10,msec);
   }
 }
 
 void liftManager(){
+  
   while(1){
-    if(controller_1.ButtonR1.pressing()&&liftHeight.angle(deg)<110){
-        lift.spin(fwd,12,volt);
-    }else if(controller_1.ButtonR2.pressing()&&liftHeight.angle(deg)+1>0){
+    if(controller_1.ButtonR1.pressing()){
+          lift.spin(fwd,12,volt);
+    }else if(controller_1.ButtonR2.pressing()){
       lift.spin(reverse,12,volt);
-    }else{
+    }else if(!liftOverride){
       lift.stop(hold);
     }
-    
+    wait(5,msec);
   }
 }
 
-void stressTest(){
+
+void wristManager(){
+  while(1){
+    if(controller_1.ButtonA.pressing()){
+      printText("45");
+      moveWristTo(45);
+    }else if(controller_1.ButtonR1.pressing()){
+      printText("90");
+      moveWristTo(90); 
+    }else if(controller_1.ButtonL1.pressing()){
+      moveWristTo(45);
+    }
+    wait(5,msec);
+  }
+}
+
+void conDisplay(){
     while(1){
         controller_1.Screen.clearScreen();
         controller_1.Screen.setCursor(1,1);
-        controller_1.Screen.print("%f",intake.temperature(celsius));
+        controller_1.Screen.print("%f",wristPosition.position(deg)/4);
         controller_1.Screen.setCursor(2,1);
-        controller_1.Screen.print("%f",intake.velocity(pct));
+        controller_1.Screen.print("%f",vertical_tracker.position(deg));
     }
 }
+
+// void print(){
+//     while(1){
+//       if(controller_1.ButtonX.pressing()){
+//         std::cout << horizontal_tracker.position(degrees);
+
+//       }
+//     }
+// }
 
 // =============================================================================
 // RW Stuff
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 2;
+  int auton_selected = 1;
+  thread a(brainD);
   switch(auton_selected) {
     case 1:
-      tunePid();
+      qual1();
       break;
     case 2:
-      exampleAuton();
+      fullLiftTest();
       break;  
     case 3:
       autonOne();
       break;
     case 4:
+      
       break; 
     case 5:
       break;
@@ -105,12 +165,31 @@ bool lift_high_prev = false, lift_top_prev = false;
 bool lift_home_prev = false;
 
 void runDriver() {
+
+  wristPosition.setPosition(42,deg);
   liftHeight.setPosition(0,deg);
-  thread s(stressTest);
+
+  lift.setStopping(hold);
+  intake.setStopping(coast);
+  claw.setStopping(coast);
+  wrist.setStopping(hold);
+  thread s(conDisplay);
   thread l(liftManager);
   thread i(intakeManager);
+  thread w(wristManager);
   stopChassis(coast);
   heading_correction = false;
+
+    resetChassis();
+  if(using_horizontal_tracker && using_vertical_tracker) {
+    thread odom = thread(trackXYOdomWheel);
+  } else if (using_horizontal_tracker) {
+    thread odom = thread(trackXOdomWheel);
+  } else if (using_vertical_tracker) {
+    thread odom = thread(trackYOdomWheel);
+  } else {
+    thread odom = thread(trackNoOdomWheel);
+  }
 
   while (true) {
       // [-100, 100] for controller stick axis values
@@ -172,5 +251,7 @@ void runPreAutonomous() {
   } else {
     thread odom = thread(trackNoOdomWheel);
   }
+
+  liftHeight.setPosition(0,deg);
 
 }

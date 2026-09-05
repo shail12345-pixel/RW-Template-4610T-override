@@ -5,9 +5,53 @@
 #include <cmath>
 #include <iostream>
 #include <thread>
+#include <string.h>
 
 #include "../include/autonomous.h"
 #include "motor-control.h"
+#include "../include/lift.h"
+
+
+
+void printText(const char* text){
+  std::cout << text <<"\n";
+}
+
+
+void moveWristTo(double target) {
+
+    double scaledTarget = target * 4;
+
+    while (true) {
+
+        double current = wristPosition.position(deg);
+
+        double error = scaledTarget - current;
+
+        if (abs(error) <= 20) {
+
+            wrist.stop(hold);
+
+            break;
+
+        }
+
+        if (error > 0) {
+
+            wrist.spin(fwd, 12, volt);
+
+        } else {
+
+            wrist.spin(reverse, 12, volt);
+
+        }
+
+        wait(10, msec);
+
+    }
+
+}
+
 
 // IMPORTANT: Remember to add respective function declarations to custom/include/autonomous.h
 // Call these functions from custom/include/user.cpp
@@ -27,80 +71,48 @@
 // Robot Control
 // =============================================================================
 
-double degToIn(double degrees, double diameter){
-  return degrees/360 * M_PI * diameter;
-}
-
-double getLiftHeight(){
-  return 1/*degToIn(((leftCascade.position(deg) + rightCascade.position(deg))/2), .25)*/;
-}
-
-double heightConsideredDown = .5;
-
-bool liftDown(){
-  if(getLiftHeight() <= heightConsideredDown){
-    return true;
-  }else{
-    return false;
-  }
-}
-
-
-
-// void cascadeToHeight(double height){
-//   int direction;
-//     if(getLiftHeight()<height){
-//       direction =1;
-//     }else{
-//       direction =-1;
-//     }
-//     while(fabs(getLiftHeight()-height)){
-//         cascade.spin(fwd,12*direction,volt);
-//     }
-// }
-
-// double alliance = 3;
-// double neutral = 6;
-// double midfield = 12;
-
-// double cup = 7;
-// double pin = 5;
-
-// void cascadeToHeight(double pinCount, double cupCount, std::string goal, double buffer = 2){
-//     double goalHeight;
-//     if(goal=="Alliance"){
-//       goalHeight = alliance;
-//     }else if(goal=="Neutral"){
-//       goalHeight = neutral;
-//     }else if(goal =="Midfield"){
-//       goalHeight = midfield;
-//     }
-//     double target = goalHeight + (pin * pinCount) + (cup * cupCount);
-//     cascadeToHeight(target);
-// }
-
-// void cascadePlusHeight(double height){
-//   double target = height + getLiftHeight();
-//   cascadeToHeight(target); 
-// }
-
-
 
 // =============================================================================
 // Autos
 // =============================================================================
 void exampleAuton() {
   // Use this for tuning linear and turn pid
-  driveTo(12, 3000);
-  turnToAngle(90, 2000);
-  turnToAngle(135, 2000);
-  turnToAngle(150, 2000);
-  turnToAngle(160, 2000);
-  turnToAngle(165, 2000);
-  turnToAngle(0, 2000);
-  driveTo(-12, 3000);
-  double heading = inertial_sensor.heading();
-  std::cout << "heading=" << heading <<"\n";
+  y_pos=0;
+  x_pos=0;
+  // driveTo(12, 3000,true,10);
+  // wait(1,sec);
+  // std::cout << y_pos << "\n";
+  // driveTo(24, 3000,true,10);
+  // wait(1,sec);
+  // std::cout << y_pos << "\n";
+  // driveTo(-36, 5000,true,10);
+  // wait(1,sec);
+  // std::cout << y_pos << "\n";
+  // double heading = inertial_sensor.heading();
+  // std::cout << "heading=" << heading <<"\n";
+
+    // turnToAngle(90, 2000);
+  // wait(500,msec);
+  // std::cout << getInertialHeading() << "\n";
+  // turnToAngle(135, 2000);
+  // wait(500,msec);
+  // std::cout << getInertialHeading() << "\n";
+  // turnToAngle(150, 2000);
+  // wait(500,msec);
+  // std::cout << getInertialHeading() << "\n";
+  // std::cout << getInertialHeading() << "\n";
+  // turnToAngle(0, 2000);
+  // wait(500,msec);
+  // std::cout << getInertialHeading() << "\n";
+
+
+  boomerang(-24,24,1,-90,.3,10000);
+  wait(500,msec);
+  std::cout << getInertialHeading() << "\n";
+  boomerang(0,48,-1,-135,.3,10000);
+  wait(500,msec);
+  std::cout << getInertialHeading() << "\n";
+
 
 }
 
@@ -322,3 +334,136 @@ void tunePid(){
 // x_pos=0 y_pos=12.0087 error_y=-0.00873792 - test 2
 // x_pos=0 y_pos=11.8683 error_y=0.131652 - test 3
 
+
+void liftPID_tuner(){
+  liftHeight.setPosition(0,deg);
+  std::cout <<"Running... \n";
+  liftToAngle(50,12);
+  Brain.Screen.clearScreen();
+  wait(5,sec);
+  Brain.Screen.printAt(10,10,"%f",liftHeight.position(deg));
+}
+
+void fullLiftTest(){
+  std::cout << "Running... \n";
+  std::cout << getLiftHeight() << "\n";
+  liftTo(true,true,true,5,"alliance");
+  //lifting to 50 degrees
+  wait(3,sec);
+  
+  //printing height to terminal
+
+  
+  
+}
+
+void brainD(){
+  std::cout << "go";
+  while(1){
+    Brain.Screen.clearScreen();
+    Brain.Screen.printAt(10,20,"(%f,%f, %f)", x_pos, y_pos, getInertialHeading());
+    wait(10,msec);
+  }
+}
+
+void simple(){
+
+
+   claw.spin(fwd,12,volt);
+  x_pos = 0;
+  y_pos = 0;
+  std::cout << "Running... \n";
+  wrist.setPosition(64,deg);
+
+  moveWristTo(95);
+  wrist.stop(hold);
+  driveTo(-5,400,false,8);
+  driveTo(4,400,false,8);
+  driveTo(-4,400,false,8);
+  driveTo(4,400,true,8);
+  stopChassis(coast);
+  
+  moveToPoint(18,-16,-1,1000,true);
+  left_chassis.spin(fwd,-6,volt);
+  right_chassis.spin(fwd,-6,volt);
+  wait(500,msec);
+  stopChassis(coast);
+  wait(.5,sec);
+ claw.spin(fwd,-12,volt);
+  wait(1,sec);
+  driveTo(10,500,true);
+  turnToAngle(75,500);
+  
+
+
+  // moveToPoint(-15,-22,1,1000,false);
+  // intake.spin(fwd,12,volt);
+  // claw.spin(fwd,12,volt);
+  // moveToPoint(-25.4,-33,1,1000,true,8);
+  // wait(0.5,sec);
+  // driveTo(5,1000,true,6);
+  // wait(.5,sec);
+  // driveTo(-2,1000,false,12);
+  // turnToAngle(-195,1000);
+  // driveTo(-10,1000);
+
+}
+
+
+
+void qual1(){
+  std::cout << "go";
+ 
+  
+  x_pos = 0;
+  y_pos = 0;
+
+  //toggles
+
+  driveTo(1,200,false,12);
+  driveTo(-6,600,false,12);
+  driveTo(4,600,false,12);
+  driveTo(-4,600,true,12);
+
+  //cup then goal
+ 
+  moveToPoint(0,26,1,1500,false);
+  driveTo(6,500,true,6);
+  moveToPoint(20,16,-1,1500);
+
+  //pin then alliance
+
+  moveToPoint(19,33,1,1000);
+  moveToPoint(-11,18,-1,2000);
+
+  //1st pc
+  
+  moveToPoint(-9,23,1,1000,false);
+  moveToPoint(-16,26,-1,1000);
+
+  wait(.5,sec);
+
+  //alliance
+
+  moveToPoint(-22,17,-1,1000);
+
+  wait(.5,sec);
+
+  /*
+
+  //2nd pc
+
+  moveToPoint(-30,18,1,1000,false);
+  moveToPoint(-36,14,-1,1000);
+
+  wait(.5,sec);
+
+  //alliance 2
+
+  turnToAngle(-180,750);
+  moveToPoint(-36,36,-1,1000);
+
+  */
+  
+  stopChassis(coast);
+}

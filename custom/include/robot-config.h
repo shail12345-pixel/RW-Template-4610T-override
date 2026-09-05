@@ -32,6 +32,7 @@ extern motor intake;
 
 extern motor claw;
 extern motor wrist;
+extern rotation wristPosition;
 
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 extern double distance_between_wheels;
