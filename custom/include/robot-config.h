@@ -25,11 +25,14 @@ extern distance left_sensor;
 extern distance right_sensor;
 extern distance back_sensor;
 
-extern motor rightCascade;
-extern motor leftCascade;
-extern motor_group cascade;
+extern rotation liftHeight;
+extern motor lift;
 
 extern motor intake;
+
+extern motor claw;
+extern motor wrist;
+extern rotation wristPosition;
 
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 extern double distance_between_wheels;
