@@ -47,11 +47,8 @@ void intakeManager(){
         liftOverride = true;
 
         claw.spin(reverse,12,volt);
-        lift.spin(fwd,12,volt);
-
-        wait(350,msec);
         
-        lift.stop(hold);
+        liftPlusHeight(10);
 
 
         moveWristTo(110);
@@ -59,7 +56,7 @@ void intakeManager(){
         
         claw.stop();
         
-        moveWristTo(68/4);
+
 
         liftOverride = false;
     }else{
@@ -83,7 +80,7 @@ void liftManager(){
     }else if(!liftOverride){
       lift.stop(hold);
     }
-    wait(5,msec);
+    wait(10,msec);
   }
 }
 
@@ -91,13 +88,14 @@ void liftManager(){
 void wristManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
+      while(getLiftHeight()>3)wait(10,msec);
       moveWristTo(-278/4.0);
     }else if(controller_1.ButtonR1.pressing()){
-      moveWristTo(0.0); 
-    }else if(controller_1.ButtonL1.pressing()&&false){
+      moveWristTo(15.0); 
+    }else if(controller_1.ButtonL1.pressing()&&getLiftHeight()){
       moveWristTo(136/4.0);
     }
-    wait(5,msec);
+    wait(10,msec);
   }
 }
 
@@ -107,7 +105,7 @@ void conDisplay(){
         controller_1.Screen.setCursor(1,1);
         controller_1.Screen.print("%f",wristPosition.position(deg)/4);
         controller_1.Screen.setCursor(2,1);
-        controller_1.Screen.print("%f",vertical_tracker.position(deg));
+        controller_1.Screen.print("%f",getLiftHeight());
     }
 }
 
@@ -120,6 +118,14 @@ void conDisplay(){
 //     }
 // }
 
+
+void testButton(){
+  while(1){
+    if(controller_1.ButtonA.pressing()){
+      liftPlusHeight(5);
+    }
+  }
+}
 // =============================================================================
 // RW Stuff
 // =============================================================================
@@ -168,7 +174,7 @@ bool lift_home_prev = false;
 
 void runDriver() {
 
-  wristPosition.setPosition(-278,deg);
+  wristPosition.setPosition(-310,deg);
   liftHeight.setPosition(0,deg);
 
   lift.setStopping(hold);
@@ -179,8 +185,14 @@ void runDriver() {
   thread l(liftManager);
   thread i(intakeManager);
   thread w(wristManager);
+  thread t(testButton);
   stopChassis(coast);
   heading_correction = false;
+
+  wait(3,sec);
+
+  controller_1.rumble("---");
+  
 
     resetChassis();
   if(using_horizontal_tracker && using_vertical_tracker) {

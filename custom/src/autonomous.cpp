@@ -432,10 +432,9 @@ void qual1(){
 
   //cup then goal
   
-  liftTo(0.0);
   runIntake();
   qual1_lift_step=1;
-  moveToPoint(0,22,1,1500,true,10);
+  moveToPoint(0,24,1,1500,true,10);
 
   wait(.5,sec);
   driveTo(6,500,true,6);
@@ -447,7 +446,7 @@ void qual1(){
   qual1_lift_step=2;
   qual1_wrist_step=1;
 
-  moveToPoint(23,10,-1,1500);
+  moveToPoint(24,16,-1,1500);
 
   score();
 
@@ -464,20 +463,35 @@ void qual1(){
   turnToAngle(0,300);
   driveTo(6,500);
   
-  moveToPoint(-11,18,-1,2000);
-/*
+  qual1_wrist_step = 3;
+  moveToPoint(3,18,-1,2000,false);
+  moveToPoint(-12,15,-1,2000);
+  claw.spin(reverse,12,volt);
+
+
+  wait(.5,sec);
+
+  qual1_wrist_step = 4;
+  claw.spin(fwd,12,volt);
+
   //1st pc
   
-  moveToPoint(-9,23,1,1000,false);
-  moveToPoint(-16,26,-1,1000);
+  moveToPoint(-4,12,1,1000,false);
+  moveToPoint(-19,24,-1,1000);
+
+  qual1_lift_step = 4;
+    qual1_wrist_step = 5;
 
   wait(.5,sec);
 
   //alliance
 
-  moveToPoint(-22,17,-1,1000);
+  //moveToPoint(-22,17,-1,1000);
 
   wait(.5,sec);
+
+  turnToAngle(-90,500,false);
+  moveToPoint(-20,18,-1,750);
 
   /*
 
@@ -502,22 +516,30 @@ void qual1_lift(){
   while(qual1_lift_step==0) wait(10,msec);
   //liftToState("intake");
   while(qual1_lift_step==1) wait(10,msec);
+  wait(250,msec);
   liftTo(true,true,true,0,"neutral");
   while(qual1_lift_step==2) wait(10,msec);
   liftToState("intake");
   while(qual1_lift_step==3) wait(10,msec);
+
   while(qual1_lift_step==4) wait(10,msec);
+
   while(qual1_lift_step==5) wait(10,msec);
 }
 
 void qual1_wrist(){
   while(qual1_wrist_step==0) wait(10,msec);
-  moveWristTo(0);
+  wait(250,msec);
+  moveWristTo(15);
   while(qual1_wrist_step==1) wait(10,msec);
   moveWristTo(-278/4);
   while(qual1_wrist_step==2) wait(10,msec);
+  wait(1000,msec);
+  moveWristTo(15);
   while(qual1_wrist_step==3) wait(10,msec);
+  moveWristTo(60);
   while(qual1_wrist_step==4) wait(10,msec);
+  moveWristTo(-25);
   while(qual1_wrist_step==5) wait(10,msec);
 
 }

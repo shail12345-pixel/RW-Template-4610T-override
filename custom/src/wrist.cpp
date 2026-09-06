@@ -14,14 +14,14 @@ double clamp(double value, double min, double max) {
 
     return value;
 }
-
 void moveWristTo(double target) {
     target = target * 4.0;
+
     const double WRIST_MIN = -278;
     const double WRIST_MAX = 136;
     const double LIMIT_MARGIN = 8.0;
+    const int TIMEOUT_MS = 600;
 
-    
     target = clamp(
         target,
         WRIST_MIN + LIMIT_MARGIN,
@@ -30,10 +30,13 @@ void moveWristTo(double target) {
 
     wristPID.setTarget(target);
 
-    while (!wristPID.targetArrived()) {
+    timer wristTimer;
+    wristTimer.clear();
 
-        double wristAngle =
-            (wristPosition.position(deg));
+    while (!wristPID.targetArrived() &&
+           wristTimer.time(msec) < TIMEOUT_MS) {
+
+        double wristAngle = wristPosition.position(deg);
 
         double output = wristPID.update(wristAngle);
 

@@ -74,7 +74,7 @@ double wheel_distance_in = (36.0 / 48.0) * 2.75 * M_PI;
 
 double distance_kp = 1.4, distance_ki = .5, distance_kd =10;
 double turn_kp = 0.2, turn_ki = 0, turn_kd = .75;
-double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 0;
+double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 2;
 
 // Enable or disable the use of tracking wheels
 bool using_horizontal_tracker = true;  // Set to true if a horizontal tracking wheel is installed and used for odometry
