@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "pid.h"
 #include <ctime>
+#include "../include/wrist.h"
 
 
 

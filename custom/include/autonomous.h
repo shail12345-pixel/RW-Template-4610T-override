@@ -37,5 +37,8 @@ void brainD();
 void simple();
 void qual1();
 
-void moveWristTo(double target);
+void qual1_lift();
+
+void qual1_wrist();
+
 void printText(const char* text);

@@ -6,7 +6,10 @@
 #include <iostream>
 #include <thread>
 #include <string.h>
+#include <thread>
 
+#include "../include/wrist.h"
+  
 #include "../include/autonomous.h"
 #include "motor-control.h"
 #include "../include/lift.h"
@@ -377,12 +380,46 @@ void simple(){
 
 }
 
+void runIntake(){
+  claw.spin(fwd,12,volt);
+  intake.spin(fwd,12,volt);
+}
 
+void stopIntake(){
+  claw.stop(coast);
+  intake.stop(coast);
+
+}
+
+void score(){
+  claw.spin(reverse,12,volt);
+        lift.spin(fwd,12,volt);
+
+        wait(250,msec);
+        
+        lift.stop(hold);
+
+
+        moveWristTo(136/4);
+
+        
+        claw.stop();
+        
+        moveWristTo(-278/4);
+}
+
+
+
+double qual1_lift_step = 0;
+double qual1_wrist_step = 0;
 
 void qual1(){
+  lift.setStopping(hold);
+  thread lift_control(qual1_lift);
+  thread wrist_control(qual1_wrist);
   std::cout << "go";
  
-  
+  wristPosition.setPosition(-290,deg);
   x_pos = 0;
   y_pos = 0;
 
@@ -391,19 +428,44 @@ void qual1(){
   driveTo(1,200,false,12);
   driveTo(-6,600,false,12);
   driveTo(4,600,false,12);
-  driveTo(-4,600,true,12);
+  driveTo(-5,600,true,12);
 
   //cup then goal
- 
-  moveToPoint(0,26,1,1500,false);
+  
+  liftTo(0.0);
+  runIntake();
+  qual1_lift_step=1;
+  moveToPoint(0,22,1,1500,true,10);
+
+  wait(.5,sec);
   driveTo(6,500,true,6);
-  moveToPoint(20,16,-1,1500);
+  
+  wait(0.5,sec);
+
+  stopIntake();
+
+  qual1_lift_step=2;
+  qual1_wrist_step=1;
+
+  moveToPoint(23,10,-1,1500);
+
+  score();
 
   //pin then alliance
 
-  moveToPoint(19,33,1,1000);
-  moveToPoint(-11,18,-1,2000);
+  runIntake();
+  
+  qual1_lift_step=3;
+  qual1_wrist_step=2;
 
+
+
+  //moveToPoint(19,33,1,1000);
+  turnToAngle(0,300);
+  driveTo(6,500);
+  
+  moveToPoint(-11,18,-1,2000);
+/*
   //1st pc
   
   moveToPoint(-9,23,1,1000,false);
@@ -434,4 +496,28 @@ void qual1(){
   */
   
   stopChassis(coast);
+}
+
+void qual1_lift(){
+  while(qual1_lift_step==0) wait(10,msec);
+  //liftToState("intake");
+  while(qual1_lift_step==1) wait(10,msec);
+  liftTo(true,true,true,0,"neutral");
+  while(qual1_lift_step==2) wait(10,msec);
+  liftToState("intake");
+  while(qual1_lift_step==3) wait(10,msec);
+  while(qual1_lift_step==4) wait(10,msec);
+  while(qual1_lift_step==5) wait(10,msec);
+}
+
+void qual1_wrist(){
+  while(qual1_wrist_step==0) wait(10,msec);
+  moveWristTo(0);
+  while(qual1_wrist_step==1) wait(10,msec);
+  moveWristTo(-278/4);
+  while(qual1_wrist_step==2) wait(10,msec);
+  while(qual1_wrist_step==3) wait(10,msec);
+  while(qual1_wrist_step==4) wait(10,msec);
+  while(qual1_wrist_step==5) wait(10,msec);
+
 }

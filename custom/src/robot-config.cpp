@@ -26,7 +26,7 @@ motor right_chassis2 = motor(PORT16, ratio18_1, false); //mini
 motor right_chassis3 = motor(PORT15, ratio6_1, false); //back
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
 
-inertial inertial_sensor = inertial(PORT2);
+inertial inertial_sensor = inertial(PORT6);
 optical example_optical_sensor = optical(PORT8);
 distance example_distance_sensor = distance(PORT21);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
@@ -72,7 +72,7 @@ double wheel_distance_in = (36.0 / 48.0) * 2.75 * M_PI;
 // heading_correction_* : PID for heading correction during linear movement
 //og double distance_kp = 1.1, distance_ki = 0.1, distance_kd = 7;
 
-double distance_kp = 1.5, distance_ki = .5, distance_kd =10;
+double distance_kp = 1.4, distance_ki = .5, distance_kd =10;
 double turn_kp = 0.2, turn_ki = 0, turn_kd = .75;
 double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 0;
 
