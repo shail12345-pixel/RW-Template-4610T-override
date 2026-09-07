@@ -155,9 +155,10 @@ void liftToState(const char* position, double maxSpeed = 12,double buffer = 0){
   if(position=="vertical"){
     target = 0;
   }else if(position=="intake"){
-    target = 1;
+    target = 4;
   }
   target = target+buffer;
+  std::cout << target;
   liftTo(target,maxSpeed);
 }
 

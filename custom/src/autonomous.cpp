@@ -344,14 +344,14 @@ void simple(){
   x_pos = 0;
   y_pos = 0;
   std::cout << "Running... \n";
-  wrist.setPosition(64,deg);
+  wristPosition.setPosition(-290,deg);
 
-  moveWristTo(95);
+  moveWristTo(15);
   wrist.stop(hold);
-  driveTo(-5,400,false,8);
-  driveTo(4,400,false,8);
+  driveTo(-3,400,false,8);
+  driveTo(5,400,false,8);
   driveTo(-4,400,false,8);
-  driveTo(4,400,true,8);
+  driveTo(6,400,true,8);
   stopChassis(coast);
   
   moveToPoint(18,-16,-1,1000,true);
@@ -360,7 +360,9 @@ void simple(){
   wait(500,msec);
   stopChassis(coast);
   wait(.5,sec);
- claw.spin(fwd,-12,volt);
+  liftToAngle(0);
+  wait(.5,sec);
+   claw.spin(fwd,-12,volt);
   wait(1,sec);
   driveTo(10,500,true);
   turnToAngle(75,500);
@@ -464,7 +466,7 @@ void qual1(){
   driveTo(6,500);
   
   qual1_wrist_step = 3;
-  moveToPoint(3,18,-1,2000,false);
+  moveToPoint(0,17,-1,2000,false);
   moveToPoint(-12,15,-1,2000);
   claw.spin(reverse,12,volt);
 
@@ -476,8 +478,9 @@ void qual1(){
 
   //1st pc
   
-  moveToPoint(-4,12,1,1000,false);
-  moveToPoint(-19,24,-1,1000);
+  moveToPoint(-3,7,1,1000,false);
+  turnToAngle(180,500,true);
+  boomerang(-18,27,-1,-45,.3,2500);
 
   qual1_lift_step = 4;
     qual1_wrist_step = 5;
@@ -490,7 +493,8 @@ void qual1(){
 
   wait(.5,sec);
 
-  turnToAngle(-90,500,false);
+  driveTo(-5,500,false);
+  turnToAngle(45,500,false);
   moveToPoint(-20,18,-1,750);
 
   /*

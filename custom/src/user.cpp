@@ -72,7 +72,8 @@ void liftManager(){
   
   while(1){
     if(controller_1.ButtonL1.pressing()){
-      liftToState("Intake");
+      liftToState("intake");
+      printText("test");
     }else if(controller_1.ButtonR1.pressing()){
           lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
@@ -88,8 +89,11 @@ void liftManager(){
 void wristManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
-      while(getLiftHeight()>3)wait(10,msec);
-      moveWristTo(-278/4.0);
+      if(!wristPosition.position(deg)/4<-75){
+      moveWristTo(-45);
+      while(getLiftHeight()<3)wait(10,msec);
+      moveWristTo(-80);
+      }
     }else if(controller_1.ButtonR1.pressing()){
       moveWristTo(15.0); 
     }else if(controller_1.ButtonL1.pressing()&&getLiftHeight()){
@@ -122,7 +126,8 @@ void conDisplay(){
 void testButton(){
   while(1){
     if(controller_1.ButtonA.pressing()){
-      liftPlusHeight(5);
+      printText("test");
+      liftToState("intake");
     }
   }
 }
@@ -138,7 +143,7 @@ void runAutonomous() {
       qual1();
       break;
     case 2:
-      fullLiftTest();
+      simple();
       break;  
     case 3:
       autonOne();
