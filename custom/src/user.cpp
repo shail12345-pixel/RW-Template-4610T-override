@@ -89,15 +89,20 @@ void liftManager(){
 void wristManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
+      printText("we're intaking!");
       if(!wristPosition.position(deg)/4<-75){
-      moveWristTo(-45);
-      while(getLiftHeight()<3)wait(10,msec);
-      moveWristTo(-80);
+        moveWristTo(-45);
+
       }
+
+        printText("so far so good!");
+        while(getLiftHeight()<3)wait(10,msec);
+        moveWristTo(-85);
+
+    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()>38){
+      moveWristTo(34);
     }else if(controller_1.ButtonR1.pressing()){
       moveWristTo(15.0); 
-    }else if(controller_1.ButtonL1.pressing()&&getLiftHeight()){
-      moveWristTo(136/4.0);
     }
     wait(10,msec);
   }

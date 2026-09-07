@@ -1,19 +1,12 @@
 #include "vex.h"
 #include "pid.h"
+#include "../include/autonomous.h"
 
 using namespace vex;
 
 PID wristPID(0.75, 0.0, 6.0);
 
-double clamp(double value, double min, double max) {
-    if (value < min)
-        return min;
 
-    if (value > max)
-        return max;
-
-    return value;
-}
 void moveWristTo(double target) {
     target = target * 4.0;
 
