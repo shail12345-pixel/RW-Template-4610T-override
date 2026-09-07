@@ -73,7 +73,7 @@ void liftManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
       liftToState("intake");
-      printText("test");
+
     }else if(controller_1.ButtonR1.pressing()){
           lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
@@ -88,21 +88,24 @@ void liftManager(){
 
 void wristManager(){
   while(1){
+
     if(controller_1.ButtonL1.pressing()){
       printText("we're intaking!");
       if(!wristPosition.position(deg)/4<-75){
         moveWristTo(-45);
 
       }
+      
 
         printText("so far so good!");
-        while(getLiftHeight()<3)wait(10,msec);
+        while(getLiftHeight()<2)wait(10,msec);
         moveWristTo(-85);
+        printText("done");
 
-    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()>38){
-      moveWristTo(34);
+    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38){
+      moveWristTo(5.0); 
     }else if(controller_1.ButtonR1.pressing()){
-      moveWristTo(15.0); 
+      moveWristTo(34.0);
     }
     wait(10,msec);
   }
@@ -131,8 +134,8 @@ void conDisplay(){
 void testButton(){
   while(1){
     if(controller_1.ButtonA.pressing()){
-      printText("test");
-      liftToState("intake");
+
+      moveWristTo(5);
     }
   }
 }

@@ -10,7 +10,7 @@ PID wristPID(0.75, 0.0, 6.0);
 void moveWristTo(double target) {
     target = target * 4.0;
 
-    const double WRIST_MIN = -278;
+    const double WRIST_MIN = -360;
     const double WRIST_MAX = 136;
     const double LIMIT_MARGIN = 8.0;
     const int TIMEOUT_MS = 600;
