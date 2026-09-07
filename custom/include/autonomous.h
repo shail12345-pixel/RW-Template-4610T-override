@@ -44,3 +44,5 @@ void qual1_wrist();
 void printText(const char* text);
 
 double clamp(double value, double min, double max);
+
+void qual1_5();
