@@ -26,6 +26,8 @@
 
 
 bool liftOverride = false;
+bool wristL1Handled = false;
+
 
 
 
@@ -90,22 +92,25 @@ void wristManager(){
   while(1){
 
     if(controller_1.ButtonL1.pressing()){
-      printText("we're intaking!");
-      if(!wristPosition.position(deg)/4<-75){
-        moveWristTo(-45);
-
-      }
-      
+      if(!wristL1Handled){
+        wristL1Handled = true;
+        printText("we're intaking!");
+        if(!wristPosition.position(deg)/4<-75){
+          moveWristTo(-45);
+        }
 
         printText("so far so good!");
         while(getLiftHeight()<2)wait(10,msec);
         moveWristTo(-85);
         printText("done");
-
-    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
-      moveWristTo(5.0); 
-    }else if(controller_1.ButtonR1.pressing()){
-      moveWristTo(34.0);
+      }
+    }else{
+      wristL1Handled = false;
+      if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
+        moveWristTo(5.0);
+      }else if(controller_1.ButtonR1.pressing()){
+        moveWristTo(34.0);
+      }
     }
     wait(10,msec);
   }

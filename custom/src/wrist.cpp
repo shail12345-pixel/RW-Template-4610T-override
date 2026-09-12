@@ -5,6 +5,10 @@
 using namespace vex;
 
 PID wristPID(0.75, 0.0, 6.0);
+wristPID.setSmallBigErrorTolerance(2,6);
+wristPID.setSmallBigErrorDuration(50,250);
+wristPID.setDerivativeTolerance(10);
+
 
 
 void moveWristTo(double target) {
