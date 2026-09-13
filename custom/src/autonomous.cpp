@@ -625,3 +625,38 @@ void qual1_5(){
   moveToPoint(-32, 8, 1,1000,false);
   stopChassis(coast);
 }
+
+
+void skills(){
+  //toggle
+  moveToPoint(0,8,1,3000,true,10);
+  moveToPoint(0,0,-1,3000,true,10);
+  boomerang(20,12,1,90,.3,3000);
+  //add score preload
+  moveToPoint(18,12,-1,3000,true,10);
+  
+  turnToPoint(20,45,1,3000);   
+  moveToPoint(20,45,1,3000,true,10);
+  //add collect lava lamp
+  turnToPoint(20,12,1,3000);
+  moveToPoint(20,12,1,3000,true,10);
+  //add score lava lamp
+  moveToPoint(20,15,-1,3000,true,10);
+  turnToPoint(45,12,1,3000);
+  moveToPoint(45,12,1,3000,true,10);
+  //add collect lava lamp 2
+  turnToPoint(20,12,1,3000);
+  moveToPoint(20,12,1,3000,true,10);
+  //add score lava lamp 3
+  moveToPoint(26,12,-1,3000,true,10);
+  turnToPoint(26,65,1,3000);
+  //add collect lava lamp 4
+  turnToPoint(32,65,1,3000);
+  moveToPoint(32,65,1,3000,true,10);
+  turnToPoint(26,12,1,3000);
+
+
+
+
+}
+  
