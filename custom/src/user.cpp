@@ -104,7 +104,7 @@ void wristManager(){
         moveWristTo(-85);
         printText("done");
 
-    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
+    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38){
       moveWristTo(5.0); 
     }else if(controller_1.ButtonR1.pressing()){
       moveWristTo(34.0);
