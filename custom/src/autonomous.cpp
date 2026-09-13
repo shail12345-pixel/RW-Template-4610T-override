@@ -627,7 +627,7 @@ void qual1_5(){
 }
 
 
-void skills(){
+void skills_arihaan_sahil(){
   //toggle
   moveToPoint(0,8,1,3000,true,10);
   moveToPoint(0,0,-1,3000,true,10);
@@ -641,22 +641,37 @@ void skills(){
   turnToPoint(20,12,1,3000);
   moveToPoint(20,12,1,3000,true,10);
   //add score lava lamp
-  moveToPoint(20,15,-1,3000,true,10);
-  turnToPoint(45,12,1,3000);
-  moveToPoint(45,12,1,3000,true,10);
-  //add collect lava lamp 2
+  turnToPoint(20,12,-1,3000);
+  moveToPoint(20,12,-1,3000,true,10);
   turnToPoint(20,12,1,3000);
   moveToPoint(20,12,1,3000,true,10);
-  //add score lava lamp 3
-  moveToPoint(26,12,-1,3000,true,10);
-  turnToPoint(26,65,1,3000);
-  //add collect lava lamp 4
-  turnToPoint(32,65,1,3000);
-  moveToPoint(32,65,1,3000,true,10);
-  turnToPoint(26,12,1,3000);
+    for(int i=0;i<3;i++){
+    moveToPoint(50,12,-1,3000,true,10);
+    turnToPoint(50,0,1,3000);
+    moveToPoint(50,0,1,3000,true,10);
+    //add matchload
+    wait(2,sec);
+    //funnel
+    moveToPoint(50,0,-1,3000,true,10);
+    turnToPoint(20,12,1,3000);
+    moveToPoint(20,12,1,3000,true,10);
+    //score funnel
+    
+  }
+    moveToPoint(20,9,-1,3000,true,10);      //going backwards after scoring 3x and at the goal to go to other side
+    
+  
+    
+
+
+
+
+
+ 
+
 
 
 
 
 }
-  
+ 
