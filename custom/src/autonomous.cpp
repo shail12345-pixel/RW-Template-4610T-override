@@ -354,7 +354,7 @@ void simple(){
   std::cout << "Running... \n";
   wristPosition.setPosition(-290,deg);
 
-  moveWristTo(15);
+  moveWristTo(30.0);
   wrist.stop(hold);
   driveTo(-3,400,false,8);
   driveTo(5,400,false,8);
@@ -367,7 +367,7 @@ void simple(){
   right_chassis.spin(fwd,-6,volt);
   wait(500,msec);
   stopChassis(coast);
-  wait(.5,sec);
+  wait(.5,sec);   
   liftToAngle(0);
   wait(.5,sec);
    claw.spin(fwd,-12,volt);

@@ -59,6 +59,9 @@ void intakeManager(){
 
 
         liftOverride = false;
+    }else if(controller_1.ButtonR1.pressing()){
+      intake.stop(coast);
+      claw.spin(fwd,6,volt);  
     }else{
       liftOverride = false;
       intake.stop(coast);
@@ -86,36 +89,58 @@ void liftManager(){
 }
 
 
-void wristManager(){
-  while(1){
+// void wristManager(){
+//   while(1){
 
-    if(controller_1.ButtonL1.pressing()){
-      printText("we're intaking!");
-      if(!wristPosition.position(deg)/4<-75){
-        moveWristTo(-45);
+//     if(controller_1.ButtonL1.pressing()){
+//       printText("we're intaking!");
+//       if(wristPosition.position(deg)<-300){
+//         moveWristTo(-45);
 
-      }
+//       }
       
 
-        printText("so far so good!");
-        while(getLiftHeight()<2)wait(10,msec);
-        moveWristTo(-85);
-        printText("done");
+//         printText("so far so good!");
+//         while(getLiftHeight()<2)wait(10,msec);
+//         moveWristTo(-85.0*4);
+//         printText("done");
 
-    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
-      moveWristTo(5.0); 
+//     }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
+//       moveWristTo(20.0); 
+//     }else if(controller_1.ButtonR1.pressing()){
+//       moveWristTo(34.0*4.0);
+//     }
+//     wait(10,msec);
+//   }
+// }
+
+
+void wristManager(){
+
+  while(1){
+
+    if(controller_1.ButtonR1.pressing()&&getLiftHeight()>35.0){
+
+      moveWristTo(80.0);
     }else if(controller_1.ButtonR1.pressing()){
-      moveWristTo(34.0);
+      moveWristTo(30.0);
+    }else if(controller_1.ButtonL1.pressing()){
+      while(liftHeight.position(deg)>1 && liftHeight.position(deg)>5)wait(10,msec);
+          moveWristTo(-360.0);
+    }else if(controller_1.ButtonDown.pressing()){
+        wrist.spin(fwd,12,volt);
+        wait(500,msec);
+        wristPosition.setPosition(190,deg);
     }
-    wait(10,msec);
   }
 }
+
 
 void conDisplay(){
     while(1){
         controller_1.Screen.clearScreen();
         controller_1.Screen.setCursor(1,1);
-        controller_1.Screen.print("%f",wristPosition.position(deg)/4);
+        controller_1.Screen.print("%f",wristPosition.position(deg));
         controller_1.Screen.setCursor(2,1);
         controller_1.Screen.print("%f",getLiftHeight());
     }
@@ -136,6 +161,8 @@ void testButton(){
     if(controller_1.ButtonA.pressing()){
 
       moveWristTo(5);
+    }else if(controller_1.ButtonB.pressing()){
+      moveWristTo(-65);
     }
   }
 }
@@ -144,7 +171,7 @@ void testButton(){
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 1;
+  int auton_selected = 2;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
@@ -187,8 +214,6 @@ bool lift_home_prev = false;
 
 void runDriver() {
 
-  wristPosition.setPosition(-310,deg);
-  liftHeight.setPosition(0,deg);
 
   lift.setStopping(hold);
   intake.setStopping(coast);
@@ -202,9 +227,6 @@ void runDriver() {
   stopChassis(coast);
   heading_correction = false;
 
-  wait(3,sec);
-
-  controller_1.rumble("---");
   
 
     resetChassis();
@@ -258,6 +280,9 @@ void runPreAutonomous() {
 
   // Calibrate inertial sensor
   inertial_sensor.calibrate();
+    wristPosition.setPosition(-310,deg);
+  liftHeight.setPosition(0,deg);
+
 
   // Wait for the Inertial Sensor to calibrate
   while (inertial_sensor.isCalibrating()) {
