@@ -229,17 +229,18 @@ void runDriver() {
   claw.setStopping(coast);
   wrist.setStopping(hold);
   thread s(conDisplay);
+  thread w(wristManager);
   thread l(liftManager);
   thread i(intakeManager);
-  thread w(wristManager);
+
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);
   stopChassis(coast);
   heading_correction = false;
 
-  wait(3,sec);
+  // wait(3,sec);
 
-  controller_1.rumble("---");
+  // controller_1.rumble("---");
   
 
     resetChassis();
@@ -290,6 +291,9 @@ void runDriver() {
 void runPreAutonomous() {
     // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+
+   wristPosition.setPosition(-280,deg);
+  liftHeight.setPosition(0,deg);
 
   // Calibrate inertial sensor
   inertial_sensor.calibrate();
