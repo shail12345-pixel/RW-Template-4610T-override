@@ -103,14 +103,11 @@ void wristManager(){
         while(getLiftHeight()<2)wait(10,msec);
         moveWristTo(-85);
         printText("done");
-      }
-    }else{
-      wristL1Handled = false;
-      if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
-        moveWristTo(5.0);
-      }else if(controller_1.ButtonR1.pressing()){
-        moveWristTo(34.0);
-      }
+
+    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38 || controller_1.ButtonR2.pressing()){
+      moveWristTo(5.0); 
+    }else if(controller_1.ButtonR1.pressing()){
+      moveWristTo(34.0);
     }
     wait(10,msec);
   }
@@ -190,8 +187,7 @@ void runAutonomous() {
     case 3:
       autonOne();
       break;
-    case 4:
-      
+    case 4:  
       break; 
     case 5:
       break;
