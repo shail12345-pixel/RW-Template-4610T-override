@@ -136,14 +136,43 @@ void conDisplay(){
 // }
 
 
-void testButton(){
+// void testButton(){
+//   while(1){
+//     if(controller_1.ButtonA.pressing()){
+
+//       moveWristTo(5);
+//     }
+//   }
+// }
+
+
+void clawReverseOrForward(){
   while(1){
     if(controller_1.ButtonA.pressing()){
-
-      moveWristTo(5);
+       claw.spin(fwd,12,volt);
+    }
+    else if(controller_1.ButtonB.pressing()){
+        claw.spin(reverse,12,volt);
     }
   }
 }
+
+void intakeReverseOrForward(){
+  while(1){
+    if(controller_1.ButtonRight.pressing()){
+       intake.spin(fwd,12,volt);
+    }
+    else if(controller_1.ButtonLeft.pressing()){
+      intake.spin(reverse,12,volt);
+    }
+  }
+}
+
+
+
+
+
+
 // =============================================================================
 // RW Stuff
 // =============================================================================
@@ -203,7 +232,8 @@ void runDriver() {
   thread l(liftManager);
   thread i(intakeManager);
   thread w(wristManager);
-  thread t(testButton);
+  thread t(clawReverseOrForward);
+  thread p(intakeReverseOrForward);
   stopChassis(coast);
   heading_correction = false;
 
