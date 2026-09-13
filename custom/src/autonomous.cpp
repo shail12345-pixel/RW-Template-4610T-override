@@ -554,8 +554,7 @@ void qual1_wrist(){
   moveWristTo(-25);
   while(qual1_wrist_step==5) wait(10,msec);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 }
 
 void qual1_5(){
@@ -676,10 +675,3 @@ void skills_arihaan_sahil(){
 
 
 }
- 
-=======
-}
->>>>>>> parent of 4f2cbac (Add qual1_5 routine and R2 wrist override)
-=======
-}
->>>>>>> parent of 4f2cbac (Add qual1_5 routine and R2 wrist override)
