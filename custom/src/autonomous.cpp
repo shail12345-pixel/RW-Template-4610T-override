@@ -627,3 +627,37 @@ void skills_Q1_Matchloading(){
 
 
 //void bottom
+
+//each sqr = about 24
+//scores two pins in each quadrant for two quadrants
+void randomAhAuton(){
+moveToPoint(0,48, 1, 3000,true, 100);
+//action
+turnToPoint(-24,24,1, 3000,true, 100);
+moveToPoint(-24,24,1,3000,100);
+//pin
+turnToPoint(-24,48, 1, 3000,true, 100);
+moveToPoint(-24,48,1, 3000, 200);
+//score
+turnToPoint(24,24, 1, 3000, true, 100);
+moveToPoint(24,24,1, 3000, true, 100);        
+//action
+turnToPoint(24,48, 1,3000, true, 100);
+moveToPoint(24,48, 1,3000,true,100);
+turnToPoint(36, 45,1 , 3000,true, 100);
+moveToPoint(36,45,1 ,3000,true,100);
+turnToPoint(24,24,1, 3000,true,100);
+moveToPoint(24,24,1, 3000,true,100);
+//action
+turnToPoint(22,22,1, 3000,true,100);
+moveToPoint(22,22,1, 3000,true,100);
+turnToPoint(48,22,1, 3000,true,100);
+moveToPoint(28,22,1, 3000,true,100);
+//action
+turnToPoint(48,48,1,3000,true, 100);
+moveToPoint(48,48,1,3000,true, 100);
+//action
+
+
+//end of autonomous run //
+}
