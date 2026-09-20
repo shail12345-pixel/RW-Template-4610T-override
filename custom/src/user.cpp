@@ -76,10 +76,13 @@ void liftManager(){
   
   while(1){
     if(controller_1.ButtonL1.pressing()){
-      liftToState("intake");
+
+     liftToState("intake");
+
 
     }else if(controller_1.ButtonR1.pressing()){
-          lift.spin(fwd,12,volt);
+      printText("liftStarted");
+         lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
       lift.spin(reverse,12,volt);
     }else if(!liftOverride){
@@ -90,26 +93,33 @@ void liftManager(){
 }
 
 
+// void wristManager(){
+//   while(1){
+
+//     if(controller_1.ButtonL1.pressing()){
+//       printText("started)");
+//       if(!((fabs(wristPosition.position(deg)-(4.0*85.0))<=2))){
+//               printText("in)");
+//         while(getLiftHeight()<3)wait(10,msec);
+//         moveWristTo(-90);
+//       }
+//             printText("out)");
+//     }else if(controller_1.ButtonR1.pressing()){
+//       printText("wristStarted");
+//       moveWristTo(5.0); 
+//       if(getLiftHeight()>38)moveWristTo(34.0);
+//     }
+//     wait(10,msec);
+//   }
+// }
+
 void wristManager(){
   while(1){
-
     if(controller_1.ButtonL1.pressing()){
-      if(!wristL1Handled){
-        wristL1Handled = true;
-        printText("we're intaking!");
-        if(!wristPosition.position(deg)/4<-75){
-          moveWristTo(-45);
-        }
-
-        printText("so far so good!");
-        while(getLiftHeight()<2)wait(10,msec);
-        moveWristTo(-85);
-        printText("done");
-
-    }else if(controller_1.ButtonR1.pressing()&&getLiftHeight()<38){
-      moveWristTo(5.0); 
+      moveWristTo(-90);
     }else if(controller_1.ButtonR1.pressing()){
-      moveWristTo(34.0);
+      printText("wrist triggered");
+      moveWristTo(5);
     }
     wait(10,msec);
   }
@@ -167,8 +177,34 @@ void intakeReverseOrForward(){
   }
 }
 
+float deadband(float input, float width){
+  if (std::fabs(input)<width){
+    return(0);
+  }
+  return(input);
+}
 
+void controlNormalized() {
 
+    double forward = deadband(controller_1.Axis3.value(), 10);
+    double turn = deadband(controller_1.Axis1.value(), 10);
+    double normal = fabs(turn) + fabs(forward);
+    double fResult = 0, tResult = 0;
+    if (normal != 0) {
+      fResult = forward / normal, tResult = turn / normal;
+      if (fabs(turn) > fabs(forward)) {
+        fResult *= fabs(turn);
+        tResult *= fabs(turn);
+      } else {
+        fResult *= fabs(forward);
+        tResult *= fabs(forward);
+      }
+    }
+    left_chassis.spin(fwd, (fResult + tResult) * 0.12, volt);
+    right_chassis.spin(fwd, (fResult - tResult) * 0.12, volt);
+    wait(10, msec);
+
+}
 
 
 
@@ -228,8 +264,8 @@ void runDriver() {
   wrist.setStopping(hold);
   thread s(conDisplay);
   thread w(wristManager);
-  thread l(liftManager);
-  thread i(intakeManager);
+ thread l(liftManager);
+ thread i(intakeManager);
 
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);
@@ -273,14 +309,8 @@ void runDriver() {
       button_left_arrow = controller_1.ButtonLeft.pressing();
       button_right_arrow = controller_1.ButtonRight.pressing();
 
-      // default split arcade drive while not running the full controlNormalized thread
-  //    if (!drive_code) {
-        // split arcade drive (Axis3 fwd/back, Axis1 turn)
-      //controlNormalized();
-      double forwardSpeed = ch3 * 0.12;
-      double turn = ch1 * 0.12;
-      driveChassis(forwardSpeed + turn, forwardSpeed - turn);
-      //}
+      
+      controlNormalized();
 
       wait(10, msec);
     }
