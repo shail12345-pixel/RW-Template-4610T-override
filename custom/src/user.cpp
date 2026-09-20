@@ -34,7 +34,10 @@ bool wristL1Handled = false;
 void intakeManager(){
   // rian from 4610R is the goat
   while(1){
-    if(controller_1.ButtonL1.pressing()){
+    if(controller_1.ButtonR1.pressing()){
+      intake.spin(fwd,6,volt);
+      claw.spin(fwd,12,volt);
+    }else if(controller_1.ButtonL1.pressing()){
       liftOverride = false;
           claw.spin(fwd,12,volt);
           intake.spin(fwd,12,volt);
@@ -52,13 +55,12 @@ void intakeManager(){
         
         liftPlusHeight(10);
 
-
-        moveWristTo(110);
+        if(getLiftHeight()<36)moveWristTo(110);
 
         
         claw.stop();
 
-        moveWristTo(20);
+        // moveWristTo(20);
         
 
 
@@ -73,11 +75,12 @@ void intakeManager(){
 }
 
 void liftManager(){
-  
+  //i cant pt down
   while(1){
     if(controller_1.ButtonL1.pressing()){
 
-     liftToState("intake");
+      liftToAngle(0,12,12);
+      lift.spin(reverse,6,volt);
 
 
     }else if(controller_1.ButtonR1.pressing()){
@@ -112,11 +115,11 @@ void liftManager(){
 //     wait(10,msec);
 //   }
 // }
-
+//i kant put down the cup
 void wristManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
-      moveWristTo(-90);
+      moveWristTo(-80);
     }else if(controller_1.ButtonR1.pressing()){
       printText("wrist triggered");
       moveWristTo(5);

@@ -28,7 +28,7 @@ double inToDeg(double inches){
 double getLiftHeight(){
   return degToIn(liftHeight.position(deg));
 }
-void liftToAngle(double targetAngle, double maxSpeed = 12) {
+void liftToAngle(double targetAngle, double maxSpeed = 12, double minSpeed = 0) {
 
   targetAngle = clamp(targetAngle, 0, inToDeg(42));
 
@@ -119,7 +119,7 @@ bool liftDown(){
 
 
 
-void liftTo(double height, double maxSpeed = 12){
+void liftTo(double height, double maxSpeed = 12, double minSpeed = 0){
   liftToAngle(inToDeg(height),maxSpeed);
   
 
@@ -132,7 +132,7 @@ double midfield = 12;
 double cup = 7;
 double pin = 3.25;
 
-void liftTo(bool pinInClaw, bool cupInClaw, bool pinPresent, double cupCount, const char* goal, double maxSpeed = 12,double buffer = 2){
+void liftTo(bool pinInClaw, bool cupInClaw, bool pinPresent, double cupCount, const char* goal, double maxSpeed = 12, double minSpeed = 0, double buffer = 2){
     double goalHeight = 0;
     if(strcmp(goal,"alliance")){
       goalHeight = alliance;
@@ -158,29 +158,30 @@ void liftTo(bool pinInClaw, bool cupInClaw, bool pinPresent, double cupCount, co
     target = target + buffer -5;
 
 
-    liftTo(target,maxSpeed);
+    liftTo(target,maxSpeed, minSpeed);
   }
 }
 
-void liftToState(const char* position, double maxSpeed = 12,double buffer = 0){
+void liftToState(const char* position, double maxSpeed = 12, double minSpeed = 0, double buffer = 0){
   double target=0;
   if(position=="vertical"){
     target = 0;
   }else if(position=="intake"){
-    target = 3;
+    target = 0.0;
+    
   }
   target = target+buffer;
 
-  liftTo(target,maxSpeed);
+  liftTo(target,maxSpeed, minSpeed);
 }
 
 
 
-void liftPlusHeight(double height, double maxSpeed = 12) {
+void liftPlusHeight(double height, double maxSpeed = 12, double minSpeed = 0) {
     double currentHeight = getLiftHeight();
     double targetHeight = currentHeight + height;
 
-    liftTo(targetHeight, maxSpeed);
+    liftTo(targetHeight, maxSpeed, minSpeed);
 }
 
 

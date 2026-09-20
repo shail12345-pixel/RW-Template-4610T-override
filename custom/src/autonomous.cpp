@@ -557,72 +557,72 @@ void qual1_wrist(){
 
 }
 
-void skills_Q1_Matchloading(){
-  //toggle
-  moveToPoint(0,8,1,3000,true,10);
-  moveToPoint(0,0,-1,3000,true,10);
-  boomerang(22,23,1,90,.3,3000);
-  //add score preload
-  moveToPoint(18,23,-1,3000,true,10);
+// void skills_Q1_Matchloading(){
+//   //toggle
+//   moveToPoint(0,8,1,3000,true,10);
+//   moveToPoint(0,0,-1,3000,true,10);
+//   boomerang(22,23,1,90,.3,3000);
+//   //add score preload
+//   moveToPoint(18,23,-1,3000,true,10);
   
-  turnToPoint(22,46,1,3000);   
-  moveToPoint(22,46,1,3000,true,10);
-  //add collect lava lamp
-  turnToPoint(22,23,1,3000);
-  moveToPoint(22,23,1,3000,true,10);
-  //add score lava lamp
-  turnToPoint(22,26,-1,3000);
-  moveToPoint(22,26,-1,3000,true,10);
-  turnToPoint(48,23,1,3000);
-  moveToPoint(48,23,1,3000,true,10);
-  for(int i=0;i<3;i++){
-    moveToPoint(60,23,-1,3000,true,10);
-    turnToPoint(60,0,1,3000);
-    moveToPoint(60,0,1,3000,true,10);
-    //add matchload
-    wait(2,sec);
-    //funnel
-    moveToPoint(60,0,-1,3000,true,10);
-    turnToPoint(22,23,1,3000);
-    moveToPoint(22,23,1,3000,true,10);
-    //score funnel
-  }
-    moveToPoint(48,23,-1,3000,true,10);      //going backwards after scoring 3x and at the goal to go to other side
-    turnToPoint(22,46,1,3000); //placeholder for 1st lava lamp
-    moveToPoint(22,46,1,3000,true,10);
-    turnToPoint(-22,46,1,3000); 
-    moveToPoint(-22,46,1,3000,true,10);
-    //collect petal
-    turnToPoint(-22,23,1,3000);
-    moveToPoint(-22,23,1,3000,true,10);
-    //score petal
+//   turnToPoint(22,46,1,3000);   
+//   moveToPoint(22,46,1,3000,true,10);
+//   //add collect lava lamp
+//   turnToPoint(22,23,1,3000);
+//   moveToPoint(22,23,1,3000,true,10);
+//   //add score lava lamp
+//   turnToPoint(22,26,-1,3000);
+//   moveToPoint(22,26,-1,3000,true,10);
+//   turnToPoint(48,23,1,3000);
+//   moveToPoint(48,23,1,3000,true,10);
+//   for(int i=0;i<3;i++){
+//     moveToPoint(60,23,-1,3000,true,10);
+//     turnToPoint(60,0,1,3000);
+//     moveToPoint(60,0,1,3000,true,10);
+//     //add matchload
+//     wait(2,sec);
+//     //funnel
+//     moveToPoint(60,0,-1,3000,true,10);
+//     turnToPoint(22,23,1,3000);
+//     moveToPoint(22,23,1,3000,true,10);
+//     //score funnel
+//   }
+//     moveToPoint(48,23,-1,3000,true,10);      //going backwards after scoring 3x and at the goal to go to other side
+//     turnToPoint(22,46,1,3000); //placeholder for 1st lava lamp
+//     moveToPoint(22,46,1,3000,true,10);
+//     turnToPoint(-22,46,1,3000); 
+//     moveToPoint(-22,46,1,3000,true,10);
+//     //collect petal
+//     turnToPoint(-22,23,1,3000);
+//     moveToPoint(-22,23,1,3000,true,10);
+//     //score petal
 
-    //back up collect petal
-    moveToPoint(-18,30,-1,3000,true,10);
-    turnToPoint(-46,23,1,3000,true,10);
-    moveToPoint(-46,23,1,3000,true,10);
-     //score
-    turnToPoint(-22,23,1,3000,true,10);
-    moveToPoint(-22,23,1,3000,true,10); //run thr point
-    turnToPoint(-60,23,-1,3000,true,10); 
-    moveToPoint(-60,23,-1,3000,true,10);
-    turnToPoint(-60,0,1,3000,true,10);
-    moveToPoint(-60,0,1,3000,true,10);
-    //matchload
-    for(int i=0;i<4;i++){
-    moveToPoint(-60,23,-1,3000,true,10);
-    turnToPoint(-60,23,1,3000,true,10);
-    moveToPoint(-60,23,1,3000,true,10); //score matchload
-    turnToPoint(-60,23,-1,3000,true,10); // run thr point(s)
-    moveToPoint(-60,23,-1,3000,true,10);
-    turnToPoint(-60,0,1,3000,true,10);
-    moveToPoint(-60,0,1,3000,true,10);
-    //add matchload
-    wait(2,sec);
-    }
-    //park in midfield
-    moveToPoint(0,67,1,3000,true,10); // 36 could be possible y value for midfield - mason
-}
+//     //back up collect petal
+//     moveToPoint(-18,30,-1,3000,true,10);
+//     turnToPoint(-46,23,1,3000,true,10);
+//     moveToPoint(-46,23,1,3000,true,10);
+//      //score
+//     turnToPoint(-22,23,1,3000,true,10);
+//     moveToPoint(-22,23,1,3000,true,10); //run thr point
+//     turnToPoint(-60,23,-1,3000,true,10); 
+//     moveToPoint(-60,23,-1,3000,true,10);
+//     turnToPoint(-60,0,1,3000,true,10);
+//     moveToPoint(-60,0,1,3000,true,10);
+//     //matchload
+//     for(int i=0;i<4;i++){
+//     moveToPoint(-60,23,-1,3000,true,10);
+//     turnToPoint(-60,23,1,3000,true,10);
+//     moveToPoint(-60,23,1,3000,true,10); //score matchload
+//     turnToPoint(-60,23,-1,3000,true,10); // run thr point(s)
+//     moveToPoint(-60,23,-1,3000,true,10);
+//     turnToPoint(-60,0,1,3000,true,10);
+//     moveToPoint(-60,0,1,3000,true,10);
+//     //add matchload
+//     wait(2,sec);
+//     }
+//     //park in midfield
+//     moveToPoint(0,67,1,3000,true,10); // 36 could be possible y value for midfield - mason
+// }
 
 
 
