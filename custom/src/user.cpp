@@ -57,6 +57,8 @@ void intakeManager(){
 
         
         claw.stop();
+
+        moveWristTo(20);
         
 
 
