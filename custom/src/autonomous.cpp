@@ -345,7 +345,11 @@ void brainD(){
   }
 }
 
-void simple(){
+// ============================================================================
+// Single Pin
+// ============================================================================
+
+void NA_1pin(){
 
 
    claw.spin(fwd,12,volt);
@@ -356,6 +360,7 @@ void simple(){
 
   moveWristTo(15);
   wrist.stop(hold);
+  lift.spin(reverse,12,volt);
   driveTo(-3,400,false,8);
   driveTo(5,400,false,8);
   driveTo(-4,400,false,8);
@@ -367,28 +372,48 @@ void simple(){
   right_chassis.spin(fwd,-6,volt);
   wait(500,msec);
   stopChassis(coast);
-  wait(.5,sec);
-  liftToAngle(0);
-  wait(.5,sec);
    claw.spin(fwd,-12,volt);
   wait(1,sec);
+  lift.stop();
   driveTo(10,500,true);
   turnToAngle(75,500);
   
-
-
-  // moveToPoint(-15,-22,1,1000,false);
-  // intake.spin(fwd,12,volt);
-  // claw.spin(fwd,12,volt);
-  // moveToPoint(-25.4,-33,1,1000,true,8);
-  // wait(0.5,sec);
-  // driveTo(5,1000,true,6);
-  // wait(.5,sec);
-  // driveTo(-2,1000,false,12);
-  // turnToAngle(-195,1000);
-  // driveTo(-10,1000);
-
 }
+
+void A_1pin(){
+
+
+   claw.spin(fwd,12,volt);
+  x_pos = 0;
+  y_pos = 0;
+  std::cout << "Running... \n";
+  wristPosition.setPosition(-290,deg);
+
+  moveWristTo(15);
+  wrist.stop(hold);
+  lift.spin(reverse,12,volt);
+  driveTo(-3,400,false,8);
+  driveTo(5,400,false,8);
+  driveTo(-4,400,false,8);
+  driveTo(6,400,true,8);
+  stopChassis(coast);
+  
+  moveToPoint(-18,-16,-1,1000,true);
+  left_chassis.spin(fwd,-6,volt);
+  right_chassis.spin(fwd,-6,volt);
+  wait(500,msec);
+  stopChassis(coast);
+   claw.spin(fwd,-12,volt);
+  wait(1,sec);
+  lift.stop();
+  driveTo(10,500,true);
+  turnToAngle(75,500);
+  
+}
+
+// =============================================================================
+// General
+// =============================================================================
 
 void runIntake(){
   claw.spin(fwd,12,volt);
@@ -447,11 +472,11 @@ void qual1(){
   moveToPoint(0,24,1,1500,true,10);
 
   wait(.5,sec);
-  driveTo(6,500,true,6);
+  driveTo(8,500,true,6);
   
   wait(0.5,sec);
 
-  stopIntake();
+
 
   qual1_lift_step=2;
   qual1_wrist_step=1;
@@ -628,36 +653,110 @@ void qual1_wrist(){
 
 //void bottom
 
-//each sqr = about 24
-//scores two pins in each quadrant for two quadrants
-void randomAhAuton(){
-moveToPoint(0,48, 1, 3000,true, 100);
-//action
-turnToPoint(-24,24,1, 3000,true, 100);
-moveToPoint(-24,24,1,3000,100);
-//pin
-turnToPoint(-24,48, 1, 3000,true, 100);
-moveToPoint(-24,48,1, 3000, 200);
-//score
-turnToPoint(24,24, 1, 3000, true, 100);
-moveToPoint(24,24,1, 3000, true, 100);        
-//action
-turnToPoint(24,48, 1,3000, true, 100);
-moveToPoint(24,48, 1,3000,true,100);
-turnToPoint(36, 45,1 , 3000,true, 100);
-moveToPoint(36,45,1 ,3000,true,100);
-turnToPoint(24,24,1, 3000,true,100);
-moveToPoint(24,24,1, 3000,true,100);
-//action
-turnToPoint(22,22,1, 3000,true,100);
-moveToPoint(22,22,1, 3000,true,100);
-turnToPoint(48,22,1, 3000,true,100);
-moveToPoint(28,22,1, 3000,true,100);
-//action
-turnToPoint(48,48,1,3000,true, 100);
-moveToPoint(48,48,1,3000,true, 100);
-//action
+// //each sqr = about 24
+// //scores two pins in each quadrant for two quadrants
+// void randomAhAuton(){
+// moveToPoint(0,48, 1, 3000,true, 100);
+// //action
+// turnToPoint(-24,24,1, 3000,true, 100);
+// moveToPoint(-24,24,1,3000,100);
+// //pin
+// turnToPoint(-24,48, 1, 3000,true, 100);
+// moveToPoint(-24,48,1, 3000, 200);
+// //score
+// turnToPoint(24,24, 1, 3000, true, 100);
+// moveToPoint(24,24,1, 3000, true, 100);        
+// //action
+// turnToPoint(24,48, 1,3000, true, 100);
+// moveToPoint(24,48, 1,3000,true,100);
+// turnToPoint(36, 45,1 , 3000,true, 100);
+// moveToPoint(36,45,1 ,3000,true,100);
+// turnToPoint(24,24,1, 3000,true,100);
+// moveToPoint(24,24,1, 3000,true,100);
+// //action
+// turnToPoint(22,22,1, 3000,true,100);
+// moveToPoint(22,22,1, 3000,true,100);
+// turnToPoint(48,22,1, 3000,true,100);
+// moveToPoint(28,22,1, 3000,true,100);
+// //action
+// turnToPoint(48,48,1,3000,true, 100);
+// moveToPoint(48,48,1,3000,true, 100);
+// //action
 
 
-//end of autonomous run //
+// //end of autonomous run //
+// }
+
+
+void skills(){
+
+  double universal_speed_cap = 8.0;
+
+  lift.setStopping(hold);
+  thread lift_control(qual1_lift);
+  thread wrist_control(qual1_wrist);
+  std::cout << "go";
+ 
+  wristPosition.setPosition(-290,deg);
+  x_pos = 0;
+  y_pos = 0;
+
+
+  moveWristTo(15);
+  wrist.stop(hold);
+  lift.spin(reverse,12,volt);
+  driveTo(-3,400,false,8);
+  driveTo(5,400,false,8);
+  driveTo(-4,400,false,8);
+  driveTo(6,400,true,8);
+  stopChassis(coast);
+  
+  moveToPoint(-18,-16,-1,1000,true);
+  left_chassis.spin(fwd,-6,volt);
+  right_chassis.spin(fwd,-6,volt);
+  wait(500,msec);
+  stopChassis(coast);
+   claw.spin(fwd,-12,volt);
+  wait(1,sec);
+  lift.stop();
+  driveTo(10,500,true);
+  turnToAngle(30,500);
+
+
+  moveToPoint(-26,-33,-1,1000,false,universal_speed_cap);
+
+  turnToAngle(-20,500,true,universal_speed_cap);
+
+  moveToPoint(-57,-17,1,1000,true,universal_speed_cap);
+
+  turnToAngle(0,500,true,universal_speed_cap);
+
+  driveTo(10,1000,true);
+
+  intake.spin(fwd,12,volt);
+  claw.spin(fwd,12,volt);
+
+  wait(3,sec);
+
+    driveTo(-10,1000,true);
+
+  moveToPoint(-50,22,-1,1000,false,universal_speed_cap);
+  moveToPoint(-37,22,-1,1000,false,universal_speed_cap);
+
+  wait(3,sec);
+
+  moveToPoint(-50,22,1,1000,false,universal_speed_cap);
+  moveToPoint(-57,-17,1,1000,true,universal_speed_cap);
+
+  turnToAngle(0,500,true,universal_speed_cap);
+
+  driveTo(10,1000,true);
+
+  intake.spin(fwd,12,volt);
+  claw.spin(fwd,12,volt);
+
+  wait(3,sec);
+  
+
+  stopChassis(coast);
 }

@@ -187,6 +187,21 @@ float deadband(float input, float width){
   return(input);
 }
 
+void resetLift(){
+  while(1){
+    if(controller_1.ButtonUp.pressing()){
+      liftOverride = true;
+      moveWristTo(0);
+      lift.spin(reverse,100,pct);
+      liftHeight.setPosition(0,deg);
+      wait(3,sec);
+      lift.stop();
+      liftOverride = false;
+    }
+  }
+}
+
+
 void controlNormalized() {
 
     double forward = deadband(controller_1.Axis3.value(), 10);
@@ -216,19 +231,20 @@ void controlNormalized() {
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 1;
+  int auton_selected = 2;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
       qual1();
       break;
     case 2:
-      simple();
+      NA_1pin();
       break;  
     case 3:
-      autonOne();
+      A_1pin();
       break;
-    case 4:  
+    case 4: 
+      skills(); 
       break; 
     case 5:
       break;
@@ -269,6 +285,7 @@ void runDriver() {
   thread w(wristManager);
  thread l(liftManager);
  thread i(intakeManager);
+ thread r(resetLift);
 
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);

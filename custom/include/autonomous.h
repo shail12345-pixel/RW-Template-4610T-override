@@ -34,8 +34,10 @@ void autonOne();
 void liftPID_tuner();
 void fullLiftTest();
 void brainD();
-void simple();
+void NA_1pin();
+void A_1pin();
 void qual1();
+void skills();
 
 void qual1_lift();
 
