@@ -78,8 +78,8 @@ void liftManager(){
   //i cant pt down
   while(1){
     if(controller_1.ButtonL1.pressing()){
-
-      liftToAngle(0,12,12);
+      
+      liftToAngle(5,12,12);
       lift.spin(reverse,6,volt);
 
 
@@ -88,6 +88,12 @@ void liftManager(){
          lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
       lift.spin(reverse,12,volt);
+    }else if(controller_1.ButtonUp.pressing()){
+      lift.spin(reverse,12,volt);
+      wait(1,sec);
+      liftHeight.setPosition(0,deg);
+      liftToAngle(5,12,12);
+
     }else if(!liftOverride){
       lift.stop(hold);
     }
@@ -119,7 +125,7 @@ void liftManager(){
 void wristManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
-      moveWristTo(-80);
+      moveWristTo(-85);
     }else if(controller_1.ButtonR1.pressing()){
       printText("wrist triggered");
       moveWristTo(5);
@@ -185,20 +191,6 @@ float deadband(float input, float width){
     return(0);
   }
   return(input);
-}
-
-void resetLift(){
-  while(1){
-    if(controller_1.ButtonUp.pressing()){
-      liftOverride = true;
-      moveWristTo(0);
-      lift.spin(reverse,100,pct);
-      liftHeight.setPosition(0,deg);
-      wait(3,sec);
-      lift.stop();
-      liftOverride = false;
-    }
-  }
 }
 
 
@@ -285,7 +277,7 @@ void runDriver() {
   thread w(wristManager);
  thread l(liftManager);
  thread i(intakeManager);
- thread r(resetLift);
+
 
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);
