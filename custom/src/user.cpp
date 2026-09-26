@@ -65,6 +65,9 @@ void intakeManager(){
 
 
         liftOverride = false;
+    }else if(controller_1.ButtonX.pressing()){
+      release();
+      while(controller_1.ButtonX.pressing())wait(10,msec);
     }else{
       liftOverride = false;
       intake.stop(coast);
@@ -218,6 +221,8 @@ void controlNormalized() {
 
 
 
+
+
 // =============================================================================
 // RW Stuff
 // =============================================================================
@@ -281,6 +286,7 @@ void runDriver() {
 
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);
+
   stopChassis(coast);
   heading_correction = false;
 

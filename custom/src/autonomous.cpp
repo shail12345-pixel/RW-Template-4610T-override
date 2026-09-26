@@ -26,7 +26,13 @@ double clamp(double value, double min, double max) {
     return value;
 }
 
+void release(){
+  liftTo(1);
+  intake.spin(fwd,12,volt);
+  wait(.5,sec);
+  intake.stop();
 
+}
 
 void printText(const char* text){
   std::cout << text <<"\n";
@@ -357,7 +363,7 @@ void NA_1pin(){
   y_pos = 0;
   std::cout << "Running... \n";
   wristPosition.setPosition(-290,deg);
-
+  release();
   moveWristTo(15);
   wrist.stop(hold);
   lift.spin(reverse,12,volt);
