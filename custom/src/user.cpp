@@ -43,7 +43,7 @@ void intakeManager(){
           intake.spin(fwd,12,volt);
           
         
-    }else if(controller_1.ButtonL2.pressing() && getLiftHeight()<3){
+    }else if(controller_1.ButtonL2.pressing() && getLiftHeight()<3 && wristPosition.position(deg)<-10){
       liftOverride = false;
       intake.spin(reverse,12,volt);
       claw.spin(reverse,12,volt);
@@ -82,7 +82,7 @@ void liftManager(){
   while(1){
     if(controller_1.ButtonL1.pressing()){
       
-      liftToAngle(5,12,12);
+      liftTo(1.5,12,12);
       lift.spin(reverse,6,volt);
 
 
@@ -95,7 +95,7 @@ void liftManager(){
       lift.spin(reverse,12,volt);
       wait(1,sec);
       liftHeight.setPosition(0,deg);
-      liftToAngle(5,12,12);
+      liftTo(.5,12,12);
 
     }else if(!liftOverride){
       lift.stop(hold);
@@ -143,7 +143,7 @@ void conDisplay(){
         controller_1.Screen.setCursor(1,1);
         controller_1.Screen.print("%f",wristPosition.position(deg)/4);
         controller_1.Screen.setCursor(2,1);
-        controller_1.Screen.print("%f",getLiftHeight());
+        controller_1.Screen.print("%f",liftHeight.position(deg));
     }
 }
 
@@ -196,6 +196,15 @@ float deadband(float input, float width){
   return(input);
 }
 
+void resetWrist(){
+  while(1){
+    if(controller_1.ButtonDown.pressing()){
+      wrist.spin(fwd,12,volt);
+      wait(.5,sec);
+      wristPosition.setPosition(216,deg);
+    }
+  }
+}
 
 void controlNormalized() {
 
@@ -228,7 +237,7 @@ void controlNormalized() {
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 2;
+  int auton_selected = 1;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
@@ -244,6 +253,7 @@ void runAutonomous() {
       skills(); 
       break; 
     case 5:
+      NA_1pin();
       break;
     case 6:
       break;
@@ -271,8 +281,6 @@ bool lift_home_prev = false;
 
 void runDriver() {
 
-  wristPosition.setPosition(-310,deg);
-  liftHeight.setPosition(0,deg);
 
   lift.setStopping(hold);
   intake.setStopping(coast);
@@ -281,6 +289,7 @@ void runDriver() {
   thread s(conDisplay);
   thread w(wristManager);
  thread l(liftManager);
+ thread r(resetWrist);
  thread i(intakeManager);
 
 

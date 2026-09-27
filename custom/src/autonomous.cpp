@@ -29,9 +29,17 @@ double clamp(double value, double min, double max) {
 void release(){
   liftTo(1);
   intake.spin(fwd,12,volt);
-  wait(.5,sec);
+  wait(1,sec);
   intake.stop();
 
+}
+
+void postAutoReset(){
+  wrist.spin(fwd,12,volt);
+  lift.spin(reverse,12,volt);
+  wait(.5,sec);
+  liftHeight.setPosition(0,deg);
+  wristPosition.setPosition(216,deg);
 }
 
 void printText(const char* text){
@@ -362,15 +370,19 @@ void NA_1pin(){
   x_pos = 0;
   y_pos = 0;
   std::cout << "Running... \n";
+
   wristPosition.setPosition(-290,deg);
   release();
   moveWristTo(15);
   wrist.stop(hold);
   lift.spin(reverse,12,volt);
-  driveTo(-3,400,false,8);
-  driveTo(5,400,false,8);
-  driveTo(-4,400,false,8);
-  driveTo(6,400,true,8);
+
+  driveTo(-6,400,true,8);
+  wait(.5,sec);
+  driveTo(8,400,false,4);
+  driveTo(-6,400,true,8);
+  wait(.5,sec);
+  driveTo(8,400,true,4);
   stopChassis(coast);
   
   moveToPoint(18,-16,-1,1000,true);
@@ -378,11 +390,19 @@ void NA_1pin(){
   right_chassis.spin(fwd,-6,volt);
   wait(500,msec);
   stopChassis(coast);
-   claw.spin(fwd,-12,volt);
+  claw.spin(fwd,-12,volt);
+
   wait(1,sec);
+  liftPlusHeight(4); 
+
+  
   lift.stop();
   driveTo(10,500,true);
   turnToAngle(75,500);
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
   
 }
 
@@ -394,12 +414,13 @@ void A_1pin(){
   y_pos = 0;
   std::cout << "Running... \n";
   wristPosition.setPosition(-290,deg);
+  release();
 
   moveWristTo(15);
   wrist.stop(hold);
   lift.spin(reverse,12,volt);
-  driveTo(-3,400,false,8);
-  driveTo(5,400,false,8);
+  driveTo(-4,400,false,8);
+  driveTo(6,400,false,8);
   driveTo(-4,400,false,8);
   driveTo(6,400,true,8);
   stopChassis(coast);
@@ -414,6 +435,9 @@ void A_1pin(){
   lift.stop();
   driveTo(10,500,true);
   turnToAngle(75,500);
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
   
 }
 
@@ -445,8 +469,7 @@ void score(){
 
         
         claw.stop();
-        
-        moveWristTo(-278/4);
+
 }
 
 
@@ -465,8 +488,8 @@ void qual1(){
   y_pos = 0;
 
   //toggles
-
-  driveTo(1,200,false,12);
+  release();
+  driveTo(3,200,false,12);
   driveTo(-6,600,false,12);
   driveTo(4,600,false,12);
   driveTo(-5,600,true,12);
@@ -475,38 +498,49 @@ void qual1(){
   
   runIntake();
   qual1_lift_step=1;
-  moveToPoint(0,24,1,1500,true,10);
+  moveToPoint(0,25.5,1,1500,true,6);
 
-  wait(.5,sec);
-  driveTo(8,500,true,6);
+  wait(250,msec);
+  driveTo(12,500,true,6);
   
-  wait(0.5,sec);
+  wait(1.5,sec);
 
 
 
   qual1_lift_step=2;
   qual1_wrist_step=1;
 
-  moveToPoint(24,16,-1,1500);
-
+  moveToPoint(24,16,-1,1500,8);
+  lift.spin(reverse,12,volt);
+  wait(250,msec);
+  lift.stop();
   score();
+  liftPlusHeight(8);
 
   //pin then alliance
 
-  runIntake();
+
   
-  qual1_lift_step=3;
-  qual1_wrist_step=2;
+  
+
 
 
 
   //moveToPoint(19,33,1,1000);
-  turnToAngle(0,300);
-  driveTo(6,500);
+  turnToAngle(15,300);
+  qual1_lift_step=3;
+  qual1_wrist_step=2;
+  wait(0.5,sec);
+  driveTo(18,500,true,6);
+  wait(0.5,sec);
+
   
-  qual1_wrist_step = 3;
-  moveToPoint(0,17,-1,2000,false);
-  moveToPoint(-12,15,-1,2000);
+      qual1_wrist_step = 3;
+
+  moveToPoint(0,17,-1,2000,false,10);
+
+  moveToPoint(-12,15,-1,2000,true,4);
+  wait(.5,sec);
   claw.spin(reverse,12,volt);
 
 
@@ -515,26 +549,28 @@ void qual1(){
   qual1_wrist_step = 4;
   claw.spin(fwd,12,volt);
 
+  postAutoReset();
+
   //1st pc
   
-  moveToPoint(-3,7,1,1000,false);
-  turnToAngle(180,500,true);
-  boomerang(-18,27,-1,-45,.3,2500);
+  // moveToPoint(-3,7,1,1000,false);
+  // turnToAngle(180,500,true);
+  // boomerang(-18,27,-1,-45,.3,2500);
 
-  qual1_lift_step = 4;
-    qual1_wrist_step = 5;
+  // qual1_lift_step = 4;
+  //   qual1_wrist_step = 5;
 
-  wait(.5,sec);
+  // wait(.5,sec);
 
   //alliance
 
   //moveToPoint(-22,17,-1,1000);
 
-  wait(.5,sec);
+  // wait(.5,sec);
 
-  driveTo(-5,500,false);
-  turnToAngle(45,500,false);
-  moveToPoint(-20,18,-1,750);
+  // driveTo(-5,500,false);
+  // turnToAngle(45,500,false);
+  // moveToPoint(-20,24,-1,750);
 
   /*
 
@@ -557,12 +593,14 @@ void qual1(){
 
 void qual1_lift(){
   while(qual1_lift_step==0) wait(10,msec);
-  //liftToState("intake");
+    liftTo(0,12,12);
   while(qual1_lift_step==1) wait(10,msec);
-  wait(250,msec);
-  liftTo(true,true,true,0,"neutral");
+  
+  liftTo(true,true,true,0,"neutral",12,0,5);
   while(qual1_lift_step==2) wait(10,msec);
-  liftToState("intake");
+  wait(0.5,sec);
+  liftTo(.5,12,12);
+    
   while(qual1_lift_step==3) wait(10,msec);
 
   while(qual1_lift_step==4) wait(10,msec);
@@ -575,9 +613,10 @@ void qual1_wrist(){
   wait(250,msec);
   moveWristTo(15);
   while(qual1_wrist_step==1) wait(10,msec);
-  moveWristTo(-278/4);
+
+  moveWristTo(-85);
   while(qual1_wrist_step==2) wait(10,msec);
-  wait(1000,msec);
+  wait(850,msec);
   moveWristTo(15);
   while(qual1_wrist_step==3) wait(10,msec);
   moveWristTo(60);
