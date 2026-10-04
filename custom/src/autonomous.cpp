@@ -807,35 +807,212 @@ void skills(){
 }
 
 
+//random ah variant
+
+
+void crackedAuto() {
+  double usc = 8.0;
+
+  lift.setStopping(hold);
+  std::cout << "crackedAuto go\n";
+
+  wristPosition.setPosition(-290, deg);
+  x_pos = 0;
+  y_pos = 0;
+
+//double toggle
+
+  //first toggle
+  driveTo(-3, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-8, 1000, false, 12);
+  //second toggle
+  driveTo(5, 1000, false,12);
+  driveTo(-5,1000,true,12);
+
+  stopChassis(coast);
+
+//phase 1
+
+  liftTo(10);
+  runIntake();
+
+  turnToPoint(12, 10, -1, 2000);
+  moveToPoint(12, 10, -1, 2000, true, usc);
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);
+  driveTo(6, 500, true, usc);
+
+  std::cout << "preload scored\n";
+
+//phase 2
+
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  // TODO: tune — yellow piece position (sitting in front of goal 2)
+  turnToPoint(24, 30, 1, 1500);
+  moveToPoint(24, 30, 1, 2000, true, usc);
+  wait(600, msec);
+
+  // TODO: tune — second goal position
+  turnToPoint(36, 18, -1, 1500);
+  moveToPoint(36, 18, -1, 2000, true, usc);
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  score();
+  liftPlusHeight(4);
+  driveTo(6, 500, true, usc);
+
+  std::cout << "yellow scored\n";
+
+  //pashe 3
+
+  // TODO: tune these positions on the field
+  double ml_left_x  =  0.0;
+  double ml_left_y  = -3.0;
+  double ml_left_heading = 180.0;
+  double goal_left_x = 12.0;
+  double goal_left_y = 24.0;
+
+  for (int i = 0; i < 4; i++) {
+    std::cout << "left matchload " << (i + 1) << "/4\n";
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
+
+    turnToPoint(ml_left_x, ml_left_y, -1, 1500);
+    moveToPoint(ml_left_x, ml_left_y, -1, 2000, true, usc);
+
+    turnToAngle(ml_left_heading, 500, true, usc);
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    runIntake();
+    wait(2, sec);
+
+    turnToPoint(goal_left_x, goal_left_y, -1, 1500);
+    moveToPoint(goal_left_x, goal_left_y, -1, 2000, true, usc);
+
+    left_chassis.spin(fwd, -5, volt);
+    right_chassis.spin(fwd, -5, volt);
+    wait(400, msec);
+    stopChassis(coast);
+
+    stopIntake();
+    score();
+    liftPlusHeight(6);
+    driveTo(6, 500, true, usc);
+  }
+
+  std::cout << "left 4x done\n";
+
+  //phase 4
+
+  postAutoReset();
+
+  // TODO: tune crossing waypoint
+  turnToPoint(60, 12, 1, 1500);
+  moveToPoint(60, 12, 1, 3000, true, usc);
+
+  //phase 5
+
+  // TODO: tune these positions on the field
+  double ml_right_x  = 106.0;
+  double ml_right_y  = -3.0;
+  double ml_right_heading = 180.0;
+  double goal_right_x = 83.0;
+  double goal_right_y = 24.0;
+
+  for (int i = 0; i < 3; i++) {
+    std::cout << "right matchload " << (i + 1) << "/3\n";
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
+
+    turnToPoint(ml_right_x, ml_right_y, -1, 1500);
+    moveToPoint(ml_right_x, ml_right_y, -1, 2000, true, usc);
+
+    turnToAngle(ml_right_heading, 500, true, usc);
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    runIntake();
+    wait(2, sec);
+
+    turnToPoint(goal_right_x, goal_right_y, -1, 1500);
+    moveToPoint(goal_right_x, goal_right_y, -1, 2000, true, usc);
+
+    left_chassis.spin(fwd, -5, volt);
+    right_chassis.spin(fwd, -5, volt);
+    wait(400, msec);
+    stopChassis(coast);
+
+    stopIntake();
+    score();
+    liftPlusHeight(6);
+    driveTo(6, 500, true, usc);
+  }
+
+  std::cout << "right 3x done\n";
+
+//phase 6
+
+  postAutoReset();
+
+  // TODO: tune center park position
+  turnToPoint(59, 65, 1, 1500);
+  moveToPoint(59, 65, 1, 3000, true, usc);
+
+  stopChassis(coast);
+  std::cout << "parked\n";
+}
+
+
+
+
 //OUR CODE
 
-void crackedAuto(){
+// void crackedAuto(){
 
-double universal_speed_cap = 8.0;
- lift.setStopping(hold);
-  thread lift_control(qual1_lift);
-  thread wrist_control(qual1_wrist);
-  std::cout << "go";
-//toggle
-driveTo(-3, 1000, false, 8);
-driveTo(5,1000,false,8);
-driveTo(-8,1000,false, 8);
-driveTo(5,1000,false,8);
-//preload scoring
-runIntake();
-claw.spin(fwd,12,volt);
-moveWristTo(220);
-liftTo(10);
-turnToPoint(12,10,-1,3000);
-moveToPoint(12,10,-1,4000,false, universal_speed_cap);
-//score
-liftTo(15);
-wait(2,sec);
-liftTo(0);
-//scored potentiallu
-turnToPoint();
+// double universal_speed_cap = 8.0;
+//  lift.setStopping(hold);
+//   thread lift_control(qual1_lift);
+//   thread wrist_control(qual1_wrist);
+//   std::cout << "go";
+// //toggle
+// driveTo(-3, 1000, false, 8);
+// driveTo(5,1000,false,8);
+// driveTo(-8,1000,false, 8);
+// driveTo(5,1000,false,8);
+// //preload scoring
+// runIntake();
+// claw.spin(fwd,12,volt);
+// moveWristTo(220);
+// liftTo(10);
+// turnToPoint(12,10,-1,3000);
+// moveToPoint(12,10,-1,4000,false, universal_speed_cap);
+// //score
+// liftTo(15);
+// wait(2,sec);
+// liftTo(0);
+// //scored potentiallu
+// turnToPoint();
 
-}
+// }
 
 
 //COPILOT CODE
@@ -896,9 +1073,6 @@ turnToPoint();
 //   postAutoReset();
 //   stopChassis(coast);
 // }
-
-
-//OTHER CODE
 
 
 
