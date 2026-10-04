@@ -806,7 +806,8 @@ void skills(){
   stopChassis(coast);
 }
 
-//each tile is 24in
+
+//OUR CODE
 
 void crackedAuto(){
 
@@ -815,17 +816,92 @@ double universal_speed_cap = 8.0;
   thread lift_control(qual1_lift);
   thread wrist_control(qual1_wrist);
   std::cout << "go";
-
-driveTo(-3, 1000, false, 12);
-driveTo(5,1000,false,12);
-driveTo(-8,1000,false, 12);
+//toggle
+driveTo(-3, 1000, false, 8);
+driveTo(5,1000,false,8);
+driveTo(-8,1000,false, 8);
+driveTo(5,1000,false,8);
+//preload scoring
+runIntake();
+claw.spin(fwd,12,volt);
+moveWristTo(220);
 liftTo(10);
-turnToPoint(12,10,-1,2000);
-moveToPoint(12,10,-1,2000,false, universal_speed_cap);
+turnToPoint(12,10,-1,3000);
+moveToPoint(12,10,-1,4000,false, universal_speed_cap);
+//score
+liftTo(15);
+wait(2,sec);
 liftTo(0);
-
-
-
-
+//scored potentiallu
+turnToPoint();
 
 }
+
+
+//COPILOT CODE
+
+
+// void crackedAuto() {
+//   const double speedCap = 8.0;
+
+//   x_pos = 0;
+//   y_pos = 0;
+
+//   // Clear room and start from a safe line
+//   driveTo(-3, 1000, false, 8);
+//   driveTo(5, 1000, false, 8);
+//   driveTo(-8, 1000, false, 8);
+//   driveTo(5, 1000, false, 8);
+
+//   // Start intake and prep to score preload
+//   intake.spin(fwd, 8, volt);
+//   claw.spin(fwd, 12, volt);
+//   moveWristTo(220);
+//   liftTo(10);
+
+//   // Drive to first scoring target
+//   turnToPoint(12, 10, -1, 3000);
+//   moveToPoint(12, 10, -1, 4000, false, speedCap);
+
+//   // Score preload
+//   liftTo(15);
+//   wait(1.25, sec);
+//   claw.spin(reverse, 12, volt);
+//   wait(250, msec);
+//   claw.stop(coast);
+//   liftTo(0);
+
+//   // Move to next pickup / score lane
+//   turnToPoint(18, 18, 1, 2500);
+//   moveToPoint(18, 18, 1, 3000, true, speedCap);
+
+//   // Intake while moving
+//   intake.spin(fwd, 12, volt);
+//   claw.spin(fwd, 12, volt);
+//   wait(1.25, sec);
+
+//   // Back up and score next object
+//   moveToPoint(12, 10, -1, 3000, true, speedCap);
+//   turnToPoint(12, 18, 1, 2500);
+//   moveToPoint(12, 18, 1, 2500, true, speedCap);
+
+//   moveWristTo(180);
+//   liftTo(12);
+//   wait(1.0, sec);
+//   claw.spin(reverse, 12, volt);
+//   wait(250, msec);
+//   claw.stop(coast);
+
+//   // Reset and park
+//   postAutoReset();
+//   stopChassis(coast);
+// }
+
+
+//OTHER CODE
+
+
+
+
+
+
