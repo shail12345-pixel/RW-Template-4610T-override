@@ -805,3 +805,27 @@ void skills(){
 
   stopChassis(coast);
 }
+
+//each tile is 24in
+
+void crackedAuto(){
+
+double universal_speed_cap = 8.0;
+ lift.setStopping(hold);
+  thread lift_control(qual1_lift);
+  thread wrist_control(qual1_wrist);
+  std::cout << "go";
+
+driveTo(-3, 1000, false, 12);
+driveTo(5,1000,false,12);
+driveTo(-8,1000,false, 12);
+liftTo(10);
+turnToPoint(12,10,-1,2000);
+moveToPoint(12,10,-1,2000,false, universal_speed_cap);
+liftTo(0);
+
+
+
+
+
+}

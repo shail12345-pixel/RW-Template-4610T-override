@@ -237,7 +237,7 @@ void controlNormalized() {
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 1;
+  int auton_selected = 6;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
@@ -256,6 +256,7 @@ void runAutonomous() {
       NA_1pin();
       break;
     case 6:
+    crackedAuto();
       break;
     case 7:
       break;
