@@ -1074,7 +1074,216 @@ void crackedAuto() {
 //   stopChassis(coast);
 // }
 
+void crackedAutodos(){
+  double usc = 8.0;
 
+  lift.setStopping(hold);
+  std::cout << "crackedAuto go\n";
+
+  wristPosition.setPosition(-290, deg);
+  x_pos = 0;
+  y_pos = 0;
+
+  // ==============================
+  // PHASE 0 — DOUBLE TOGGLE (just drives, no mechanisms)
+  // ==============================
+  driveTo(-3, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-8, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-5, 1000, true, 12);
+  stopChassis(coast);
+
+  // ==============================
+  // PHASE 1 — SCORE PRELOAD at (24, 24)
+  // ==============================
+  liftTo(10);
+  runIntake();
+
+  turnToPoint(24, 24, -1, 2000);
+  moveToPoint(24, 24, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);                // stack piece 1 — TODO: tune height
+  driveTo(6, 500, true, usc);
+
+  std::cout << "preload scored\n";
+
+  // ==============================
+  // PHASE 2 — PICK UP PIN at (24, 0), SCORE at (24, 24)
+  // ==============================
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(24, 0, 1, 1500);
+  moveToPoint(24, 0, 1, 2000, true, usc);
+  wait(600, msec);                  // let intake grab it
+
+  liftTo(12);                       // TODO: tune — raise for stack piece 2
+  turnToPoint(24, 24, -1, 1500);
+  moveToPoint(24, 24, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(6);                // stack piece 2 — TODO: tune height
+  driveTo(6, 500, true, usc);
+
+  std::cout << "pin scored\n";
+
+  // ==============================
+  // PHASE 3 — PICK UP PINCUP at (48, 24), SCORE at (24, 24)
+  // ==============================
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(48, 24, 1, 1500);
+  moveToPoint(48, 24, 1, 2000, true, usc);
+  wait(600, msec);                  // let intake grab it
+
+  liftTo(14);                       // TODO: tune — raise for stack piece 3
+  turnToPoint(24, 24, -1, 1500);
+  moveToPoint(24, 24, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(8);                // stack piece 3 — TODO: tune height
+  driveTo(6, 500, true, usc);
+
+  std::cout << "pincup scored\n";
+
+  // ==============================
+  // PHASE 4 — RIGHT MATCHLOAD x3: (57, 0) -> score at (24, 24)
+  // Stack pieces 4, 5, 6 — lift goes higher each time
+  // ==============================
+  for (int i = 0; i < 3; i++) {
+    std::cout << "right matchload " << (i + 1) << "/3\n";
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
+
+    // drive to matchload zone (right side)
+    turnToPoint(57, 0, -1, 1500);
+    moveToPoint(57, 0, -1, 2000, true, usc);
+
+    // back into wall to receive matchload
+    turnToAngle(0, 500, true, usc);    // TODO: tune heading
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    // receive matchload from human
+    runIntake();
+    wait(2, sec);
+
+    liftTo(16 + i * 3);               // TODO: tune — pieces 4/5/6
+    // drive to right goal and score
+    turnToPoint(24, 24, -1, 1500);
+    moveToPoint(24, 24, -1, 2000, true, usc);
+
+    // nudge into goal
+    left_chassis.spin(fwd, -5, volt);
+    right_chassis.spin(fwd, -5, volt);
+    wait(400, msec);
+    stopChassis(coast);
+
+    stopIntake();
+    score();
+    liftPlusHeight(10 + i * 2);       // TODO: tune — increasing clearance
+    driveTo(6, 500, true, usc);
+  }
+
+  std::cout << "right 3x done\n";
+
+  // ==============================
+  // PHASE 5 — CROSS TO LEFT MATCHLOADER (-57, 0)
+  // ==============================
+  postAutoReset();
+
+  turnToPoint(-57, 0, 1, 1500);
+  moveToPoint(-57, 0, 1, 3000, true, usc);
+
+  // ==============================
+  // PHASE 6 — LEFT MATCHLOAD x4: (-57, 0) -> score at (-24, 23)
+  // ==============================
+  for (int i = 0; i < 4; i++) {
+    std::cout << "left matchload " << (i + 1) << "/4\n";
+
+    if (i > 0) {
+      // after first iteration, drive back from goal to matchloader
+      postAutoReset();
+      moveWristTo(-85);
+      liftToAngle(5);
+
+      turnToPoint(-57, 0, -1, 1500);
+      moveToPoint(-57, 0, -1, 2000, true, usc);
+    } else {
+      // first iteration — already at matchloader from crossing
+      moveWristTo(-85);
+      liftToAngle(5);
+    }
+
+    // back into wall to receive matchload
+    turnToAngle(0, 500, true, usc);    // TODO: tune heading
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    // receive matchload from human
+    runIntake();
+    wait(2, sec);
+
+    liftTo(10 + i * 3);               // TODO: tune — pieces 1/2/3/4
+    // drive to left goal and score
+    turnToPoint(-24, 23, -1, 1500);
+    moveToPoint(-24, 23, -1, 2000, true, usc);
+
+    // nudge into goal
+    left_chassis.spin(fwd, -5, volt);
+    right_chassis.spin(fwd, -5, volt);
+    wait(400, msec);
+    stopChassis(coast);
+
+    stopIntake();
+    score();
+    liftPlusHeight(6 + i * 2);        // TODO: tune — increasing clearance
+    driveTo(6, 500, true, usc);
+  }
+
+  std::cout << "left 4x done\n";
+
+  // ==============================
+  // PHASE 7 — PARK at (-17, 65)
+  // ==============================
+  postAutoReset();
+
+  turnToPoint(-17, 65, 1, 1500);
+  moveToPoint(-17, 65, 1, 3000, true, usc);
+
+  stopChassis(coast);
+  std::cout << "parked\n";
+}
 
 
 

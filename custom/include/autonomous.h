@@ -39,7 +39,7 @@ void A_1pin();
 void qual1();
 void skills();
 void crackedAuto();
-
+void crackedAutodos();
 void qual1_lift();
 
 void qual1_wrist();
