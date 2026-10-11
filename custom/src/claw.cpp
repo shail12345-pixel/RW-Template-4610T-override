@@ -9,7 +9,7 @@ constexpr double pinDetectionDistanceMm = 70.0;
 constexpr double clawClosedPositionDegrees = 90.0;
 }
 
-void distanceWrit() {
+void distanceClaw() {
     claw.setPosition(0, vex::rotationUnits::deg);
     claw.setStopping(vex::brakeType::hold);
     bool isClosed = false;
