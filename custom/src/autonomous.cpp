@@ -1090,18 +1090,18 @@ void crackedAutodos(){
   driveTo(-3, 1000, false, 12);
   driveTo(5, 1000, false, 12);
   driveTo(-8, 1000, false, 12);
-  driveTo(5, 1000, false, 12);
-  driveTo(-5, 1000, true, 12);
+  driveTo(8, 1000, false, 12);
+  driveTo(-8, 1000, true, 12);
   stopChassis(coast);
 
   // ==============================
   // PHASE 1 — SCORE PRELOAD at (24, 24)
   // ==============================
-  liftTo(10);
+  liftTo(4);
   runIntake();
 
-  turnToPoint(24, 24, -1, 2000);
-  moveToPoint(24, 24, -1, 2000, true, usc);
+  turnToPoint(24, 23-8, -1, 2000);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
 
   // nudge into goal
   left_chassis.spin(fwd, -5, volt);
@@ -1286,5 +1286,90 @@ void crackedAutodos(){
 }
 
 
+void matchAutoUno(){
+double usc = 8.0;
 
+  lift.setStopping(hold);
+
+  wristPosition.setPosition(-290, deg);
+  x_pos = 0;
+  y_pos = 0;
+
+  // double toggle
+  driveTo(-3, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-5, 1000, false, 12);
+  driveTo(8, 1000, false, 12);
+  driveTo(-8, 1000, true, 12);
+  stopChassis(coast);
+
+  //score preload at at (24, 24)
+  liftTo(4);
+  runIntake();
+  //have to account for middle of bot being centered this worked for me idk
+  turnToPoint(24, 23-8, -1, 2000);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);                
+
+
+  //get pincup at(24,48) and score at (24,24)
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(24, 48-8, 1, 1500);
+  moveToPoint(24, 48-8, 1, 2000, true, usc);
+  wait(600, msec);                  // let intake grab it
+
+  liftTo(14);                      
+  turnToPoint(24, 23-8, -1, 1500);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);              
+  driveTo(6, 500, true, usc);
+
+
+  //get pincup at(48,24) and score at (24,24)
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(48, 23-8, 1, 1500);
+  moveToPoint(48, 23-8, 1, 2000, true, usc);
+  wait(600, msec);                  // let intake grab it
+
+  liftTo(14);                       // TODO: tune — raise for stack piece 3
+  turnToPoint(24, 23-8, -1, 1500);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  // nudge into goal
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(8);                // stack piece 3 — TODO: tune height
+  driveTo(6, 500, true, usc);
+}
 
