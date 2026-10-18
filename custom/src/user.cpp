@@ -256,10 +256,10 @@ void runAutonomous() {
       NA_1pin();
       break;
     case 6:
-    crackedAuto();
+      crackedAuto();
       break;
     case 7:
-      crackedAutoDos();
+      exampleAuton2();
       break;
     case 8:
       matchAutoUno();

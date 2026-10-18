@@ -39,7 +39,6 @@ void A_1pin();
 void qual1();
 void skills();
 void crackedAuto();
-void crackedAutoDos();
 void matchAutoUno();
 void qual1_lift();
 
