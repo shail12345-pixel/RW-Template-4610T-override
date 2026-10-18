@@ -12,7 +12,6 @@
 #include "utils.h"
 #include "pid.h"
 #include <ctime>
-#include "../include/wrist.h"
 
 
 
@@ -23,187 +22,11 @@
 // Driver Control
 // =============================================================================
 
-
-
-bool liftOverride = false;
-bool wristL1Handled = false;
-
-
-
-
-void intakeManager(){
-  // rian from 4610R is the goat
-  while(1){
-    if(controller_1.ButtonR1.pressing()){
-      intake.spin(fwd,6,volt);
-      claw.spin(fwd,12,volt);
-    }else if(controller_1.ButtonL1.pressing()){
-      liftOverride = false;
-          claw.spin(fwd,12,volt);
-          intake.spin(fwd,12,volt);
-          
-        
-    }else if(controller_1.ButtonL2.pressing() && getLiftHeight()<3 && wristPosition.position(deg)<-10){
-      liftOverride = false;
-      intake.spin(reverse,12,volt);
-      claw.spin(reverse,12,volt);
-      
-    }else if(controller_1.ButtonL2.pressing()){
-        liftOverride = true;
-
-        claw.spin(reverse,12,volt);
-        
-        liftPlusHeight(10);
-
-        if(getLiftHeight()<36)moveWristTo(110);
-
-        
-        claw.stop();
-
-        // moveWristTo(20);
-        
-
-
-        liftOverride = false;
-    }else if(controller_1.ButtonX.pressing()){
-      release();
-      while(controller_1.ButtonX.pressing())wait(10,msec);
-    }else{
-      liftOverride = false;
-      intake.stop(coast);
-      claw.stop(coast);
-    }
-    wait(10,msec);
-  }
-}
-
-void liftManager(){
-  //i cant pt down
-  while(1){
-    if(controller_1.ButtonL1.pressing()){
-      
-      liftTo(1.5,12,12);
-      lift.spin(reverse,6,volt);
-
-
-    }else if(controller_1.ButtonR1.pressing()){
-      printText("liftStarted");
-         lift.spin(fwd,12,volt);
-    }else if(controller_1.ButtonR2.pressing()){
-      lift.spin(reverse,12,volt);
-    }else if(controller_1.ButtonUp.pressing()){
-      lift.spin(reverse,12,volt);
-      wait(1,sec);
-      liftHeight.setPosition(0,deg);
-      liftTo(.5,12,12);
-
-    }else if(!liftOverride){
-      lift.stop(hold);
-    }
-    wait(10,msec);
-  }
-}
-
-
-// void wristManager(){
-//   while(1){
-
-//     if(controller_1.ButtonL1.pressing()){
-//       printText("started)");
-//       if(!((fabs(wristPosition.position(deg)-(4.0*85.0))<=2))){
-//               printText("in)");
-//         while(getLiftHeight()<3)wait(10,msec);
-//         moveWristTo(-90);
-//       }
-//             printText("out)");
-//     }else if(controller_1.ButtonR1.pressing()){
-//       printText("wristStarted");
-//       moveWristTo(5.0); 
-//       if(getLiftHeight()>38)moveWristTo(34.0);
-//     }
-//     wait(10,msec);
-//   }
-// }
-//i kant put down the cup
-void wristManager(){
-  while(1){
-    if(controller_1.ButtonL1.pressing()){
-      moveWristTo(-85);
-    }else if(controller_1.ButtonR1.pressing()){
-      printText("wrist triggered");
-      moveWristTo(5);
-    }
-    wait(10,msec);
-  }
-}
-
-void conDisplay(){
-    while(1){
-        controller_1.Screen.clearScreen();
-        controller_1.Screen.setCursor(1,1);
-        controller_1.Screen.print("%f",wristPosition.position(deg)/4);
-        controller_1.Screen.setCursor(2,1);
-        controller_1.Screen.print("%f",liftHeight.position(deg));
-    }
-}
-
-// void print(){
-//     while(1){
-//       if(controller_1.ButtonX.pressing()){
-//         std::cout << horizontal_tracker.position(degrees);
-
-//       }
-//     }
-// }
-
-
-// void testButton(){
-//   while(1){
-//     if(controller_1.ButtonA.pressing()){
-
-//       moveWristTo(5);
-//     }
-//   }
-// }
-
-
-void clawReverseOrForward(){
-  while(1){
-    if(controller_1.ButtonA.pressing()){
-       claw.spin(fwd,12,volt);
-    }
-    else if(controller_1.ButtonB.pressing()){
-        claw.spin(reverse,12,volt);
-    }
-  }
-}
-
-void intakeReverseOrForward(){
-  while(1){
-    if(controller_1.ButtonRight.pressing()){
-       intake.spin(fwd,12,volt);
-    }
-    else if(controller_1.ButtonLeft.pressing()){
-      intake.spin(reverse,12,volt);
-    }
-  }
-}
-
 float deadband(float input, float width){
   if (std::fabs(input)<width){
     return(0);
   }
   return(input);
-}
-
-void resetWrist(){
-  while(1){
-    if(controller_1.ButtonDown.pressing()){
-      wrist.spin(fwd,12,volt);
-      wait(.5,sec);
-      wristPosition.setPosition(216,deg);
-    }
-  }
 }
 
 void controlNormalized() {
@@ -228,8 +51,82 @@ void controlNormalized() {
 
 }
 
+void liftControl(){
+  while(1){
+    if(controller_1.ButtonR1.pressing()){
+      lift.spin(fwd,12,volt);
+    }else if(controller_1.ButtonR2.pressing()){
+      lift.spin(reverse,12,volt);
+    }else{
+      lift.stop(hold);
+    }
+  }
+}
+
+bool clawOverride = false;
 
 
+void moveClawTo(const char* position){
+  if(!clawOverride){
+    if(position=="open"){
+      //0
+      while(claw.position(deg)>2.5){
+        claw.spin(fwd,-12,volt);
+      }
+      claw.stop(hold);
+    }else if(position=="close"){
+      while(claw.position(deg)<50){
+        claw.spin(fwd,12,volt);
+      }
+      claw.stop(hold);
+    }else if(position=="matchload"){
+      if(claw.position(deg)>35){
+        claw.spin(fwd,-12,volt);
+      }else if(claw.position(deg)<32.5){
+        claw.spin(fwd,12,volt);
+      }
+      claw.stop(hold);
+    }
+  }
+}
+
+void clawControl(){
+  bool inClaw = false;
+  while(1){
+    if(controller_1.ButtonL1.pressing()){
+      clawOverride = false;
+      clawRollers.spin(fwd,12,volt);
+      claw.spin(fwd,12,volt);
+      if(clawRollers.power(watt)>4)inClaw=true;
+
+    }else if(controller_1.ButtonL2.pressing()){
+      clawOverride = true;
+      clawOverride = true;
+      inClaw=false;
+        claw.spin(fwd,-12,volt);
+      claw.setPosition(0,deg);
+    }else{
+      clawOverride = false;
+      clawRollers.stop(coast);
+      if(inClaw){
+        claw.spin(fwd,12,volt);
+      }else{
+        claw.stop(hold);
+      }
+    }
+  }
+}
+
+
+
+
+void conD(){
+  while(1){
+    controller_1.Screen.clearLine(1);
+    controller_1.Screen.setCursor(1,1);
+    controller_1.Screen.print("%f",claw.position(deg));
+  }
+}
 
 
 // =============================================================================
@@ -241,19 +138,19 @@ void runAutonomous() {
   thread a(brainD);
   switch(auton_selected) {
     case 1:
-      qual1();
+     
       break;
     case 2:
-      NA_1pin();
+     
       break;  
     case 3:
-      A_1pin();
+      
       break;
     case 4: 
-      skills(); 
+      
       break; 
     case 5:
-      NA_1pin();
+     
       break;
     case 6:
       break;
@@ -282,26 +179,18 @@ bool lift_home_prev = false;
 void runDriver() {
 
 
-  lift.setStopping(hold);
-  intake.setStopping(coast);
-  claw.setStopping(coast);
-  wrist.setStopping(hold);
-  thread s(conDisplay);
-  thread w(wristManager);
- thread l(liftManager);
- thread r(resetWrist);
- thread i(intakeManager);
-
-
-  thread t(clawReverseOrForward);
-  thread p(intakeReverseOrForward);
-
   stopChassis(coast);
   heading_correction = false;
+  claw.setPosition(0,deg);
 
   // wait(3,sec);
 
   // controller_1.rumble("---");
+
+  thread lift_control_thread(liftControl);
+  thread claw_control_thread(clawControl);
+  thread controller_display(conD);
+
   
 
     resetChassis();
@@ -347,8 +236,8 @@ void runPreAutonomous() {
     // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-   wristPosition.setPosition(-280,deg);
-  liftHeight.setPosition(0,deg);
+
+
 
   // Calibrate inertial sensor
   inertial_sensor.calibrate();
@@ -373,6 +262,6 @@ void runPreAutonomous() {
     thread odom = thread(trackNoOdomWheel);
   }
 
-  liftHeight.setPosition(0,deg);
+
 
 }

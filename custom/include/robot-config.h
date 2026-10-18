@@ -8,11 +8,11 @@ extern brain Brain;
 extern controller controller_1;
 extern motor left_chassis1;
 extern motor left_chassis2;
-extern motor left_chassis3;
+
 extern motor_group left_chassis;
 extern motor right_chassis1;
 extern motor right_chassis2;
-extern motor right_chassis3;
+
 extern motor_group right_chassis;
 extern inertial inertial_sensor;
 extern optical example_optical_sensor;
@@ -25,14 +25,12 @@ extern distance left_sensor;
 extern distance right_sensor;
 extern distance back_sensor;
 
-extern rotation liftHeight;
-extern motor lift;
-
-extern motor intake;
+extern motor rightLift;
+extern motor leftLift;
+extern motor_group lift;
 
 extern motor claw;
-extern motor wrist;
-extern rotation wristPosition;
+extern motor clawRollers;
 
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 extern double distance_between_wheels;
