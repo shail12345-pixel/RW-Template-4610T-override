@@ -1015,7 +1015,7 @@ void crackedAuto() {
 // }
 
 
-//COPILOT CODE
+//other CODE
 
 
 // void crackedAuto() {
@@ -1074,7 +1074,7 @@ void crackedAuto() {
 //   stopChassis(coast);
 // }
 
-void crackedAutodos(){
+void crackedAutoDos(){
   double usc = 8.0;
 
   lift.setStopping(hold);

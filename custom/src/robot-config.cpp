@@ -17,14 +17,14 @@ controller controller_1 = controller(primary);
 // gearSetting is one of the following: ratio36_1(red), ratio18_1(green), ratio6_1(blue)
 // all chassis motors should be reversed appropriately so that they spin vertical when given a positive voltage input
 // such as driveChassis(12, 12)
-motor left_chassis1 = motor(PORT20, ratio6_1, true); //front
-motor left_chassis2 = motor(PORT19, ratio18_1, true); //mini
-motor left_chassis3 = motor(PORT18, ratio6_1, true); //back
-motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
-motor right_chassis1 = motor(PORT17, ratio6_1, false); //front
-motor right_chassis2 = motor(PORT16, ratio18_1, false); //mini
-motor right_chassis3 = motor(PORT15, ratio6_1, false); //back
-motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
+motor left_chassis1 = motor(PORT10, ratio6_1, true); //front
+//motor left_chassis2 = motor(PORT19, ratio18_1, true); //mini
+motor left_chassis3 = motor(PORT3, ratio6_1, true); //back
+motor_group left_chassis = motor_group(left_chassis1, left_chassis3); //add back left_Chassis2
+motor right_chassis1 = motor(PORT4, ratio6_1, false); //front
+//motor right_chassis2 = motor(PORT16, ratio18_1, false); //mini
+motor right_chassis3 = motor(PORT6, ratio6_1, false); //back
+motor_group right_chassis = motor_group(right_chassis1, right_chassis3); //add back right_chassis2
 
 inertial inertial_sensor = inertial(PORT6);
 optical example_optical_sensor = optical(PORT8);

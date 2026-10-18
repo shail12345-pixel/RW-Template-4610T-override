@@ -237,7 +237,7 @@ void controlNormalized() {
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 8;
+  int auton_selected = 7;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
@@ -259,7 +259,7 @@ void runAutonomous() {
     crackedAuto();
       break;
     case 7:
-      crackedAutodos();
+      crackedAutoDos();
       break;
     case 8:
       matchAutoUno();
