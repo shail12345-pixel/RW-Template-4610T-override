@@ -40,6 +40,7 @@ void qual1();
 void skills();
 void crackedAuto();
 void matchAutoUno();
+void matchAuto();
 void qual1_lift();
 
 void qual1_wrist();

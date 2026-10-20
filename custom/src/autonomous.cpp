@@ -1026,7 +1026,87 @@ void crackedAuto(){
 
 
 
+void matchAuto(){
+   double usc = 8.0;
 
+  lift.setStopping(hold);
+  wristPosition.setPosition(-290, deg);
+  x_pos = 0;
+  y_pos = 0;
+
+  // --- TOGGLE ---
+  driveTo(5, 1000, false, 12);
+  driveTo(-5, 1000, true, 12);
+  stopChassis(coast);
+
+  // --- TURN AND SCORE PRELOAD ---
+  claw.spin(reverse, 12, volt);
+  liftTo(4);
+  runIntake();
+
+  turnToAngle(-45, 1000);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);
+
+  // --- GET PINCUP #1, SCORE ON SAME GOAL ---
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(24, 48-8, 1, 1500);
+  moveToPoint(24, 48-8, 1, 2000, true, usc);
+  wait(600, msec);
+
+  liftTo(14);
+  turnToPoint(24, 23-8, -1, 1500);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);
+  driveTo(6, 500, true, usc);
+
+  // --- GET PINCUP #2, SCORE ON SAME GOAL ---
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(48, 23-8, 1, 1500);
+  moveToPoint(48, 23-8, 1, 2000, true, usc);
+  wait(600, msec);
+
+  liftTo(14);
+  turnToPoint(24, 23-8, -1, 1500);
+  moveToPoint(24, 23-8, -1, 2000, true, usc);
+
+  left_chassis.spin(fwd, -5, volt);
+  right_chassis.spin(fwd, -5, volt);
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(8);
+  driveTo(6, 500, true, usc);
+
+  stopChassis(coast);
+
+}
 
 
 
