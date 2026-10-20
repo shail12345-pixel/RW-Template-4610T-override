@@ -228,7 +228,34 @@ void controlNormalized() {
 
 }
 
+void locationSensor(){
 
+inertial_sensor.calibrate();
+  while(inertial_sensor.isCalibrating()){
+    wait(10,msec);
+  }
+x_pos = 0;
+y_pos = 0;
+ 
+//Brain Version:
+
+while(1){
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1,1);
+    Brain.Screen.print("(%f, %f, %f)", x_pos, y_pos, getInertialHeading());
+    wait(.5,sec);
+  }
+}
+
+//Controller version:
+
+// controller_1.Screen.clearScreen();
+//   while(1){
+// controller_1.Screen.setCursor(1, 1); //change if needed
+// controller_1.Screen.print( "(%f, %f, %f)", x_pos, y_pos, getInertialHeading());
+// wait(.5,sec);
+// }
+// }
 
 
 
@@ -237,7 +264,7 @@ void controlNormalized() {
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 7;
+  int auton_selected = 8;
   thread a(brainD);
   switch(auton_selected) {
     case 1:
@@ -262,7 +289,7 @@ void runAutonomous() {
       exampleAuton2();
       break;
     case 8:
-      matchAutoUno();
+      matchAuto();
       break;
     case 9:
       break;
@@ -298,6 +325,7 @@ void runDriver() {
 
   thread t(clawReverseOrForward);
   thread p(intakeReverseOrForward);
+  thread o(locationSensor);
 
   stopChassis(coast);
   heading_correction = false;
