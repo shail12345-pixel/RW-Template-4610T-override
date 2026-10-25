@@ -110,14 +110,14 @@ void exampleAuton() {
 }
 
 void exampleAuton2() {
-  moveToPoint(24, 24, 1, 2000, false);
-  moveToPoint(48, 48, 1, 2000, true);
-  moveToPoint(24, 24, -1, 2000, true);
-  moveToPoint(0, 0, 1, 2000, true);
-  correct_angle = 0;
-  driveTo(24, 2000, false, 8);
-  turnToAngle(90, 800, false);
-  turnToAngle(180, 800, true);
+  moveToPoint(0, 24, 1, 5000, false);
+  //moveToPoint(48, 48, 1, 2000, true);
+  //moveToPoint(24, 24, -1, 2000, true);
+  //moveToPoint(0, 0, 1, 2000, true);
+  //correct_angle = 0;
+  //driveTo(24, 2000, false, 8);
+  //turnToAngle(90, 800, false);
+  //turnToAngle(180, 800, true);
 }
 
 double arm_pid_target = 0, arm_load_target = 60, arm_store_target = 250, arm_score_target = 470;
@@ -820,6 +820,7 @@ void crackedAuto(){
   wristPosition.setPosition(-290, deg);
   x_pos = 0;
   y_pos = 0;
+  correct_angle = 0;
 
   // ==============================
   // PHASE 0 — DOUBLE TOGGLE (just drives, no mechanisms)

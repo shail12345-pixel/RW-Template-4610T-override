@@ -17,16 +17,16 @@ controller controller_1 = controller(primary);
 // gearSetting is one of the following: ratio36_1(red), ratio18_1(green), ratio6_1(blue)
 // all chassis motors should be reversed appropriately so that they spin vertical when given a positive voltage input
 // such as driveChassis(12, 12)
-motor left_chassis1 = motor(PORT20, ratio6_1, true); //front
-motor left_chassis2 = motor(PORT19, ratio18_1, true); //mini
-motor left_chassis3 = motor(PORT18, ratio6_1, true); //back
+motor left_chassis1 = motor(PORT1, ratio6_1, true); //front
+motor left_chassis2 = motor(PORT2, ratio18_1, true); //mini
+motor left_chassis3 = motor(PORT3, ratio6_1, true); //back
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
-motor right_chassis1 = motor(PORT17, ratio6_1, false); //front
-motor right_chassis2 = motor(PORT16, ratio18_1, false); //mini
-motor right_chassis3 = motor(PORT15, ratio6_1, false); //back
+motor right_chassis1 = motor(PORT4, ratio6_1, false); //front
+motor right_chassis2 = motor(PORT5, ratio18_1, false); //mini
+motor right_chassis3 = motor(PORT6, ratio6_1, false); //back
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
 
-inertial inertial_sensor = inertial(PORT6);
+inertial inertial_sensor = inertial(PORT11);
 optical example_optical_sensor = optical(PORT8);
 distance example_distance_sensor = distance(PORT21);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
@@ -45,16 +45,16 @@ distance left_sensor = distance(PORT21);
 distance right_sensor = distance(PORT21);
 distance back_sensor = distance(PORT21);
 
-motor lift = motor(PORT4, ratio36_1, true);
-rotation liftHeight = rotation(PORT5,true);
+motor lift = motor(PORT21, ratio36_1, true);
+rotation liftHeight = rotation(PORT21,true);
 
 
-motor intake = motor(PORT1, ratio6_1, false);
-motor claw = motor(PORT10, ratio18_1, false);
+motor intake = motor(PORT21, ratio6_1, false);
+motor claw = motor(PORT21, ratio18_1, false);
 
 
 motor wrist = motor(PORT8, ratio18_1, true);
-rotation wristPosition(PORT9,false);
+rotation wristPosition(PORT21,false);
 
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
@@ -72,13 +72,16 @@ double wheel_distance_in = (36.0 / 48.0) * 2.75 * M_PI;
 // heading_correction_* : PID for heading correction during linear movement
 //og double distance_kp = 1.1, distance_ki = 0.1, distance_kd = 7;
 
-double distance_kp = 1.4, distance_ki = .5, distance_kd =10;
-double turn_kp = 0.2, turn_ki = 0, turn_kd = .75;
-double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 2;
+double distance_kp = 0.75, distance_ki = 0.2, distance_kd =0;
+double turn_kp = 0, turn_ki = 0, turn_kd = 0;
+double heading_correction_kp = 0, heading_correction_ki = 0, heading_correction_kd = 0;
+
+//double turn_kp = 0.2, turn_ki = 0, turn_kd = .75;
+//double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 2;
 
 // Enable or disable the use of tracking wheels
-bool using_horizontal_tracker = true;  // Set to true if a horizontal tracking wheel is installed and used for odometry
-bool using_vertical_tracker = true;   // Set to true if a vertical tracking wheel is installed and used for odometry
+bool using_horizontal_tracker = false;  // Set to true if a horizontal tracking wheel is installed and used for odometry
+bool using_vertical_tracker = false;   // Set to true if a vertical tracking wheel is installed and used for odometry
 
 // IGNORE THESE IF YOU ARE NOT USING TRACKING WHEELS
 // These comments are in the perspective of a top down view of the robot when the robot is facing vertical
