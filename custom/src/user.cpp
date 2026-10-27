@@ -118,6 +118,22 @@ void clawControl(){
 }
 
 
+void clawControlPranoy(){
+  while(1){
+    if(controller_1.ButtonL1.pressing()){
+      clawOverride = true;
+      claw.spin(fwd, 12, volt);
+      clawRollers.spin(fwd, 12, volt);
+    }
+    else if(controller_1.ButtonL2.pressing()){
+      clawRollers.stop(coast);
+      claw.stop(coast);
+      clawOverride = false;
+    }
+  }
+  
+}
+
 
 
 void conD(){
