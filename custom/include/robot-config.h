@@ -14,6 +14,7 @@ extern motor right_chassis1;
 extern motor right_chassis2;
 
 extern motor_group right_chassis;
+extern rotation liftHeight;
 extern inertial inertial_sensor;
 extern optical example_optical_sensor;
 extern distance example_distance_sensor;

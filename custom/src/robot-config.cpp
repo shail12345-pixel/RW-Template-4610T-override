@@ -31,9 +31,9 @@ digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
 
 // Format is rotation(port, reversed)
 // just set these to random ports if you don't use tracking wheels
-rotation horizontal_tracker = rotation(PORT13, true);
+rotation horizontal_tracker = rotation(PORT3, true);
 rotation vertical_tracker = rotation(PORT14, true);
-
+rotation liftHeight = rotation(PORT5);
 
 
 // Distance reset sensors

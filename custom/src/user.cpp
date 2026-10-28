@@ -135,6 +135,22 @@ void clawControlPranoy(){
 }
 
 
+constexpr double rotationDegreesPerStage = -20.0;
+//
+void rotationMeasure() {
+  while (true) {
+    double rotationDegrees = liftHeight.position(deg);
+    int stage = static_cast<int>(
+        std::floor(rotationDegrees / rotationDegreesPerStage));
+
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    Brain.Screen.print("Stack stage: %d", stage);
+    Brain.Screen.setCursor(2, 1);
+    Brain.Screen.print("Rotation: %.1f deg", rotationDegrees);
+    wait(100, msec);
+  }
+}
 
 void conD(){
   while(1){
@@ -198,6 +214,7 @@ void runDriver() {
   stopChassis(coast);
   heading_correction = false;
   claw.setPosition(0,deg);
+  liftHeight.setPosition(0, deg);
 
   // wait(3,sec);
 
@@ -206,6 +223,7 @@ void runDriver() {
   thread lift_control_thread(liftControl);
   thread claw_control_thread(clawControl);
   thread controller_display(conD);
+  thread rotation_display(rotationMeasure);
 
   
 
@@ -251,9 +269,6 @@ void runDriver() {
 void runPreAutonomous() {
     // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-
-
-
 
   // Calibrate inertial sensor
   inertial_sensor.calibrate();
