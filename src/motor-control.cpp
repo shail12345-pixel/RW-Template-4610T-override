@@ -1081,6 +1081,96 @@ void turnToPoint(double x, double y, int direction, double time_limit_msec) {
 }
 
 /*
+ * swingToPoint
+ * Swing turns (one side locked, the other side drives) until the robot faces a point.
+ * The side that moves is picked automatically, the same way swing() does it.
+ * The target angle is recalculated every loop, since the robot moves while it swings.
+ * - x, y: Coordinates of the target point.
+ * - dir: Which end should face the point (1 = front, -1 = back).
+ * - drive_direction: Whether the moving side drives forward (1) or backward (-1).
+ * - time_limit_msec: Maximum time allowed for the swing (in milliseconds).
+ * - exit: If true, settles and stops at the end; if false, exits as soon as the angle is passed (for chaining).
+ * - max_output: Maximum voltage output to motors.
+ */
+void swingToPoint(double x, double y, int dir, double drive_direction, double time_limit_msec, bool exit, double max_output) {
+  stopChassis(vex::brakeType::coast);
+  is_turning = true;
+  double threshold = 1, add = 0;
+  if(dir == -1) {
+    add = 180; // Face the point with the back of the robot
+  }
+  double swing_angle = normalizeTarget(radToDeg(atan2(x - x_pos, y - y_pos)) + add);
+  PID pid = PID(turn_kp, turn_ki, turn_kd);
+  pid.setTarget(swing_angle);
+  pid.setIntegralMax(0);
+  pid.setIntegralRange(5);
+  pid.setSmallBigErrorTolerance(threshold, threshold * 3);
+  pid.setSmallBigErrorDuration(50, 250);
+  pid.setDerivativeTolerance(threshold * 4.5);
+
+  // Pick which side moves (fixed for the whole swing).
+  // Right turn forward or left turn backward -> left side moves. Otherwise right side moves.
+  bool turn_right = swing_angle - getInertialHeading() > 0;
+  bool left_moves = (turn_right && drive_direction == 1) || (!turn_right && drive_direction == -1);
+
+  // Draw the baseline for visualization
+  double draw_amplifier = 230 / fabs(swing_angle);
+  Brain.Screen.clearScreen(black);
+  Brain.Screen.setPenColor(green);
+  Brain.Screen.drawLine(0, fabs(swing_angle) * draw_amplifier, 600, fabs(swing_angle) * draw_amplifier);
+  Brain.Screen.setPenColor(red);
+
+  double start_time = Brain.timer(msec);
+  double output;
+  double current_heading;
+  double previous_heading = 0;
+  int index = 1;
+  while (Brain.timer(msec) - start_time <= time_limit_msec) {
+    // Update the target as the robot moves
+    swing_angle = normalizeTarget(radToDeg(atan2(x - x_pos, y - y_pos)) + add);
+    pid.setTarget(swing_angle);
+    current_heading = getInertialHeading();
+    output = pid.update(current_heading);
+
+    if(exit) {
+      if(pid.targetArrived()) break;
+    } else {
+      // Chaining: leave as soon as the target angle is passed
+      if(turn_right && current_heading >= swing_angle) break;
+      if(!turn_right && current_heading <= swing_angle) break;
+      // Keep a minimum speed so it doesn't slow down before chaining
+      if(turn_right && output < min_output) output = min_output;
+      if(!turn_right && output > -min_output) output = -min_output;
+    }
+
+    // Draw heading trace
+    Brain.Screen.drawLine(
+        index * 3, fabs(previous_heading) * draw_amplifier,
+        (index + 1) * 3, fabs(current_heading * draw_amplifier));
+    index++;
+    previous_heading = current_heading;
+
+    if(output > max_output) output = max_output;
+    else if(output < -max_output) output = -max_output;
+
+    // Positive output = turn right. Left side forward turns right, right side forward turns left.
+    if(left_moves) {
+      left_chassis.spin(fwd, output, volt);
+      right_chassis.stop(hold);
+    } else {
+      left_chassis.stop(hold);
+      right_chassis.spin(fwd, -output, volt);
+    }
+    wait(10, msec);
+  }
+  if(exit) {
+    stopChassis(vex::hold);
+  }
+  correct_angle = getInertialHeading();
+  is_turning = false;
+}
+
+/*
  * moveToPoint
  * Moves the robot to a specific point in the field, adjusting heading as needed.
  * - x, y: Coordinates of the target point.

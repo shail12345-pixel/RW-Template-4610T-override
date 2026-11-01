@@ -262,6 +262,7 @@ double arm_pid_target = 0, arm_load_target = 60, arm_store_target = 250, arm_sco
 //   driveChassis(1, 1);                                  // Slow drive forward
 // }
 
+
 //assume local point system
 void autonOne(){
 //change this to back up at an angle since not enough space
@@ -1023,6 +1024,127 @@ void crackedAuto(){
   std::cout << "parked\n";
 }
 
+//11/01/26 skills auto route by aaditya coded by arihaan
+void rightSideSkillsAuto(){
+  //universal speed cap
+  double usc = 8.0;
+
+  lift.setStopping(hold);
+
+  wristPosition.setPosition(-290, deg);
+  x_pos = 0;
+  y_pos = 0;
+  correct_angle = 0;
+
+  //toggles
+  driveTo(-3, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-8, 1000, false, 12);
+  driveTo(8, 1000, false, 12);
+  driveTo(-8, 1000, true, 12);
+  stopChassis(coast);
+
+  //score preload at (24, 24)
+  liftTo(4);
+  runIntake();
+
+  //calling move to point without calling turn to point first does a swing turn
+  moveToPoint(24, 24, 1, 2000,true ,usc);
+  stopChassis(coast);
+  stopIntake();
+  score();
+  liftPlusHeight(4);                
+  driveTo(-6, 500, true, usc);
+
+
+
+  // get pincup at (24, 48) score at (24, 24)
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(24, 48, 1, 1500);
+  moveToPoint(24, 48, 1, 2000, true, usc);
+  wait(600, msec);                 
+
+  liftTo(14);                   
+  turnToPoint(24, 24, 1, 1500);
+  moveToPoint(24, 24, 1, 2000, true, usc);
+
+
+  stopChassis(coast);
+  stopIntake();
+  score();
+  liftPlusHeight(8);  
+  driveTo(-6, 500, true, usc);
+
+  // get pincup at (48, 14) score at (24, 24)
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+
+  turnToPoint(48, 24, 1, 1500);
+  moveToPoint(48, 24, 1, 2000, true, usc);
+  wait(600, msec);                 
+
+  liftTo(14);                   
+  turnToPoint(24, 24, 1, 1500);
+  moveToPoint(24, 24, 1, 2000, true, usc);
+
+
+  stopChassis(coast);
+  stopIntake();
+  score();
+  liftPlusHeight(8);  
+  driveTo(-6, 500, true, usc);
+
+  
+  // right matchload x3: (57, 0) -> score at (24, 24)
+  for (int i = 0; i < 3; i++) {
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
+
+    // drive to matchload zone (right side)
+    turnToPoint(57, 0, -1, 1500);
+    moveToPoint(57, 0, -1, 2000, true, usc);
+
+    // back into wall to receive matchload
+    turnToAngle(0, 500, true, usc);  
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    // receive matchload
+    runIntake();
+    wait(2, sec);
+
+    liftTo(16 + i * 3);            
+    // drive to right goal and score
+    turnToPoint(24, 24, -1, 1500);
+    moveToPoint(24, 24, -1, 2000, true, usc);
+
+
+    stopChassis(coast);
+    stopIntake();
+    score();
+    liftPlusHeight(10 + i * 2);       // todo: tune increasing liftHeight
+    driveTo(6, 500, true, usc);
+  }
+
+
+  //todo middle right side
+
+  //park at (-17, 65) change these numbres prolly
+  postAutoReset();
+
+  turnToPoint(-17, 65, 1, 1500);
+  moveToPoint(-17, 65, 1, 3000, true, usc);
+
+  stopChassis(coast);
+}
 
 
 

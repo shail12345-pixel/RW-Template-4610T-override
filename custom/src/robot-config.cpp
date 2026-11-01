@@ -17,16 +17,19 @@ controller controller_1 = controller(primary);
 // gearSetting is one of the following: ratio36_1(red), ratio18_1(green), ratio6_1(blue)
 // all chassis motors should be reversed appropriately so that they spin vertical when given a positive voltage input
 // such as driveChassis(12, 12)
-motor left_chassis1 = motor(PORT1, ratio6_1, true); //front
-motor left_chassis2 = motor(PORT2, ratio18_1, true); //mini
+motor left_chassis1 = motor(PORT10, ratio6_1, true); //front
+//motor left_chassis2 = motor(PORT2, ratio18_1, true); //mini
 motor left_chassis3 = motor(PORT3, ratio6_1, true); //back
-motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
-motor right_chassis1 = motor(PORT4, ratio6_1, false); //front
-motor right_chassis2 = motor(PORT5, ratio18_1, false); //mini
-motor right_chassis3 = motor(PORT6, ratio6_1, false); //back
-motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
+motor_group left_chassis = motor_group(left_chassis1, left_chassis3);
+//motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_chassis3);
 
-inertial inertial_sensor = inertial(PORT11);
+motor right_chassis1 = motor(PORT4, ratio6_1, false); //front
+//motor right_chassis2 = motor(PORT5, ratio18_1, false); //mini
+motor right_chassis3 = motor(PORT6, ratio6_1, false); //back
+motor_group right_chassis = motor_group(right_chassis1, right_chassis3);
+//motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_chassis3);
+
+inertial inertial_sensor = inertial(PORT5);
 optical example_optical_sensor = optical(PORT8);
 distance example_distance_sensor = distance(PORT21);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
