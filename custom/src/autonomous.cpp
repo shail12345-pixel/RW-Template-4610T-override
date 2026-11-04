@@ -1024,7 +1024,7 @@ void crackedAuto(){
   std::cout << "parked\n";
 }
 
-//11/01/26 skills auto route by aaditya coded by arihaan
+//11/01/26 skills auto route by aaditya coded by arihaan not 
 void rightSideSkillsAuto(){
   //universal speed cap
   double usc = 8.0;
@@ -1136,12 +1136,77 @@ void rightSideSkillsAuto(){
 
 
   //todo middle right side
+  for (int i = 0; i < 3; i++) {
+
+    postAutoReset();
+    moveWristTo(-85);
+    liftToAngle(5);
+
+    // drive to matchload zone (right side)
+    turnToPoint(57, 0, -1, 1500);
+    moveToPoint(57, 0, -1, 2000, true, usc);
+
+    // back into wall to receive matchload
+    turnToAngle(0, 500, true, usc);  
+    driveTo(-8, 800, true, 6);
+    stopChassis(coast);
+
+    // receive matchload
+    runIntake();
+    wait(2, sec);
+
+    liftTo(16 + i * 3);   //change lift alter to new bot         
+    // drive to second alliance goal and score
+    turnToPoint(48, 48, -1, 1500);
+    moveToPoint(48, 48, -1, 2000, true, usc);
+
+
+    stopChassis(coast);
+    stopIntake();
+    score();
+    liftPlusHeight(10 + i * 2);       // todo: tune increasing liftHeight
+    driveTo(6, 500, true, usc); //might have to tune
+  }
+  // drive to matchload zone (right side)
+  turnToPoint(57, 0, -1, 1500);
+  moveToPoint(57, 0, -1, 2000, true, usc);
+
+ 
+  // back into wall to receive matchload
+  turnToAngle(0, 500, true, usc);  
+  driveTo(-8, 800, true, 6);
+  stopChassis(coast);
+
+  // receive matchload
+  runIntake();
+  wait(2, sec);
+  
+  //drive back
+  turnToPoint(57, 72, 1, 2000);
+  moveToPoint(57, 72, 1, 2000, true, usc);
+
+  //point towards center then toggle
+  //liftTo(15); -- might have to raise lift here in order to score at the end 
+  turnToPoint(0,72, -1, 2000);  //issue: might have to raise lift here in order to score at the end if scoring funcs dont work at all.
+  driveTo(-5, 800, true, 6);
+
+  //drive to center
+  moveToPoint(0, 72, -1, 2000, true, usc);
+  //score
+
+  score(); // issue potentially
+  postAutoReset(); //cleans up scoring functions mistake
+  stopIntake();
+
+
+
+  //toggle
+
+
+
 
   //park at (-17, 65) change these numbres prolly
   postAutoReset();
-
-  turnToPoint(-17, 65, 1, 1500);
-  moveToPoint(-17, 65, 1, 3000, true, usc);
 
   stopChassis(coast);
 }
