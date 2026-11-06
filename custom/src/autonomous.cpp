@@ -40,6 +40,8 @@ void postAutoReset(){
   wait(.5,sec);
   liftHeight.setPosition(0,deg);
   wristPosition.setPosition(216,deg);
+  
+  
 }
 
 void printText(const char* text){
@@ -470,6 +472,8 @@ void score(){
 
         
         claw.stop();
+        
+
 
 }
 
@@ -1069,8 +1073,8 @@ void rightSideSkillsAuto(){
   wait(600, msec);                 
 
   liftTo(14);                   
-  turnToPoint(24, 24, 1, 1500);
-  moveToPoint(24, 24, 1, 2000, true, usc);
+  turnToPoint(24, 24, -1, 1500);
+  moveToPoint(24, 24, -1, 2000, true, usc);
 
 
   stopChassis(coast);
@@ -1123,7 +1127,7 @@ void rightSideSkillsAuto(){
 
     liftTo(16 + i * 3);            
     // drive to right goal and score
-    turnToPoint(24, 24, -1, 1500);
+    turnToPoint(24, 24, -1,   1500);
     moveToPoint(24, 24, -1, 2000, true, usc);
 
 
@@ -1195,7 +1199,7 @@ void rightSideSkillsAuto(){
   //score
 
   score(); // issue potentially
-  postAutoReset(); //cleans up scoring functions mistake
+  postAutoReset(); //cleans up scoring functions mistake - need to change function definiton if this doesnt work
   stopIntake();
 
 
@@ -1385,3 +1389,50 @@ double usc = 8.0;
   driveTo(6, 500, true, usc);
 }
 
+void matchAutoEmil(){
+  double usc = 8.0;
+
+  lift.setStopping(hold);
+
+  wristPosition.setPosition(-360, deg);
+  x_pos = 0;
+  y_pos = 0;
+// when a pressed, ma
+  // double toggle
+  driveTo(-3, 1000, false, 12);
+  driveTo(5, 1000, false, 12);
+  driveTo(-5, 1000, false, 12);
+  driveTo(8, 1000, false, 12);
+  driveTo(-8, 1000, true, 12);
+
+  turnToPoint(24,24,-1,2000);
+  moveToPoint(24,24,-1,2000);
+
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);              
+  driveTo(6, 500, true, usc);
+
+  turnToPoint(24,0,1,2000);
+  moveToPoint(24,0,1,3000);
+
+  postAutoReset();
+  moveWristTo(-85);
+  liftToAngle(5);
+  runIntake();
+  wait(3,sec);
+
+
+  turnToPoint(24,24,-1,2000);
+  moveToPoint(24,24,-1,2000);
+
+  wait(400, msec);
+  stopChassis(coast);
+
+  stopIntake();
+  score();
+  liftPlusHeight(4);         
+}

@@ -38,6 +38,7 @@ void NA_1pin();
 void A_1pin();
 void qual1();
 void skills();
+void matchAutoEmil();
 void crackedAuto();
 void rightSideSkillsAuto();
 void matchAutoUno();

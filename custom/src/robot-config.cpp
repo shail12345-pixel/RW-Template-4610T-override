@@ -36,8 +36,8 @@ digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
 
 // Format is rotation(port, reversed)
 // just set these to random ports if you don't use tracking wheels
-rotation horizontal_tracker = rotation(PORT13, true);
-rotation vertical_tracker = rotation(PORT14, true);
+rotation horizontal_tracker = rotation(PORT7, true);
+rotation vertical_tracker = rotation(PORT20, true);
 
 
 
@@ -83,16 +83,16 @@ double heading_correction_kp = 0, heading_correction_ki = 0, heading_correction_
 //double heading_correction_kp = .72, heading_correction_ki = .2, heading_correction_kd = 2;
 
 // Enable or disable the use of tracking wheels
-bool using_horizontal_tracker = false;  // Set to true if a horizontal tracking wheel is installed and used for odometry
-bool using_vertical_tracker = false;   // Set to true if a vertical tracking wheel is installed and used for odometry
+bool using_horizontal_tracker = true;  // Set to true if a horizontal tracking wheel is installed and used for odometry
+bool using_vertical_tracker = true;   // Set to true if a vertical tracking wheel is installed and used for odometry
 
 // IGNORE THESE IF YOU ARE NOT USING TRACKING WHEELS
 // These comments are in the perspective of a top down view of the robot when the robot is facing vertical
 // Vertical distance from the center of the bot to the horizontal tracking wheel (in inches, positive is when the wheel is behind the center)
-double horizontal_tracker_dist_from_center = 4.91;
+double horizontal_tracker_dist_from_center = 15.5/2.0 - 4;
 // Horizontal distance from the center of the bot to the vertical tracking wheel (in inches, positive is when the wheel is to the right of the center)
-double vertical_tracker_dist_from_center = .53;
-double horizontal_tracker_diameter = 2.75; // Diameter of the horizontal tracker wheel (in inches)
+double vertical_tracker_dist_from_center = 7.25-14/2;
+double horizontal_tracker_diameter = 2; // Diameter of the horizontal tracker wheel (in inches)
 double vertical_tracker_diameter = 2; // Diameter of the vertical tracker wheel (in inches)
 
 // Distance Reset setup
