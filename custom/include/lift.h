@@ -31,3 +31,11 @@ extern void liftTo(bool pinInClaw, bool cupInClaw, bool pinPresent, double cupCo
 extern void liftToState(const char* position, double maxSpeed = 12, double minSpeed = 0, double buffer = 0);
 
 extern void liftPlusHeight(double height, double maxSpeed = 12, double minSpeed = 0);
+
+// Non-blocking driver-control stages
+extern double liftStageHeight(int i);
+extern bool liftStageActive();
+extern void liftStageCancel();
+extern void liftStageGoTo(double inches);
+extern void liftStageNext();
+extern void liftStageUpdate();

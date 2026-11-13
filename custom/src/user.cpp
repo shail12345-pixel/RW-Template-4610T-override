@@ -78,27 +78,46 @@ void intakeManager(){
 }
 
 void liftManager(){
-  //i cant pt down
+  // Stage button = Y: jump to the next stage above the current height.
+  // Any manual lift input (L1 / R1 / R2 / Up) cancels the stage immediately and
+  // the lift just holds wherever you let go, so you can move up or down from a
+  // stage freely and it never snaps back to the last selected one.
+  bool yPrev = false;
   while(1){
+    bool yNow = controller_1.ButtonY.pressing();
+    bool yPressed = yNow && !yPrev;   // rising edge only
+    yPrev = yNow;
+
     if(controller_1.ButtonL1.pressing()){
-      
+      liftStageCancel();
       liftTo(1.5,12,12);
       lift.spin(reverse,6,volt);
 
-
     }else if(controller_1.ButtonR1.pressing()){
+      liftStageCancel();
       printText("liftStarted");
-         lift.spin(fwd,12,volt);
+      lift.spin(fwd,12,volt);
     }else if(controller_1.ButtonR2.pressing()){
+      liftStageCancel();
       lift.spin(reverse,12,volt);
     }else if(controller_1.ButtonUp.pressing()){
+      liftStageCancel();
       lift.spin(reverse,12,volt);
       wait(1,sec);
       liftHeight.setPosition(0,deg);
       liftTo(.5,12,12);
 
-    }else if(!liftOverride){
-      lift.stop(hold);
+    }else if(liftOverride){
+      // intakeManager is running its own blocking lift move; stay out of the way
+      liftStageCancel();
+    }else{
+      if(yPressed) liftStageNext();
+
+      if(liftStageActive()){
+        liftStageUpdate();
+      }else{
+        lift.stop(hold);
+      }
     }
     wait(10,msec);
   }
