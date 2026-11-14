@@ -354,12 +354,12 @@ void runAutonomous() {
   // thread b(conD);
   switch(auton_selected) {
     case 1:
-     skills();
+     NA_2pin();
       break;
     case 2:
      
       break;  
-    case 3:
+    case 3: 
       
       break;
     case 4: 
