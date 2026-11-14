@@ -48,7 +48,9 @@ void release();
 
 double clamp(double value, double min, double max);
 //blue
-void BA_2pin();
-void BA_3pin();
+void A_2pin();
+void NA_2pin();
+void A_3pin();
 void BAL_3pin();
+void skills();
 //red

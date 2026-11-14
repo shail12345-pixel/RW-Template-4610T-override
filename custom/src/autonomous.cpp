@@ -818,7 +818,7 @@ void brainD(){
 
 int step_BA_2pin = 0;
 
-void lc_BA_2pin(){
+void lc_2pin(){
   while(step_BA_2pin==0) wait(10,msec);
     lift.spin(fwd,12,volt);
     wait(450,msec);
@@ -839,10 +839,23 @@ void lc_BA_2pin(){
     lift.spin(fwd,-3,volt);
     wait(500,msec);
     lift.stop();
+  while(step_BA_2pin==5) wait(10,msec);
+    lift.spin(reverse,12,volt);
+    wait(500,msec);
+    lift.stop();
+  while(step_BA_2pin==6) wait(10,msec);
+    lift.spin(fwd,12,volt);
+    wait(950,msec);
+    lift.stop();
+  while(step_BA_2pin==7) wait(10,msec);
+    lift.spin(fwd,-3,volt);
+    wait(500,msec);
+    lift.stop();
+
 }
 
-void BA_2pin(){
-  thread a(lc_BA_2pin);
+void A_2pin(){
+  thread a(lc_2pin);
   x_pos = 0;
   y_pos = 0;
   driveTo(1.5,500);
@@ -881,56 +894,232 @@ void BA_2pin(){
   wait(0.5,sec);
   claw.spin(reverse,12,volt);
 
+  wait(1,sec);
+  driveTo(-8,1000);
+
 
   stopChassis(coast);
   
-  // driveTo(-6,1000);
-  // step_BA_2pin++;
-  // claw.spin(fwd,12,volt);
-  // turnToPoint(28,-24,1,1000);
-  // driveTo(10,1000,true,3);
-  // wait(1000,msec);
+  
+}
 
-  // step_BA_2pin=1;
-  // driveTo(-12,1000,10);
-  // moveToPoint(17.5,7,1,2500,true,10);
-  // step_BA_2pin++;
-  // left_chassis.spin(fwd,3,volt);
-  // right_chassis.spin(fwd,3,volt);
-  // //moveToPoint(16,3,1,2500,true,10);
-  // stopChassis(coast);
-  // step_BA_2pin++;
-  // wait(500,msec);
+void NA_2pin(){
+  thread a(lc_2pin);
+  x_pos = 0;
+  y_pos = 0;
+ // driveTo(1,500);
+  
+  toggle.spin(fwd,12,volt);
+  wait(700,msec);
+  toggle.stop();
+  
+  step_BA_2pin++; //1
 
-  // claw.spin(reverse,12,volt);
+  moveToPoint(-19.25,7.5,1,2500,true,10);
+  step_BA_2pin++; //2
+  
+  wait(500,msec);
 
-  // wait(1,sec);
+  claw.spin(reverse,12,volt);
+
+  wait(1,sec);
+
+  driveTo(-10,500);
+
+  step_BA_2pin++; //3
+
+
+  moveToPoint(-6,15,1,1000,false);
+  moveToPoint(-19,29,1,1500,true,6);
+  claw.spin(fwd,12,volt);
+
+  wait(0.5,sec);
+
+    step_BA_2pin++; //4
+  turnToAngle(180,500);
+  moveToPoint(-19,7,1,2000,true,6);
+  step_BA_2pin++; //5
+
+  wait(0.5,sec);
+  claw.spin(reverse,12,volt);
+  wait(1,sec);
+  driveTo(-8,1000);
+
+
+  stopChassis(coast);
+  
+  
+}
+
+
+void A_3pin(){
+  thread a(lc_2pin);
+  x_pos = 0;
+  y_pos = 0;
+  driveTo(1.5,500);
+  
+  toggle.spin(fwd,12,volt);
+  wait(700,msec);
+  toggle.stop();
+  
+  step_BA_2pin++; //1
+
+  moveToPoint(18.25,7.5,1,2500,true,10);
+  step_BA_2pin++; //2
+  
+  wait(500,msec);
+
+  claw.spin(reverse,12,volt);
+
+  wait(0.5,sec);
+
+  driveTo(-10,500);
+
+  step_BA_2pin++; //3
+
+
+  moveToPoint(6,15,1,1000,false);
+  moveToPoint(17,29,1,1500,true,6);
+  claw.spin(fwd,12,volt);
+
+  wait(0.5,sec);
+
+    step_BA_2pin++; //4
+  turnToAngle(180,500);
+  moveToPoint(18,8,1,1500,true,6);
+  step_BA_2pin++; //5
+
+  wait(0.5,sec);
+  claw.spin(reverse,12,volt);
+
+  wait(1,sec);
+  
+
+  moveToPoint(17,19,-1,1000,false);
+  step_BA_2pin++; //6
+  moveToPoint(35,15,1,1500,false);
+  moveToPoint(45,9,1,1500,true,6);
+
+  claw.spin(fwd,12,volt);
+
+  wait(0.5,sec);
+
+  step_BA_2pin++; //7
+
+  turnToAngle(-90,500);
+
+  moveToPoint(17,10,1,1500);
+
+  step_BA_2pin++; //8
+
+  wait(0.5,sec);
+  claw.spin(reverse,12,volt);
+
+
+  stopChassis(coast);
+  
+  
+}
+
+
+void lc_s(){
+  while(step_BA_2pin==0) wait(10,msec);
+    lift.spin(fwd,12,volt);
+    wait(450,msec);
+    lift.stop(hold);
+  while(step_BA_2pin==1) wait(10,msec);
+    lift.spin(reverse,3,volt);
+    wait(500,msec);
+    lift.stop(hold);
+  while(step_BA_2pin==2) wait(10,msec);
+    lift.spin(reverse,12,volt);
+    wait(500,msec);
+    lift.stop();
+  while(step_BA_2pin==3) wait(10,msec);
+    lift.spin(fwd,12,volt);
+    wait(750,msec);
+    lift.stop();
+  while(step_BA_2pin==4) wait(10,msec);
+    lift.spin(fwd,-3,volt);
+    wait(500,msec);
+    lift.stop();
+  while(step_BA_2pin==5) wait(10,msec);
+    lift.spin(reverse,12,volt);
+    wait(500,msec);
+    lift.stop();
+  while(step_BA_2pin==6) wait(10,msec);
+    lift.spin(fwd,12,volt);
+    wait(950,msec);
+    lift.stop();
+  while(step_BA_2pin==7) wait(10,msec);
+    lift.spin(fwd,-3,volt);
+    wait(500,msec);
+    lift.stop();
+
+}
+
+void skills(){
+  thread a(lc_s);
+  x_pos = 0;
+  y_pos = 0;
+  driveTo(1.5,500);
+  
+  toggle.spin(fwd,12,volt);
+  wait(700,msec);
+  toggle.stop();
+  
+  step_BA_2pin++; //1
+
+  moveToPoint(18.25,7.5,1,2500,true,10);
+  step_BA_2pin++; //2
+  
+  wait(500,msec);
+
+  claw.spin(reverse,12,volt);
+
+  wait(0.5,sec);
+
+  driveTo(-10,500);
+
+  moveToPoint(10.5,19.5,1,1500,false);
+  moveToPoint(35,11.5,1,1500,false);
+  moveToPoint(60.5,-2,1,1500,true);
+
+  turnToAngle(180,500);
+
+  moveToPoint(52.5,-14,1,1500,true);
+
+  wait(0.5,sec);
+
+  driveTo(-10,1000,false);
+  turnToAngle(-90,500,false);
+  moveToPoint(21.5,7.5,1,1500,true,8);
+
+  wait(.5,sec);
+
+
+  int times = 0;
+
+  while(times<5){
+      moveToPoint(21.5,7.5,-1,1500,false,8);
+      turnToAngle(180,500);
+      moveToPoint(52.5,-14,1,1500,true);
+
+      wait(0.5,sec);
+
+
+      driveTo(-10,1000,false);
+      turnToAngle(-90,500,false);
+      moveToPoint(21.5,7.5,1,1500,true,8);
+
+
+    times++
+  }
 
   
 
 
-  
-
-  
-  //turnToPoint(17.5,16.742,1,2500);
-  //moveToPoint(17.5,16.742,1,2500,false,10);
-  //wait(.5,sec);
-  
-  //turnToPoint(17.5,16.742,1,2500);
-  //moveToPoint(7.719,7.5 ,-1,2500,false,10);
-  //wait(.5,sec);
-  
-  //turnToPoint(18.013,-5.208,1,2500);
-  //moveToPoint(18.013,-5.208,1,2500,false,10);
-  //wait(.5,sec);
-
-  //turnToPoint(7.719,7.5 ,1,2500);
-  //moveToPoint(7.719,7.5 ,-1,2500,false,10);
-  //wait(.5,sec);
-
-  //turnToPoint(17.37,16.749,1,2500);
-  //moveToPoint(17.37,16.749,-1,2500,false,10);
-  
+  stopChassis(coast);
 }
 
 /*void BA_3pin(){

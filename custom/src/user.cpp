@@ -359,7 +359,7 @@ void runAutonomous() {
   // thread b(conD);
   switch(auton_selected) {
     case 1:
-      BA_2pin();
+     skills();
       break;
     case 2:
      
