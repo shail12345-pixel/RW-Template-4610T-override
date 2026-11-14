@@ -877,31 +877,61 @@ void A_2pin(){
 
   driveTo(-10,500);
 
-  step_BA_2pin++; //3
+  // step_BA_2pin++; //3
 
 
-  moveToPoint(6,15,1,1000,false);
-  moveToPoint(19,29,1,1500,true,6);
-  claw.spin(fwd,12,volt);
+  // moveToPoint(6,15,1,1000,false);
+  // moveToPoint(19,29,1,1500,true,6);
+  // claw.spin(fwd,12,volt);
 
-  wait(0.5,sec);
+  // wait(0.5,sec);
 
-    step_BA_2pin++; //4
-  turnToAngle(180,500);
-  moveToPoint(18,7,1,2000,true,6);
-  step_BA_2pin++; //5
+  //   step_BA_2pin++; //4
+  // turnToAngle(180,500);
+  // moveToPoint(18,7,1,2000,true,6);
+  // step_BA_2pin++; //5
 
-  wait(0.5,sec);
+  // wait(0.5,sec);
+  // claw.spin(reverse,12,volt);
+
+  // wait(1,sec);
+  // driveTo(-8,1000);
+
+
+  // stopChassis(coast);
+  
+  
+}
+
+void NA_1pin(){
+  thread a(lc_2pin);
+  x_pos = 0;
+  y_pos = 0;
+ // driveTo(1,500);
+  
+  toggle.spin(fwd,12,volt);
+  wait(700,msec);
+  toggle.stop();
+  
+  step_BA_2pin++; //1
+
+  moveToPoint(-19.25,8.5,1,2500,true,10);
+  step_BA_2pin++; //2
+  
+  wait(500,msec);
+
   claw.spin(reverse,12,volt);
 
   wait(1,sec);
-  driveTo(-8,1000);
+
+  driveTo(-10,500);
 
 
   stopChassis(coast);
   
   
 }
+
 
 void NA_2pin(){
   thread a(lc_2pin);
@@ -926,27 +956,27 @@ void NA_2pin(){
 
   driveTo(-10,500);
 
-  // step_BA_2pin++; //3
+  step_BA_2pin++; //3
 
 
-  // moveToPoint(-6,15,1,1000,false);
-  // moveToPoint(-17,29,1,1500,true,6);
-  // claw.spin(fwd,12,volt);
+  moveToPoint(-6,15,1,1000,false);
+  moveToPoint(-17,29,1,1500,true,6);
+  claw.spin(fwd,12,volt);
 
-  // wait(0.5,sec);
+  wait(0.5,sec);
 
-  //   step_BA_2pin++; //4
-  // turnToAngle(180,500);
-  // moveToPoint(-19,7,1,2000,true,6);
-  // step_BA_2pin++; //5
+    step_BA_2pin++; //4
+  turnToAngle(180,500);
+  moveToPoint(-19,7,1,2000,true,6);
+  step_BA_2pin++; //5
 
-  // wait(0.5,sec);
-  // claw.spin(reverse,12,volt);
-  // wait(1,sec);
-  // driveTo(-8,1000);
+  wait(0.5,sec);
+  claw.spin(reverse,12,volt);
+  wait(1,sec);
+  driveTo(-8,1000);
 
 
-  // stopChassis(coast);
+  stopChassis(coast);
   
   
 }

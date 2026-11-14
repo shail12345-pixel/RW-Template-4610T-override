@@ -354,7 +354,7 @@ void runAutonomous() {
   // thread b(conD);
   switch(auton_selected) {
     case 1:
-     NA_2pin();
+     A_2pin(); // currently a 1 pin
       break;
     case 2:
      

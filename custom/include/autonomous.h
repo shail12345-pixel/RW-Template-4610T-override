@@ -50,6 +50,7 @@ double clamp(double value, double min, double max);
 //blue
 void A_2pin();
 void NA_2pin();
+void NA_1pin();
 void A_3pin();
 void BAL_3pin();
 void skills();
