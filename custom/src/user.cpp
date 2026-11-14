@@ -78,7 +78,7 @@ void controlNormalized() {
 // R1 / R2 held     -> manual control from wherever you are.
 // Manual released  -> lift HOLDS where you let go (it is NOT sent back to a stage).
 // Up / Down arrows step to the next stage above / below the current TARGET
-// (so double-taps still work mid-move and manual moves are respected).
+
 void liftControl() {
   double targetDeg = STAGE_DEG[1];   // start by holding the bottom stage
   bool wasManual = false;
@@ -259,12 +259,7 @@ void toggleControl(){
   } 
 } 
 
-//stage 0 = 0 (placeholder, same as stage 1)
-//stage 1 = 0
-//stage 2 = -16.2
-//stage 3 = -39.1
 
-//
 void rotationMeasure() {
   while (true) {
     double rotationDegrees = (liftHeight.position(deg));
