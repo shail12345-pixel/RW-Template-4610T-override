@@ -877,28 +877,28 @@ void A_2pin(){
 
   driveTo(-10,500);
 
-  // step_BA_2pin++; //3
+  step_BA_2pin++; //3
 
 
-  // moveToPoint(6,15,1,1000,false);
-  // moveToPoint(19,29,1,1500,true,6);
-  // claw.spin(fwd,12,volt);
+  moveToPoint(6,15,1,1000,false);
+  moveToPoint(19,29,1,1500,true,6);
+  claw.spin(fwd,12,volt);
 
-  // wait(0.5,sec);
+  wait(0.5,sec);
 
-  //   step_BA_2pin++; //4
-  // turnToAngle(180,500);
-  // moveToPoint(18,7,1,2000,true,6);
-  // step_BA_2pin++; //5
+    step_BA_2pin++; //4
+  turnToAngle(180,500);
+  moveToPoint(18,7,1,2000,true,6);
+  step_BA_2pin++; //5
 
-  // wait(0.5,sec);
-  // claw.spin(reverse,12,volt);
+  wait(0.5,sec);
+  claw.spin(reverse,12,volt);
 
-  // wait(1,sec);
-  // driveTo(-8,1000);
+  wait(1,sec);
+  driveTo(-8,1000);
 
 
-  // stopChassis(coast);
+  stopChassis(coast);
   
   
 }
