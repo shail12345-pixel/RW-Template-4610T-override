@@ -821,7 +821,7 @@ int step_BA_2pin = 0;
 void lc_2pin(){
   while(step_BA_2pin==0) wait(10,msec);
     lift.spin(fwd,12,volt);
-    wait(450,msec);
+    wait(750,msec);
     lift.stop(hold);
   while(step_BA_2pin==1) wait(10,msec);
     lift.spin(reverse,3,volt);
@@ -855,7 +855,7 @@ void lc_2pin(){
 }
 
 void A_2pin(){
-  thread a(lc_2pin);
+  
   x_pos = 0;
   y_pos = 0;
   driveTo(1.5,500);
@@ -863,11 +863,19 @@ void A_2pin(){
   toggle.spin(fwd,12,volt);
   wait(700,msec);
   toggle.stop();
-  
-  step_BA_2pin++; //1
 
-  moveToPoint(18.25,7.5,1,2500,true,10);
-  step_BA_2pin++; //2
+
+  lift.spin(fwd,12,volt);
+  wait(750,msec);
+  lift.stop(hold);
+   //step_BA_2pin++; //1
+
+  moveToPoint(15,12,1,2500,true,10);
+  lift.spin(reverse,12,volt);
+  wait(750,msec);
+  lift.stop(hold);
+  
+  //step_BA_2pin++; //2
   
   wait(500,msec);
 
@@ -875,27 +883,39 @@ void A_2pin(){
 
   wait(1,sec);
 
-  driveTo(-10,500);
+  driveTo(-14,500);
+  return;
+  
+  lift.spin(fwd,12,volt);
+  wait(750,msec);
+  lift.stop();
+  
 
-  step_BA_2pin++; //3
+  //step_BA_2pin++; //3
 
 
-  moveToPoint(6,15,1,1000,false);
-  moveToPoint(19,29,1,1500,true,6);
+  moveToPoint(12,30,1,1000,false);
+  moveToPoint(16,34,1,1500,true,6);
   claw.spin(fwd,12,volt);
 
   wait(0.5,sec);
-
-    step_BA_2pin++; //4
-  turnToAngle(180,500);
-  moveToPoint(18,7,1,2000,true,6);
-  step_BA_2pin++; //5
+    lift.spin(reverse,12,volt);
+    wait(750,msec);
+    lift.stop();
+    //step_BA_2pin++; //4
+  turnToAngle(270,500);
+  moveToPoint(15,12,1,2000,true,6);
+  lift.spin(fwd,12,volt);     //step_BA_2pin++; //5
+  wait(750,msec);
+  lift.stop();
 
   wait(0.5,sec);
   claw.spin(reverse,12,volt);
 
   wait(1,sec);
-  driveTo(-8,1000);
+  driveTo(-10,1000);
+
+  
 
 
   stopChassis(coast);
@@ -981,20 +1001,29 @@ void NA_2pin(){
   
 }
 
-
+// goal = (-11.25,25.96,-40)
+//
 void A_3pin(){
-  thread a(lc_2pin);
+  thread a(lc_2pin); 
   x_pos = 0;
   y_pos = 0;
+
+inertial_sensor.setRotation(90, degrees); // Robot's starting direction is right
+
   driveTo(1.5,500);
   
-  toggle.spin(fwd,12,volt);
+  toggle.spin(fwd,12,volt); 
   wait(700,msec);
   toggle.stop();
   
   step_BA_2pin++; //1
 
-  moveToPoint(18.25,7.5,1,2500,true,10);
+
+  lift.spin(fwd,12,volt);
+  wait(2000,msec);
+  lift.stop(hold);
+
+  moveToPoint(18.5,7.5,1,2500,true,10);
   step_BA_2pin++; //2
   
   wait(500,msec);
@@ -1042,6 +1071,8 @@ void A_3pin(){
 
   step_BA_2pin++; //8
 
+  moveToPoint(-11.25,25.96,1000,false); // go to goal
+
   wait(0.5,sec);
   claw.spin(reverse,12,volt);
 
@@ -1087,6 +1118,21 @@ void lc_s(){
     lift.stop();
 
 }
+
+void MSA_3pin(){
+  inertial_sensor.setRotation(90, degrees);
+  wait(50, msec);
+  A_2pin();
+  moveToPoint(36,5,1,2500,true);
+  claw.spin(fwd,12,volt);
+  wait(2000,msec);
+  moveToPoint(11,8,1,2500,true);
+  stopChassis(coast);
+
+
+}
+
+
 
 void skills(){
   thread a(lc_s);
@@ -1152,83 +1198,83 @@ void skills(){
   stopChassis(coast);
 }
 
-/*void BA_3pin(){
-  x_pos = 0;
-  y_pos = 0;
-  claw.spin(fwd,12,volt);
+// void BA_3pin(){
+//   x_pos = 0;
+//   y_pos = 0;
+//   claw.spin(fwd,12,volt);
 
-  turnToPoint(17.5,16.742,1,2500);
-  moveToPoint(17.5,16.742,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(17.5,16.742,1,2500);
+//   moveToPoint(17.5,16.742,1,2500,false,10);
+//   wait(.5,sec);
   
-  turnToPoint(17.5,16.742,1,2500);
-  moveToPoint(7.719,7.5 ,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(17.5,16.742,1,2500);
+//   moveToPoint(7.719,7.5 ,-1,2500,false,10);
+//   wait(.5,sec);
   
-  turnToPoint(18.013,-5.208,1,2500);
-  moveToPoint(18.013,-5.208,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(18.013,-5.208,1,2500);
+//   moveToPoint(18.013,-5.208,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(7.719,7.5 ,1,2500);
-  moveToPoint(7.719,7.5 ,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(7.719,7.5 ,1,2500);
+//   moveToPoint(7.719,7.5 ,-1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(17.37,16.749,1,2500);
-  moveToPoint(17.37,16.749,-1,2500,false,10);
-  wait(.5,sec);
-  //new compared to BA_2pin
+//   turnToPoint(17.37,16.749,1,2500);
+//   moveToPoint(17.37,16.749,-1,2500,false,10);
+//   wait(.5,sec);
+//   //new compared to BA_2pin
 
-  turnToPoint(17.37,16.749,1,2500);
-  moveToPoint(-11.819,11.333,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(17.37,16.749,1,2500);
+//   moveToPoint(-11.819,11.333,-1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-29.561,-5.539,1,2500);
-  moveToPoint(-29.561,-5.539,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-29.561,-5.539,1,2500);
+//   moveToPoint(-29.561,-5.539,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-29.561,-5.539,1,2500);
-  moveToPoint(-11.819,11.333,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-29.561,-5.539,1,2500);
+//   moveToPoint(-11.819,11.333,-1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-29.387,16.551,1,2500);
-  moveToPoint(-29.387,16.551,1,2500,false,10);
+//   turnToPoint(-29.387,16.551,1,2500);
+//   moveToPoint(-29.387,16.551,1,2500,false,10);
   
-}
+// }
 
-void BAL_3pin(){
-  x_pos = 0;
-  y_pos = 0;
-  claw.spin(fwd,12,volt);
+// void BAL_3pin(){
+//   x_pos = 0;
+//   y_pos = 0;
+//   claw.spin(fwd,12,volt);
 
-  turnToPoint(-18.194,19.145,1,2500);
-  moveToPoint(-18.194,19.145,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-18.194,19.145,1,2500);
+//   moveToPoint(-18.194,19.145,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-18.194,19.145,1,2500);
-  moveToPoint(-18.194,3.231,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-18.194,19.145,1,2500);
+//   moveToPoint(-18.194,3.231,-1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-42.383,19.145,1,2500);
-  moveToPoint(-42.383,19.145,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-42.383,19.145,1,2500);
+//   moveToPoint(-42.383,19.145,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-18.035,18.986,1,2500);
-  moveToPoint(-18.035,18.986,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-18.035,18.986,1,2500);
+//   moveToPoint(-18.035,18.986,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-18.035,18.986,1,2500);
-  moveToPoint(-32.994,19.304,-1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-18.035,18.986,1,2500);
+//   moveToPoint(-32.994,19.304,-1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-18.512,43.016,1,2500);
-  moveToPoint(-18.512,43.016,1,2500,false,10);
-  wait(.5,sec);
+//   turnToPoint(-18.512,43.016,1,2500);
+//   moveToPoint(-18.512,43.016,1,2500,false,10);
+//   wait(.5,sec);
 
-  turnToPoint(-18.193,18.986,1,2500);
-  moveToPoint(-18.193,18.986,1,2500,false,10); 
+//   turnToPoint(-18.193,18.986,1,2500);
+//   moveToPoint(-18.193,18.986,1,2500,false,10); 
   
-}
-*/
+// }
+
 
 
 

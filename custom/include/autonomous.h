@@ -53,5 +53,6 @@ void NA_2pin();
 void NA_1pin();
 void A_3pin();
 void BAL_3pin();
+void MSA_3pin();
 void skills();
 //red

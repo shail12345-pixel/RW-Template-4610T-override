@@ -349,18 +349,18 @@ void conD(){
 // =============================================================================
 
 void runAutonomous() {
-  int auton_selected = 1;
+  int auton_selected = 3;
   thread a(brainD);
   // thread b(conD);
   switch(auton_selected) {
     case 1:
-     A_2pin(); // currently a 1 pin
+     A_3pin(); // test phase
       break;
     case 2:
-     
+    brainD();
       break;  
     case 3: 
-      
+      MSA_3pin();
       break;
     case 4: 
       
@@ -411,6 +411,7 @@ void runDriver() {
   thread rotation_display(rotationMeasure);
   thread stage_setter_thread(stageSetter);
   thread toggle_thread(toggleControl);
+ 
   
 
     resetChassis();
