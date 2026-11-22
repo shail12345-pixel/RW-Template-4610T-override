@@ -1120,6 +1120,7 @@ void lc_s(){
 
 }
 
+//auto calls the working two pin and then proceeds to score a third -- different variants will be made for different 3rd pin options
 void MSA_3pin(){
   //sets heading to 90
   inertial_sensor.setRotation(90, degrees);
