@@ -1120,9 +1120,12 @@ void lc_s(){
 }
 
 void MSA_3pin(){
+  //sets heading to 90
   inertial_sensor.setRotation(90, degrees);
   wait(50, msec);
+  //runs 2 pin auton
   A_2pin();
+  //3 pin starts
   moveToPoint(36,5,1,2500,true);
   claw.spin(fwd,12,volt);
   wait(2000,msec);
