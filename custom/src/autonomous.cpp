@@ -1129,7 +1129,13 @@ void MSA_3pin(){
   moveToPoint(36,5,1,2500,true);
   claw.spin(fwd,12,volt);
   wait(2000,msec);
-  moveToPoint(11,8,1,2500,true);
+  lift.spin(fwd,12,volt); //inititaes lift when going to score 3rd pin
+  wait(1000,msec);
+  lift.stop(hold); //hold lift at top
+  moveToPoint(11,8,1,2500,true);  //moves to goal
+  lift.spin(reverse,12,volt); //scores pin
+  wait(2000, msec);
+  lift.stop(brake);
   stopChassis(coast);
 
 
