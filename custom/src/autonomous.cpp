@@ -864,6 +864,7 @@ void A_2pin(){
   wait(700,msec);
   toggle.stop();
 
+  //toggle ends and pathing begins
 
   lift.spin(fwd,12,volt);
   wait(750,msec);
@@ -884,7 +885,7 @@ void A_2pin(){
   wait(1,sec);
 
   driveTo(-14,500);
-  return;
+  return;  //ends function
   
   lift.spin(fwd,12,volt);
   wait(750,msec);
