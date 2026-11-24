@@ -249,10 +249,10 @@ void clawControlPranoy(){
 void toggleControl(){
   while(1){
     if(controller_1.ButtonA.pressing()){
-      toggle.spin(fwd,12,volt);
+      toggle_group.spin(fwd,12,volt);
     }
     else{
-      toggle.stop();
+      toggle_group.stop();
     }
     
     wait(10, msec);
