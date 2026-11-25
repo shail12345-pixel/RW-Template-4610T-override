@@ -492,7 +492,7 @@ void brainD(){
 //   x_pos = 0;
 //   y_pos = 0;
 
-//   //toggles
+//   //toggle_groups
 //   release();
 //   driveTo(3,200,false,12);
 //   driveTo(-6,600,false,12);
@@ -633,7 +633,7 @@ void brainD(){
 // }
 
 // // void skills_Q1_Matchloading(){
-// //   //toggle
+// //   //toggle_group
 // //   moveToPoint(0,8,1,3000,true,10);
 // //   moveToPoint(0,0,-1,3000,true,10);
 // //   boomerang(22,23,1,90,.3,3000);
@@ -860,11 +860,11 @@ void A_2pin(){
   y_pos = 0;
   driveTo(1.5,500);
   
-  toggle.spin(fwd,12,volt);
+  toggle_group.spin(fwd,12,volt);
   wait(700,msec);
-  toggle.stop();
+  toggle_group.stop();
 
-  //toggle ends and pathing begins
+  //toggle_group ends and pathing begins
 
   lift.spin(fwd,12,volt);
   wait(750,msec);
@@ -930,9 +930,9 @@ void NA_1pin(){
   y_pos = 0;
  // driveTo(1,500);
   
-  toggle.spin(fwd,12,volt);
+  toggle_group.spin(fwd,12,volt);
   wait(700,msec);
-  toggle.stop();
+  toggle_group.stop();
   
   step_BA_2pin++; //1
 
@@ -960,9 +960,9 @@ void NA_2pin(){
   y_pos = 0;
  // driveTo(1,500);
   
-  toggle.spin(fwd,12,volt);
+  toggle_group.spin(fwd,12,volt);
   wait(700,msec);
-  toggle.stop();
+  toggle_group.stop();
   
   step_BA_2pin++; //1
 
@@ -1013,9 +1013,9 @@ inertial_sensor.setRotation(90, degrees); // Robot's starting direction is right
 
   driveTo(1.5,500);
   
-  toggle.spin(fwd,12,volt); 
+  toggle_group.spin(fwd,12,volt); 
   wait(700,msec);
-  toggle.stop();
+  toggle_group.stop();
   
   step_BA_2pin++; //1
 
@@ -1151,9 +1151,9 @@ void skills(){
   y_pos = 0;
   driveTo(1.5,500);
   
-  toggle.spin(fwd,12,volt);
+  toggle_group.spin(fwd,12,volt);
   wait(700,msec);
-  toggle.stop();
+  toggle_group.stop();
   
   step_BA_2pin++; //1
 

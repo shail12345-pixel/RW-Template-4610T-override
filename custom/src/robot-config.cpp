@@ -24,7 +24,7 @@ motor right_chassis1 = motor(PORT16, ratio6_1, false); //back
 motor right_chassis2 = motor(PORT6, ratio6_1, true); //front
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2);
 
-motor toggle1 = motor(PORT11,ratio18_1,false);
+motor toggle1 = motor(PORT11,ratio18_1,true);
 motor toggle2 = motor(PORT14, ratio18_1,false);
 motor_group toggle_group = motor_group(toggle1,toggle2);
 
